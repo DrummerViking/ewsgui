@@ -9,13 +9,13 @@
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
 	
 	# Author of this module
-	Author = 'agallego'
+	Author = 'Agustin Gallegos [MSFT]'
 	
 	# Company or vendor of this module
-	CompanyName = 'MyCompany'
+	CompanyName = 'Agustin Gallegos'
 	
 	# Copyright statement for this module
-	Copyright = 'Copyright (c) 2020 agallego'
+	Copyright = 'Copyright (c) 2020 Agustin Gallegos'
 	
 	# Description of the functionality provided by this module
 	Description = 'Exchange Web Services (EWS) tool to perform different options'
