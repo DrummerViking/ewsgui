@@ -36,35 +36,14 @@
                             Removed AutodiscoverSCPLookup, as most of the uses of this app is with Exchange Online
         1.80 - 04/16/2018 - Optimized logon options. If we choose 'Office 365', we will not use SCP and we hard-code EXO endpoint.
         1.82 - 02/15/2019 - Added 2 columns to folder lists methods 1-6 : TotalItemsCount, # of Subfolders
+        2.00 - 04/29/2020 - Moving tool to Module in GitHub
     #>
 
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
 
     function GenerateForm {
-     
-    #Internal function to request inputs using UI instead of Read-Host
-    function Show-InputBox{
-        [CmdletBinding()]
-        param
-        (
-            [Parameter(Mandatory=$true)]
-            [string]
-            $Prompt,
-            
-            [Parameter(Mandatory=$false)]
-            [string]
-            $DefaultValue='',
-            
-            [Parameter(Mandatory=$false)]
-            [string]
-            $Title = 'Windows PowerShell'
-        )
-        
-        Add-Type -AssemblyName Microsoft.VisualBasic
-        [Microsoft.VisualBasic.Interaction]::InputBox($Prompt,$Title, $DefaultValue)
-    }
-     
+         
     #region Import the Assemblies
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
@@ -627,182 +606,14 @@
 
     #endregion Processes
 
-    #region load EWS API DLL
+    # Loading EWS API dll file
+    Load-EWSDLL
 
-    write-host " " 
-    Write-Host "This script requires at least EWS API 2.1" -ForegroundColor Yellow 
+    # registering EWS API as an Enterprise App in Azure AD
+    Register-EWSGuiApp
     
-        # Locating DLL location either in working path, in EWS API 2.1 path or in EWS API 2.2 path
-        $Directory = ".\"
-        $EWS = Join-Path $Directory "Microsoft.Exchange.WebServices.dll"
-        $test = Test-Path -Path $EWS
-        if ($test -eq $False){
-            Write-Host "EWS DLL in local path not found" -ForegroundColor Cyan
-            $test2 = Test-Path -Path "C:\Program Files (x86)\Microsoft\Exchange\Web Services\2.*\Microsoft.Exchange.WebServices.dll"
-            if ($test2 -eq $False){
-                Write-Host "EWS 2.1 not found" -ForegroundColor Cyan
-                $test3 = Test-Path -Path "C:\Program Files\Microsoft\Exchange\Web Services\2.*\Microsoft.Exchange.WebServices.dll"
-                if ($test3 -eq $False) {
-                    Write-Host "EWS 2.2 not found" -ForegroundColor Cyan
-                    }else{
-                    Write-Host "EWS 2.2 found" -ForegroundColor Cyan
-                    }
-                }else{
-                Write-Host "EWS 2.1 found" -ForegroundColor Cyan
-                }        
-            }else{
-            Write-Host "EWS DLL found in local path" -ForegroundColor Cyan
-            }
-        
-        
-        if($test -eq $False -and $test2 -eq $False -and $test3 -eq $False){
-                Write-Host " "
-            Write-Host "You don't seem to have EWS API dll file 'Microsoft.Exchange.WebServices.dll' in the same Directory of this script" -ForegroundColor Red
-            Write-Host "please get a copy of the file or download the whole API from: " -ForegroundColor Red -NoNewline
-            Write-Host "https://www.microsoft.com/en-us/download/details.aspx?id=42951" -ForegroundColor Cyan
-            Write-Host ""
-            Write-Host "we will open your browser in 10 seconds automatically directly to this URL" -ForegroundColor Red
-            Start-sleep -Seconds 10 
-            Start-Process -FilePath "https://www.microsoft.com/en-us/download/details.aspx?id=42951"
-
-            return
-        }
-        
-        Write-host "EWS API detected. All good!" -ForegroundColor Cyan
-                
-        if ($test -eq $True){
-            Add-Type -Path $EWS
-            Write-Host "Using EWS DLL in local path" -ForegroundColor Cyan
-            }
-        elseif($test2 -eq $True){
-            Add-Type -Path "C:\Program Files (x86)\Microsoft\Exchange\Web Services\2.*\Microsoft.Exchange.WebServices.dll"
-            Write-Host "Using EWS 2.1" -ForegroundColor Cyan
-            }
-        elseif ($test3 -eq $True){
-            Add-Type -Path "C:\Program Files\Microsoft\Exchange\Web Services\2.*\Microsoft.Exchange.WebServices.dll"
-            Write-Host "Using EWS 2.2" -ForegroundColor Cyan
-            }
-        write-host " "
-    #endregion
-
-    #region Select Exchange version and establish connection
-
-        # Choosing if connection is to Office 365 or an Exchange on-premises
-        $PremiseForm.Controls.Add($radiobutton1)
-        $PremiseForm.Controls.Add($radiobutton2)
-        $PremiseForm.Controls.Add($radiobutton3)
-        $PremiseForm.Controls.Add($radiobutton4)
-        $PremiseForm.ClientSize = New-Object System.Drawing.Size(250,160)
-        $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
-        $PremiseForm.Name = "form1"
-        $PremiseForm.Text = "Choose your Exchange version"
-        #
-        # radiobutton1
-        #
-        $radiobutton1.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
-        $radiobutton1.Location = New-Object System.Drawing.Point(20,20)
-        $radiobutton1.Size = New-Object System.Drawing.Size(150,25)
-        $radiobutton1.TabStop = $True
-        $radiobutton1.Text = "Exchange 2007"
-        $radioButton1.Checked = $true
-        $radiobutton1.UseVisualStyleBackColor = $True
-        #
-        # radiobutton2
-        #
-        $radiobutton2.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
-        $radiobutton2.Location = New-Object System.Drawing.Point(20,50)
-        $radiobutton2.Size = New-Object System.Drawing.Size(150,20)
-        $radiobutton2.TabStop = $True
-        $radiobutton2.Text = "Exchange 2010"
-        $radioButton2.Checked = $false
-        $radiobutton2.UseVisualStyleBackColor = $True
-        #
-        # radiobutton3
-        #
-        $radiobutton3.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
-        $radiobutton3.Location = New-Object System.Drawing.Point(20,80)
-        $radiobutton3.Size = New-Object System.Drawing.Size(150,25)
-        $radiobutton3.TabStop = $True
-        $radiobutton3.Text = "Exchange 2013/2016"
-        $radiobutton3.Checked = $false
-        $radiobutton3.UseVisualStyleBackColor = $True
-        #
-        # radiobutton4
-        #
-        $radiobutton4.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
-        $radiobutton4.Location = New-Object System.Drawing.Point(20,110)
-        $radiobutton4.Size = New-Object System.Drawing.Size(150,30)
-        $radiobutton4.Text = "Office365"
-        $radiobutton4.Checked = $false
-        $radiobutton4.UseVisualStyleBackColor = $True
-
-        #"Go" button
-        $buttonGo.DataBindings.DefaultDataSourceUpdateMode = 0
-        $buttonGo.ForeColor = [System.Drawing.Color]::FromArgb(255,0,0,0)
-        $System_Drawing_Point = New-Object System.Drawing.Point
-        $System_Drawing_Point.X = 170
-        $System_Drawing_Point.Y = 20
-        $buttonGo.Location = $System_Drawing_Point
-        $buttonGo.Name = "Go"
-        $System_Drawing_Size = New-Object System.Drawing.Size
-        $System_Drawing_Size.Height = 25
-        $System_Drawing_Size.Width = 50
-        $buttonGo.Size = $System_Drawing_Size
-        $buttonGo.Text = "Go"
-        $buttonGo.UseVisualStyleBackColor = $True
-        $buttonGo.add_Click({
-            if($radiobutton1.Checked){$Global:option = "Exchange2007_SP1"}
-            elseif($radiobutton2.Checked){$Global:option = "Exchange2010_SP2"}
-            elseif($radiobutton3.Checked){$Global:option = "Exchange2013_SP1"}
-            elseif($radiobutton4.Checked){$Global:option = "Exchange2013_SP1"}
-            $PremiseForm.Hide()
-        })
-        $PremiseForm.Controls.Add($buttonGo)
-
-        #"Exit" button
-        $buttonExit.DataBindings.DefaultDataSourceUpdateMode = 0
-        $buttonExit.ForeColor = [System.Drawing.Color]::FromArgb(255,0,0,0)
-        $System_Drawing_Point = New-Object System.Drawing.Point
-        $System_Drawing_Point.X = 170
-        $System_Drawing_Point.Y = 50
-        $buttonExit.Location = $System_Drawing_Point
-        $buttonExit.Name = "Exit"
-        $System_Drawing_Size = New-Object System.Drawing.Size
-        $System_Drawing_Size.Height = 25
-        $System_Drawing_Size.Width = 50
-        $buttonExit.Size = $System_Drawing_Size
-        $buttonExit.Text = "Exit"
-        $buttonExit.UseVisualStyleBackColor = $True
-        $buttonExit.add_Click({$PremiseForm.Close() ; $buttonExit.Dispose() })
-        $PremiseForm.Controls.Add($buttonExit)
-
-        #Show Form
-        $PremiseForm.Add_Shown({$PremiseForm.Activate()})
-        $PremiseForm.ShowDialog()| Out-Null
-        #exit if 'Exit' button is pushed
-        if($buttonExit.IsDisposed){return} 
-
-        #creating service object
-        $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
-        $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
-     
-        #setting credentials
-        $psCred = Get-Credential -Message "Type your credentials or Administrator credentials"
-        $Global:email = $psCred.UserName
-        $creds = New-Object System.Net.NetworkCredential($psCred.UserName.ToString(),$psCred.GetNetworkCredential().password.ToString()) 
-        $service.Credentials = $creds
-        $service.TraceEnabled = $False
-        if($radiobutton4.Checked){
-            $service.EnableScpLookup = $False 
-            $service.Url = [system.URI]"https://outlook.office365.com/ews/exchange.asmx"
-        }else{
-            # setting Autodiscover endpoint
-            $service.EnableScpLookup = $True
-            $service.AutodiscoverUrl($email,{$true}) 
-        }    
-        Write-Host "connected to URL: " $service.url -ForegroundColor Yellow
-
-    #endregion
+    # Connecting to EWS and creating service object
+    $service = Connect-EWSService
 
     $ExpandFilters = {
     # Removing all controls, in order to reload the screen appropiately for each selection
