@@ -1,20 +1,23 @@
 ﻿# EWS-GUI Tool
-Exchange Web Services (EWS) tool to perform different options
+Exchange Web Services (EWS) tool to perform different options in Exchange Online.
 
-# PSFModule guidance
+ > This Module requires in addition AzureAD module, in order to use ADAL libraries.
 
-This is a finished module layout optimized for implementing the PSFramework.
-
-If you don't care to deal with the details, this is what you need to do to get started seeing results:
-
- - Add the functions you want to publish to `/functions/`
- - Update the `FunctionsToExport` node in the module manifest (ewsgui.psd1). All functions you want to publish should be in a list.
- - Add internal helper functions the user should not see to `/internal/functions/`
- 
- ## Path Warning
- 
- > If you want your module to be compatible with Linux and MacOS, keep in mind that those OS are case sensitive for paths and files.
- 
- `Import-ModuleFile` is preconfigured to resolve the path of the files specified, so it will reliably convert weird path notations the system can't handle.
- Content imported through that command thus need not mind the path separator.
- If you want to make sure your code too will survive OS-specific path notations, get used to using `Resolve-path` or the more powerful `Resolve-PSFPath`.
+## Allows to perform 16 different operations using EWS API:
+- Option 1 : List Folders in Root
+- Option 2 : List Folders in Archive Root
+- Option 3 : List Folders in Public Folder Root
+- Option 4 : List subFolders from a desired Parent Folder
+- Option 5 : List folders in Recoverable Items Root folder
+- Option 6 : List folders in Recoverable Items folder in Archive
+- Option 7 : List Items in a desired Folder
+- Option 8 : Create a custom Folder in Root
+- Option 9 : Delete a Folder
+- Option 10 : Get user's Inbox Rules
+- Option 11 : Get user's OOF Settings
+- Option 12 : Move items between folders
+- Option 13 : Delete a subset of items in a folder
+- Option 14 : Get user's Delegate information
+- Option 15 : Change sensitivity to items in a folder
+- Option 16 : Remove OWA configurations
+- Option 17 : Switch to another Mailbox
