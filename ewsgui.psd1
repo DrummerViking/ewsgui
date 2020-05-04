@@ -27,6 +27,7 @@
 	# this module
 	RequiredModules = @(
 		@{ ModuleName='PSFramework'; ModuleVersion='1.1.59' }
+		@{ ModuleName='AzureAD' ; ModuleVersion='2.0.2.76' }
 	)
 	
 	# Assemblies that must be loaded prior to importing this module
