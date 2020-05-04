@@ -21,7 +21,7 @@
 	Description = 'Exchange Web Services (EWS) tool to perform different options'
 	
 	# Minimum version of the Windows PowerShell engine required by this module
-	PowerShellVersion = '5.0'
+	PowerShellVersion = '3.0'
 	
 	# Modules that must be imported into the global environment prior to importing
 	# this module
