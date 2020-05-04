@@ -3,10 +3,10 @@ Exchange Web Services (EWS) tool to perform different options in Exchange Online
 
  > This Module requires in addition AzureAD module, in order to use ADAL libraries.
 
-Allows to perform 16 different operations using EWS API:
-- 1) List Folders in Root
-- 2) List Folders in Archive Root
-- 3) List Folders in Public Folder Root
+## Allows to perform 16 different operations using EWS API:
+- 1. List Folders in Root
+- 2. List Folders in Archive Root
+- 3. List Folders in Public Folder Root
 - 4) List subFolders from a desired Parent Folder
 - 5) List folders in Recoverable Items Root folder
 - 6) List folders in Recoverable Items folder in Archive
