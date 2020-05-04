@@ -110,19 +110,46 @@
     $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
     $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
  
-    #setting credentials
-    $psCred = Get-Credential -Message "Type your credentials or Administrator credentials"
-    $Global:email = $psCred.UserName
-    $authenticationContext = New-Object Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext("https://login.microsoftonline.com/$TenantId", $False)
+    #Getting oauth credentials
+    $Folderpath = (Get-Module azuread -ListAvailable | Sort-Object Version -Descending)[0].Path
+    $path = join-path (split-path $Folderpath -parent) 'Microsoft.IdentityModel.Clients.ActiveDirectory.dll'
+    Add-Type -Path $path
+
+    $authenticationContext = New-Object Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext("https://login.windows.net/common", $False)
     $platformParameters = New-Object Microsoft.IdentityModel.Clients.ActiveDirectory.PlatformParameters([Microsoft.IdentityModel.Clients.ActiveDirectory.PromptBehavior]::Always)
+    $resourceUri = "https://outlook.office365.com"
+    $AppId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
     $redirectUri = New-Object Uri("http://localhost/code")
-    $AADCredential = New-Object "Microsoft.IdentityModel.Clients.ActiveDirectory.UserCredential" -ArgumentList $psCred.UserName, $psCred.Password
-    $authenticationResult = $authenticationContext.AcquireTokenAsync("https://outlook.office365.com", $AppDetails.AppId, $AADCredential)
-    if ($authenticationResult.Exception.InnerException.ErrorCode -eq 'interaction_required' ) {
-        $authenticationResult = $authenticationContext.AcquireTokenAsync("https://outlook.office365.com", $AppDetails.AppId, $redirectUri, $platformParameters)
-    }
+
+    Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "Looking in token cache"
+    $authenticationResult = $authenticationContext.AcquireTokenSilentAsync($resourceUri, $AppId)
+
+    while ($authenticationResult.IsCompleted -ne $true) { Start-Sleep -Milliseconds 500; Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "sleep" }
+
+    # Check if we failed to get the token
+    if (!($authenticationResult.IsFaulted -eq $false)) {
+
+        Write-PSFMessage -Level Warning -Message "Acquire token silent failed" -ErrorRecord $_
+        switch ($authenticationResult.Exception.InnerException.ErrorCode) {
+            failed_to_acquire_token_silently { 
+                # do nothing since we pretty much expect this to fail
+                Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "Cache miss, asking for credentials"
+                $authenticationResult = $authenticationContext.AcquireTokenAsync($resourceUri, $AppId, $redirectUri, $platformParameters)
+
+                while ($authenticationResult.IsCompleted -ne $true) { Start-Sleep -Milliseconds 500; Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "sleep" }
+            }
+            multiple_matching_tokens_detected {
+                # we could clear the cache here since we don't have a UPN, but we are just going to move on to prompting
+                Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "Multiple matching entries found, asking for credentials"
+                $authenticationResult = $authenticationContext.AcquireTokenAsync($resourceUri, $AppId, $redirectUri, $platformParameters)
+
+                while ($authenticationResult.IsCompleted -ne $true) { Start-Sleep -Milliseconds 500; Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "sleep" }
+            }
+            Default { Write-PSFMessage -Level Warning -Message "Unknown Token Error $authenticationResult.Exception.InnerException.ErrorCode" -ErrorRecord $_ }
+        }
+    }   
     $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($authenticationResult.Result.AccessToken)
-    $Service.Credentials =  $exchangeCredentials
+    $Service.Credentials = $exchangeCredentials
     $service.Url = New-Object Uri("https://outlook.office365.com/ews/exchange.asmx")
 
     return $service

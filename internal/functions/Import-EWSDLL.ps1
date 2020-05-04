@@ -1,4 +1,4 @@
-﻿Function Load-EWSDLL {
+﻿Function Import-EWSDLL {
     <#
     .SYNOPSIS
     Loads EWS DLL into the session
@@ -7,7 +7,7 @@
     Search and Loads EWS DLL into the session
     
     .EXAMPLE
-    PS C:\> Load-EWSDLL
+    PS C:\> Import-EWSDLL
     Search and Loads EWS DLL into the session
     
     #>

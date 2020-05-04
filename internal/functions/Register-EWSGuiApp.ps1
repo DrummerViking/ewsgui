@@ -18,16 +18,10 @@
         try {
             Import-module AzureAD
             Write-PSFHostColor -String "[$((Get-Date).ToString("HH:mm:ss"))] We will connect to AzureAD to allow this app to connect to your tenant using OAUTH"
-            $ConnStatus = Connect-AzureAD -Credential (Get-credential -Message "Enter Global Admin credentials") -ErrorAction Stop
+            $ConnStatus = Connect-AzureAD -ErrorAction Stop
         }
         catch {
-            if ( ($_.Exception.InnerException.InnerException.InnerException.InnerException.ErrorCode | ConvertFrom-Json).error -eq 'interaction_required' ) {
-                Write-PSFHostColor -String "[$((Get-Date).ToString("HH:mm:ss"))] Your are account seems to be requiring MFA to connect to Azure AD. Requesting to authenticate"
-                $ConnStatus = Connect-AzureAD -ErrorAction Stop
-            }
-            else {
-                return $_
-            }
+            return $_
         }
     } -EnableException $true -PSCmdlet $PSCmdlet
 

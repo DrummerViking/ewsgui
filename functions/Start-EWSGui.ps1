@@ -38,7 +38,6 @@
         1.82 - 02/15/2019 - Added 2 columns to folder lists methods 1-6 : TotalItemsCount, # of Subfolders
         2.00 - 04/29/2020 - Moving tool to Module in GitHub
     #>
-
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
 
@@ -607,10 +606,10 @@
     #endregion Processes
 
     # Loading EWS API dll file
-    Load-EWSDLL
+    Import-EWSDLL
 
     # registering EWS API as an Enterprise App in Azure AD
-    Register-EWSGuiApp
+    # Register-EWSGuiApp
     
     # Connecting to EWS and creating service object
     $service = Connect-EWSService
