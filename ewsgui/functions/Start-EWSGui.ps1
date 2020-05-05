@@ -35,6 +35,7 @@
 
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignment", "")]
     [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = 'Low')]
     param(
         # Parameters
@@ -301,8 +302,8 @@
 
             $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)  
             $fiItems = $null
-            $array = New-Object System.Collections.ArrayList  
-            do{  
+            $array = New-Object System.Collections.ArrayList
+            do{
                 $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)  
                 foreach($Item in $fiItems.Items){
                     $i++
@@ -312,7 +313,7 @@
                     $tempItem.Move($TargetFolderId) | Out-Null
                 }
                 $ivItemView.Offset += $fiItems.Items.Count
-                Start-Sleep -Milliseconds 500  
+                Start-Sleep -Milliseconds 500
             }while($fiItems.MoreAvailable -eq $true)  
             $dgResults.datasource = $array
             $dgResults.AutoResizeColumns()
@@ -360,11 +361,11 @@
             if($filters.Length -eq 0){
                 $searchFilter = $Null
                 }
-     
+
             $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)  
-         
-            $fiItems = $null
-            $array = New-Object System.Collections.ArrayList  
+            $fiItems = $null
+
+            $array = New-Object System.Collections.ArrayList
             do{  
                 $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)  
                 foreach($Item in $fiItems.Items){  

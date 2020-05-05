@@ -10,6 +10,7 @@
     PS C:\> Regiser-EWSGuiApp
     Registers EWS API Application into AzureAD
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignment", "")]
     [Cmdletbinding()]
     param(
         # Parameters
@@ -53,7 +54,7 @@
     # register Service Principal Assignment between Global admin and the registered app:
     $AdminObjectId = (Get-AzureAdUser -Filter "userprincipalname eq '$($ConnStatus.Account.id)'").ObjectId
     if ( -not (Get-AzureADServiceAppRoleAssignment -ObjectId $AppDetails.ObjectId -All:$true | Where-Object { $_.PrincipalId -eq $AdminObjectId }) ) {
-        $AppRoleAssignment = $appDetails | New-AzureADServiceAppRoleAssignment -PrincipalId $AdminObjectId -ResourceId $AppDetails.ObjectId -id "00000000-0000-0000-0000-000000000000" -ErrorAction Stop
+        $null = $appDetails | New-AzureADServiceAppRoleAssignment -PrincipalId $AdminObjectId -ResourceId $AppDetails.ObjectId -id "00000000-0000-0000-0000-000000000000" -ErrorAction Stop
     }
 
     # Grant consent to the App to access EXO and Windows Azure AD to sign in on behalf of the whole tenant (no user consent will be needed afterwards)

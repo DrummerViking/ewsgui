@@ -11,7 +11,6 @@
     Search and Loads EWS DLL into the session
     
     #>
-    #[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
     [Cmdletbinding()]
     param(
         # Parameters

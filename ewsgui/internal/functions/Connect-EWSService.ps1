@@ -14,6 +14,7 @@
     Creates service object and authenticate the user.
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignment", "")]
     [Cmdletbinding()]
     param(
         # Parameters
