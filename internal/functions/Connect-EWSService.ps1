@@ -40,8 +40,8 @@
     # radiobutton2
     #
     $radiobutton2.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
-    $radiobutton2.Location = New-Object System.Drawing.Point(20, 50)
-    $radiobutton2.Size = New-Object System.Drawing.Size(150, 20)
+    $radiobutton2.Location = New-Object System.Drawing.Point(20, 55)
+    $radiobutton2.Size = New-Object System.Drawing.Size(150, 30)
     $radiobutton2.TabStop = $True
     $radiobutton2.Text = "Exchange 2013/2016/2019"
     $radioButton2.Checked = $false
@@ -50,7 +50,7 @@
     # radiobutton3
     #
     $radiobutton3.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
-    $radiobutton3.Location = New-Object System.Drawing.Point(20, 80)
+    $radiobutton3.Location = New-Object System.Drawing.Point(20, 95)
     $radiobutton3.Size = New-Object System.Drawing.Size(150, 25)
     $radiobutton3.TabStop = $True
     $radiobutton3.Text = "Office365"
