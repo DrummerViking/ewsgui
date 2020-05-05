@@ -1,15 +1,19 @@
 ﻿Function Register-EWSGuiApp {
     <#
     .SYNOPSIS
-    Short description
+    Registers EWS API Application into AzureAD
     
     .DESCRIPTION
-    Long description
+    Registers EWS API Application into AzureAD and grant Admin consent on behalf of the Organization.
     
     .EXAMPLE
-    An example
-    
+    PS C:\> Regiser-EWSGuiApp
+    Registers EWS API Application into AzureAD
     #>
+    [Cmdletbinding()]
+    param(
+        # Parameters
+    )
     Invoke-PSFProtectedCommand -Action "Connecting to AzureAD" -Target "AzureAD" -ScriptBlock {
         Write-PSFHostColor -String "[$((Get-Date).ToString("HH:mm:ss"))] Connecting to AzureAD"
         if ( !(Get-Module AzureAD -ListAvailable) -and !(Get-Module AzureAD) ) {

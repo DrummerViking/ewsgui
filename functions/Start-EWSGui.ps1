@@ -28,6 +28,10 @@
     Runs the GUI tool to use EWS with Exchange server and Online.
 
     #>
+    [Cmdletbinding()]
+    param(
+        # Parameters
+    )
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
 
@@ -596,7 +600,7 @@
     #endregion Processes
 
     # Loading EWS API dll file
-    Import-EWSDLL
+    # Import-EWSDLL
 
     # registering EWS API as an Enterprise App in Azure AD
     # Register-EWSGuiApp

@@ -1,6 +1,7 @@
 ﻿# EWS-GUI Tool
 Exchange Web Services (EWS) tool to perform different options in Exchange Online.
 
+ > This Module requires Powershell 3.0 and above.<br>
  > This Module requires in addition AzureAD module, in order to use ADAL libraries.
 
 ## Allows to perform 16 different operations using EWS API:
