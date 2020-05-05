@@ -13,6 +13,7 @@
     PS C:\> Connect-EWSService
     Creates service object and authenticate the user.
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [Cmdletbinding()]
     param(
         # Parameters

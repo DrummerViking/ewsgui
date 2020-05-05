@@ -22,13 +22,20 @@
         15) Change sensitivity to items in a folder
         16) Remove OWA configurations
         17) Switch to another Mailbox
+    
+    .PARAMETER Confirm
+    If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
+
+    .PARAMETER WhatIf
+    If this switch is enabled, no actions are performed but informational messages will be displayed that explain what would happen if the command were to run.
 
     .EXAMPLE
     PS C:\ Start-Ewsgui.ps1
     Runs the GUI tool to use EWS with Exchange server and Online.
 
     #>
-    [Cmdletbinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = 'Low')]
     param(
         # Parameters
     )
@@ -248,7 +255,7 @@
         $array = New-Object System.Collections.ArrayList
         $output = $service.GetUserOofSettings($email) | Select-Object State, ExternalAudience, @{Name="StartTime";Expression={$service.GetUserOofSettings($email).Duration.StartTime.ToString()}}, @{Name="EndTime";Expression={$service.GetUserOofSettings($email).Duration.EndTime.ToString()}}, @{Name="InternalReply";Expression={$service.GetUserOofSettings($email).InternalReply.Message}}, @{Name="ExternalReply";Expression={$service.GetUserOofSettings($email).ExternalReply.Message}}, AllowExternalOof
         $array.Add($output)
-        
+
         $dgResults.datasource = $array
         $dgResults.AutoResizeColumns()
         $dgResults.Visible = $True
@@ -285,19 +292,19 @@
                 $Filter3 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsLessThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$EndDate)
                 $filters += $Filter3
                 }
-                
+
             $searchFilter = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+SearchFilterCollection([Microsoft.Exchange.WebServices.Data.LogicalOperator]::AND,$filters)
-            
+
             if($filters.Length -eq 0){
                 $searchFilter = $Null
-                }
-     
+            }
+
             $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)  
             $fiItems = $null
             $array = New-Object System.Collections.ArrayList  
             do{  
                 $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)  
-                foreach($Item in $fiItems.Items){  
+                foreach($Item in $fiItems.Items){
                     $i++
                     $output = $Item | Select-Object @{Name="Action";Expression={"Moving Item"}}, DateTimeReceived, Subject
                     $array.Add($output)
@@ -347,9 +354,9 @@
                 $Filter3 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsLessThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$EndDate)
                 $filters += $Filter3
                 }
-                
+
             $searchFilter = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+SearchFilterCollection([Microsoft.Exchange.WebServices.Data.LogicalOperator]::AND,$filters)
-            
+
             if($filters.Length -eq 0){
                 $searchFilter = $Null
                 }
