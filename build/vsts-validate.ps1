@@ -4,4 +4,4 @@
 # Needs to ensure things are Done Right and only legal commits to master get built
 
 # Run internal pester tests
-& "$PSScriptRoot\..\O365HybridLab\tests\pester.ps1"
+& "$PSScriptRoot\..\ewsgui\tests\pester.ps1"

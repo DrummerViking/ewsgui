@@ -16,7 +16,7 @@
 		The name of the repository to use for gathering dependencies from.
 #>
 param (
-	$WorkingDirectory = "$($env:SYSTEM_DEFAULTWORKINGDIRECTORY)\_O365HybridLab",
+	$WorkingDirectory = "$($env:SYSTEM_DEFAULTWORKINGDIRECTORY)\_ewsgui",
 	
 	$Repository = 'PSGallery',
 
@@ -24,7 +24,7 @@ param (
 	$IncludeAZ
 )
 
-$moduleName = 'O365HybridLab'
+$moduleName = 'ewsgui'
 
 # Prepare Paths
 Write-PSFMessage -Level Host -Message "Creating working folders"

@@ -1,0 +1,22 @@
+﻿
+# ignore the settings folder and files for VSCode and PSS
+.vscode/*
+*.psproj
+*TempPoint*
+
+# Ignore staging info from Visual Studio
+library/ewsgui/.vs/*
+library/ewsgui/ewsgui/bin/*
+library/ewsgui/ewsgui/obj/*
+
+# ignore PowerShell Studio MetaData
+ewsgui/ewsgui.psproj
+ewsgui/ewsgui.psproj.bak
+ewsgui/ewsgui.psprojs
+ewsgui/ewsgui.psproj
+
+# ignore the TestResults
+TestResults/*
+
+# ignore the publishing Directory
+publish/*

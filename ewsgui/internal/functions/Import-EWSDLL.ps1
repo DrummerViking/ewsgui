@@ -11,7 +11,6 @@
     Search and Loads EWS DLL into the session
     
     #>
-    #[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
     [Cmdletbinding()]
     param(
         # Parameters
@@ -37,20 +36,22 @@
         }
         else {
             Write-PSFHostColor -String "[$((Get-Date).ToString("HH:mm:ss"))] EWS 2.1 found" -DefaultColor Cyan
-        }        
+        }
     }
     else {
         Write-PSFHostColor -String "[$((Get-Date).ToString("HH:mm:ss"))] EWS DLL found in local path" -DefaultColor Cyan
     }
 
     if ($test -eq $False -and $test2 -eq $False -and $test3 -eq $False) {
-        Write-Host " "
-        Write-Host "You don't seem to have EWS API dll file 'Microsoft.Exchange.WebServices.dll' in the same Directory of this script" -ForegroundColor Red
-        Write-Host "please get a copy of the file or download the whole API from: " -ForegroundColor Red -NoNewline
-        Write-Host "https://www.microsoft.com/en-us/download/details.aspx?id=42951" -ForegroundColor Cyan
-        Write-Host ""
-        Write-Host "we will open your browser in 10 seconds automatically directly to this URL" -ForegroundColor Red
-        Start-sleep -Seconds 10 
+        $EwsMessage = @"
+You don't seem to have EWS API dll file 'Microsoft.Exchange.WebServices.dll' in the same Directory of this script
+please get a copy of the file or download the whole API from:
+https://www.microsoft.com/en-us/download/details.aspx?id=42951
+        
+we will open your browser in 10 seconds automatically directly to this URL
+"@
+        Write-PSFHostColor -String $EwsMessage -DefaultColor Yellow
+        Start-sleep -Seconds 10
         Start-Process "https://www.microsoft.com/en-us/download/details.aspx?id=42951"
 
         return
