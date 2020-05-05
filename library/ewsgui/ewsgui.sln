@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{5315CD3F-63C2-4CC5-8F1E-2F9914658A15}") = "ewsgui", "ewsgui\ewsgui.csproj", "{0C9BA19A-772E-42DE-BC25-7C54078B8E8B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C9BA19A-772E-42DE-BC25-7C54078B8E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C9BA19A-772E-42DE-BC25-7C54078B8E8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C9BA19A-772E-42DE-BC25-7C54078B8E8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C9BA19A-772E-42DE-BC25-7C54078B8E8B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8AF4ACD-1A9B-420B-B61D-837B66D68650}
+	EndGlobalSection
+EndGlobal
