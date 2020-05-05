@@ -1,4 +1,4 @@
-﻿New-PSFLicense -Product 'ewsgui' -Manufacturer 'agallego' -ProductVersion $script:ModuleVersion -ProductType Module -Name MIT -Version "1.0.0.0" -Date (Get-Date "2020-03-30") -Text @"
+﻿New-PSFLicense -Product 'ewsgui' -Manufacturer 'agallego' -ProductVersion $script:ModuleVersion -ProductType Module -Name MIT -Version "1.0.0.0" -Date (Get-Date "2020-05-05") -Text @"
 Copyright (c) 2020 agallego
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
