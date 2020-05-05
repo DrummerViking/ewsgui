@@ -35,7 +35,7 @@
 
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignment", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = 'Low')]
     param(
         # Parameters
@@ -263,7 +263,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready..."
-        Write-PSFMessage -Level Host -Message "process11 finished"       
+        Write-PSFMessage -Level Host -Message "process11 finished"
     }
     #endregion Process11
 
@@ -300,11 +300,11 @@
                 $searchFilter = $Null
             }
 
-            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)  
+            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
             $fiItems = $null
             $array = New-Object System.Collections.ArrayList
             do{
-                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)  
+                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)
                 foreach($Item in $fiItems.Items){
                     $i++
                     $output = $Item | Select-Object @{Name="Action";Expression={"Moving Item"}}, DateTimeReceived, Subject
@@ -314,7 +314,7 @@
                 }
                 $ivItemView.Offset += $fiItems.Items.Count
                 Start-Sleep -Milliseconds 500
-            }while($fiItems.MoreAvailable -eq $true)  
+            }while($fiItems.MoreAvailable -eq $true)
             $dgResults.datasource = $array
             $dgResults.AutoResizeColumns()
             $dgResults.Visible = $True
@@ -362,13 +362,13 @@
                 $searchFilter = $Null
                 }
 
-            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)  
+            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
             $fiItems = $null
 
             $array = New-Object System.Collections.ArrayList
-            do{  
-                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)  
-                foreach($Item in $fiItems.Items){  
+            do{
+                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)
+                foreach($Item in $fiItems.Items){
                     $i++
                     $output = $Item | Select-Object @{Name="Action";Expression={"Deleting Item"}}, DateTimeReceived, Subject
                     $array.Add($output)
@@ -377,8 +377,8 @@
                     $tempItem.Delete($ComboOption, $True)
                 }
                 $ivItemView.Offset += $fiItems.Items.Count
-                Start-Sleep -Milliseconds 500  
-            }while($fiItems.MoreAvailable -eq $true)  
+                Start-Sleep -Milliseconds 500
+            }while($fiItems.MoreAvailable -eq $true)
             $dgResults.datasource = $array
             $dgResults.AutoResizeColumns()
             $dgResults.Visible = $True
@@ -390,7 +390,6 @@
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
         }
-        
     }
     #endregion Process13
 
@@ -403,18 +402,18 @@
         $delegates = $service.GetDelegates($mailbox, $true);
         $Collection = @()
         foreach($Delegate in $delegates.DelegateUserResponses)
-        { 
-            $Obj = "" | Select-Object EmailAddress,Inbox,Calendar,Contacts,Tasks,Notes,Journal,MeetingMessages,ViewPrivateItems 
+        {
+            $Obj = "" | Select-Object EmailAddress,Inbox,Calendar,Contacts,Tasks,Notes,Journal,MeetingMessages,ViewPrivateItems
             $Obj.EmailAddress = $Delegate.DelegateUser.UserId.PrimarySmtpAddress
-            $Obj.Inbox = $Delegate.DelegateUser.Permissions.InboxFolderPermissionLevel 
-            $Obj.Calendar = $Delegate.DelegateUser.Permissions.CalendarFolderPermissionLevel 
-            $Obj.Contacts = $Delegate.DelegateUser.Permissions.ContactsFolderPermissionLevel 
-            $Obj.Tasks = $Delegate.DelegateUser.Permissions.TasksFolderPermissionLevel 
-            $Obj.Notes = $Delegate.DelegateUser.Permissions.NotesFolderPermissionLevel 
-            $Obj.Journal = $Delegate.DelegateUser.Permissions.JournalFolderPermissionLevel 
-            $Obj.ViewPrivateItems = $Delegate.DelegateUser.ViewPrivateItems 
-            $Obj.MeetingMessages = $Delegate.DelegateUser.ReceiveCopiesOfMeetingMessages 
-            $Collection += $Obj 
+            $Obj.Inbox = $Delegate.DelegateUser.Permissions.InboxFolderPermissionLevel
+            $Obj.Calendar = $Delegate.DelegateUser.Permissions.CalendarFolderPermissionLevel
+            $Obj.Contacts = $Delegate.DelegateUser.Permissions.ContactsFolderPermissionLevel
+            $Obj.Tasks = $Delegate.DelegateUser.Permissions.TasksFolderPermissionLevel
+            $Obj.Notes = $Delegate.DelegateUser.Permissions.NotesFolderPermissionLevel
+            $Obj.Journal = $Delegate.DelegateUser.Permissions.JournalFolderPermissionLevel
+            $Obj.ViewPrivateItems = $Delegate.DelegateUser.ViewPrivateItems
+            $Obj.MeetingMessages = $Delegate.DelegateUser.ReceiveCopiesOfMeetingMessages
+            $Collection += $Obj
         }
         $array = New-Object System.Collections.ArrayList
         foreach ($Del in $Collection)
@@ -429,7 +428,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready. Amount of Delegates: $i"
-        Write-PSFMessage -Level Host -Message "process14 finished"        
+        Write-PSFMessage -Level Host -Message "process14 finished"
     }
     #endregion Process14
 
@@ -443,7 +442,7 @@
             $StartDate = $FromDatePicker.Value
             $EndDate = $ToDatePicker.Value
             $MsgSubject = $txtBoxSubject.text
-            
+
             # Combining Filters into a single Collection
             $filters = @()
             if($MsgSubject -ne ""){
@@ -458,20 +457,20 @@
                 $Filter3 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsLessThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$EndDate)
                 $filters += $Filter3
                 }
-                
+
             $searchFilter = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+SearchFilterCollection([Microsoft.Exchange.WebServices.Data.LogicalOperator]::AND,$filters)
-            
+
             if($filters.Length -eq 0){
                 $searchFilter = $Null
                 }
-     
-            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)  
-         
+
+            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
+
             $fiItems = $null
-            $array = New-Object System.Collections.ArrayList  
-            do{  
-                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)  
-                foreach($Item in $fiItems.Items){  
+            $array = New-Object System.Collections.ArrayList
+            do{
+                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)
+                foreach($Item in $fiItems.Items){
                     $i++
                     $output = $Item | Select-Object @{Name="Action";Expression={"Applying Sensitivity" + $DeleteOpt}}, DateTimeReceived, Subject
                     $array.Add($output)
@@ -481,8 +480,8 @@
                     $tempItem.Update([Microsoft.Exchange.WebServices.Data.ConflictResolutionMode]::AlwaysOverwrite)
                 }
                 $ivItemView.Offset += $fiItems.Items.Count
-                Start-Sleep -Milliseconds 500  
-            }while($fiItems.MoreAvailable -eq $true)  
+                Start-Sleep -Milliseconds 500
+            }while($fiItems.MoreAvailable -eq $true)
             $dgResults.datasource = $array
             $dgResults.AutoResizeColumns()
             $dgResults.Visible = $True
@@ -509,18 +508,16 @@
             $fid = $null
             if ($ComboOption1 -eq "Root")
             {
-                $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root, $email) 
+                $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root, $email)
             }
             elseif ($ComboOption1 -eq "Calendar")
             {
-            $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Calendar, $email) 
+            $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Calendar, $email)
             }
             elseif ($ComboOption1 -eq "Inbox")
             {
-            $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Inbox, $email) 
+            $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Inbox, $email)
             }
-        
-
             
             if($ComboOption2 -ne "CleanFinders"){
                 try{
@@ -546,7 +543,7 @@
                 $output = $output + $nl + "Opening Mailbox: $email"
                 try{
                     $finderFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($Service,$folderid)
-            
+
                     $output = $output + $nl + "Cleaning SearchFolder (same as Outlook /Cleanfinders)"
 
                     # If the bind was created clean the folder Finder
@@ -566,12 +563,12 @@
                 $statusBar.Text = "Ready..."
                 Write-PSFMessage -Level Host -Message "Process16 finished."
                 $PremiseForm.Refresh()
-                
+
                 #Cleaning Variables
                 $SmtpAddress = $null
                 $finderFolder = $null
                 $folderid = $null
-            }    
+            }
     }
     #endregion Process16
 
@@ -592,7 +589,7 @@
         $PremiseForm.Controls.Add($labImpersonation)
         $labImpersonation.Text = $Global:email
         $PremiseForm.Text = "Managing user: " + $Global:email + ". Choose your Option"
-        
+
         Write-PSFMessage -Level Host -Message "Process17 finished."
         $statusBar.Text = "Ready..."
         $PremiseForm.Refresh()
@@ -610,7 +607,7 @@
 
     # registering EWS API as an Enterprise App in Azure AD
     # Register-EWSGuiApp
-    
+
     # Connecting to EWS and creating service object
     $service = Connect-EWSService
 
@@ -619,7 +616,7 @@
     $PremiseForm.Controls.RemoveByKey("FromDate")
     $PremiseForm.Controls.RemoveByKey("FromDatePicker")
     $PremiseForm.Controls.RemoveByKey("ToDate")
-    $PremiseForm.Controls.RemoveByKey("ToDatePicker") 
+    $PremiseForm.Controls.RemoveByKey("ToDatePicker")
     $PremiseForm.Controls.RemoveByKey("labSubject")
     $PremiseForm.Controls.RemoveByKey("txtBoxSubject")
     $PremiseForm.Controls.RemoveByKey("labFolderID")
@@ -655,21 +652,18 @@
     $labFromDate.Size = New-Object System.Drawing.Size(80,35)
     $labFromDate.Name = "FromDate"
     $labFromDate.Text = "From or greater than"
-     
-     
+
     # FromDate Date Picker
     $FromDatePicker.DataBindings.DefaultDataSourceUpdateMode = 0
     $FromDatePicker.Location = New-Object System.Drawing.Point(100,285)
     $FromDatePicker.Name = "FromDatePicker"
     $FromDatePicker.Text = ""
 
-
     #Label ToDate
     $labToDate.Location = New-Object System.Drawing.Point(5,330)
     $labToDate.Name = "ToDate"
     $labToDate.Size = New-Object System.Drawing.Size(80,40)
     $labToDate.Text = "To or less than"
-     
 
     # ToDate Date Picker
     $ToDatePicker.DataBindings.DefaultDataSourceUpdateMode = 0
@@ -677,13 +671,11 @@
     $ToDatePicker.Name = "ToDatePicker"
     $ToDatePicker.Text = ""
 
-
     #Label Subject
     $labSubject.Location = New-Object System.Drawing.Point(5,370)
     $labSubject.Size = New-Object System.Drawing.Size(50,20)
     $labSubject.Name = "labSubject"
     $labSubject.Text = "Subject: "
-     
      
     #TextBox Subject
     $txtBoxSubject.Location = New-Object System.Drawing.Point(100,370)
@@ -691,19 +683,17 @@
     $txtBoxSubject.Name = "txtBoxSubject"
     $txtBoxSubject.Text = ""
 
-
     #Label FolderID
     $labFolderID.Location = New-Object System.Drawing.Point(5,400)
     $labFolderID.Size = New-Object System.Drawing.Size(55,20)
     $labFolderID.Name = "labFolderID"
     $labFolderID.Text = "FolderID:"
-     
+
     #TextBox FolderID
     $txtBoxFolderID.Location = New-Object System.Drawing.Point(100,400)
     $txtBoxFolderID.Size = New-Object System.Drawing.Size(280,20)
     $txtBoxFolderID.Name = "txtBoxFolderID"
     $txtBoxFolderID.Text = ""
-
 
     #Adapting FolderID and TxtBoxFolderID based on the selection
     if($radiobutton4.Checked -or $radiobutton8.Checked -or $radiobutton9.Checked){
@@ -713,7 +703,7 @@
     elseif($radiobutton12.Checked){
         $labFolderID.Size = New-Object System.Drawing.Size(95,20)
         $labFolderID.Text = "SourceFolderID:"
-    } 
+    }
     elseif($radiobutton17.Checked){
         $labFolderID.Location = New-Object System.Drawing.Point(5,285)
         $labFolderID.Size = New-Object System.Drawing.Size(95,20)
@@ -726,7 +716,7 @@
     $labTargetFolderID.Size = New-Object System.Drawing.Size(95,20)
     $labTargetFolderID.Name = "labTargetFolderID"
     $labTargetFolderID.Text = "TargetFolderID:"
-        
+
     #TextBox Target FolderID
     $txtBoxTargetFolderID.Location = New-Object System.Drawing.Point(100,430)
     $txtBoxTargetFolderID.Size = New-Object System.Drawing.Size(280,20)
@@ -788,7 +778,7 @@
     $comboBoxConfig.Items.Add("UM.E14.PersonalAutoAttendants")|Out-Null
     $comboBoxConfig.Items.Add("CleanFinders")|Out-Null
     $comboBoxConfig.add_SelectedIndexChanged($handler_comboBoxConfig_SelectedIndexChanged)
-        
+
     if($radiobutton4.Checked){
         $PremiseForm.Controls.Add($labFolderID)
         $PremiseForm.Controls.Add($txtBoxFolderID)
@@ -799,7 +789,7 @@
         $PremiseForm.Controls.Add($labFromDate)
         $PremiseForm.Controls.Add($FromDatePicker)
         $PremiseForm.Controls.Add($labToDate)
-        $PremiseForm.Controls.Add($ToDatePicker) 
+        $PremiseForm.Controls.Add($ToDatePicker)
         $PremiseForm.Controls.Add($labSubject)
         $PremiseForm.Controls.Add($txtBoxSubject)
     }
@@ -823,7 +813,7 @@
         $PremiseForm.Controls.Add($labFromDate)
         $PremiseForm.Controls.Add($FromDatePicker)
         $PremiseForm.Controls.Add($labToDate)
-        $PremiseForm.Controls.Add($ToDatePicker) 
+        $PremiseForm.Controls.Add($ToDatePicker)
         $PremiseForm.Controls.Add($labSubject)
         $PremiseForm.Controls.Add($txtBoxSubject)
         $PremiseForm.Controls.Add($labFolderID)
@@ -840,7 +830,7 @@
         $PremiseForm.Controls.Add($labFromDate)
         $PremiseForm.Controls.Add($FromDatePicker)
         $PremiseForm.Controls.Add($labToDate)
-        $PremiseForm.Controls.Add($ToDatePicker) 
+        $PremiseForm.Controls.Add($ToDatePicker)
         $PremiseForm.Controls.Add($labSubject)
         $PremiseForm.Controls.Add($txtBoxSubject)
         $PremiseForm.Controls.Add($labFolderID)
@@ -858,7 +848,7 @@
         $PremiseForm.Controls.Add($labFromDate)
         $PremiseForm.Controls.Add($FromDatePicker)
         $PremiseForm.Controls.Add($labToDate)
-        $PremiseForm.Controls.Add($ToDatePicker) 
+        $PremiseForm.Controls.Add($ToDatePicker)
         $PremiseForm.Controls.Add($labSubject)
         $PremiseForm.Controls.Add($txtBoxSubject)
         $PremiseForm.Controls.Add($labFolderID)
@@ -877,7 +867,6 @@
         $PremiseForm.Controls.Add($txtBoxFolderID)
     }
     $PremiseForm.refresh()
-
     }
 
     $handler_comboBoxMenu_SelectedIndexChanged= {
@@ -908,10 +897,8 @@
         $PremiseForm.WindowState = $InitialFormWindowState
     }
 
-
     #----------------------------------------------
     #region Generated Form Code
-
 
     $PremiseForm.Controls.Add($radiobutton1)
     $PremiseForm.Controls.Add($radiobutton2)
@@ -935,7 +922,7 @@
     $statusBar.Text = "Ready..."
     $PremiseForm.Controls.Add($statusBar)
     $PremiseForm.ClientSize = New-Object System.Drawing.Size(800,720)
-    $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $PremiseForm.Name = "form1"
     $PremiseForm.Text = "Managing user: " + $email + ". Choose your Option"
     $PremiseForm.StartPosition = "CenterScreen"
@@ -944,7 +931,7 @@
     #
     # radiobutton1
     #
-    $radiobutton1.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton1.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton1.Location = New-Object System.Drawing.Point(20,20)
     $radiobutton1.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton1.TabIndex = 1
@@ -955,7 +942,7 @@
     #
     # radiobutton2
     #
-    $radiobutton2.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton2.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton2.Location = New-Object System.Drawing.Point(20,50)
     $radiobutton2.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton2.TabIndex = 2
@@ -966,7 +953,7 @@
     #
     # radiobutton3
     #
-    $radiobutton3.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton3.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton3.Location = New-Object System.Drawing.Point(20,80)
     $radiobutton3.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton3.TabIndex = 3
@@ -977,7 +964,7 @@
     #
     # radiobutton4
     #
-    $radiobutton4.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton4.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton4.Location = New-Object System.Drawing.Point(20,110)
     $radiobutton4.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton4.TabIndex = 4
@@ -988,7 +975,7 @@
     #
     # radiobutton5
     #
-    $radiobutton5.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton5.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton5.Location = New-Object System.Drawing.Point(20,140)
     $radiobutton5.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton5.Tabindex = 5
@@ -999,7 +986,7 @@
     #
     # radiobutton6
     #
-    $radiobutton6.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton6.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton6.Location = New-Object System.Drawing.Point(20,170)
     $radiobutton6.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton6.TabIndex = 6
@@ -1010,7 +997,7 @@
     #
     # radiobutton7
     #
-    $radiobutton7.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton7.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton7.Location = New-Object System.Drawing.Point(20,200)
     $radiobutton7.Name = "radiobutton7"
     $radiobutton7.Size = New-Object System.Drawing.Size(300,15)
@@ -1022,7 +1009,7 @@
     #
     # radiobutton8
     #
-    $radiobutton8.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton8.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton8.Location = New-Object System.Drawing.Point(20,230)
     $radiobutton8.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton8.TabIndex = 8
@@ -1033,7 +1020,7 @@
     #
     # radiobutton9
     #
-    $radiobutton9.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton9.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton9.Location = New-Object System.Drawing.Point(20,260)
     $radiobutton9.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton9.TabIndex = 9
@@ -1044,7 +1031,7 @@
     #
     # radiobutton10
     #
-    $radiobutton10.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton10.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton10.Location = New-Object System.Drawing.Point(400,20)
     $radiobutton10.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton10.TabIndex = 10
@@ -1055,7 +1042,7 @@
     #
     # radiobutton11
     #
-    $radiobutton11.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton11.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton11.Location = New-Object System.Drawing.Point(400,50)
     $radiobutton11.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton11.TabIndex = 11
@@ -1066,7 +1053,7 @@
     #
     # radiobutton12
     #
-    $radiobutton12.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton12.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton12.Location = New-Object System.Drawing.Point(400,80)
     $radiobutton12.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton12.TabIndex = 12
@@ -1077,7 +1064,7 @@
     #
     # radiobutton13
     #
-    $radiobutton13.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton13.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton13.Location = New-Object System.Drawing.Point(400,110)
     $radiobutton13.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton13.TabIndex = 13
@@ -1088,7 +1075,7 @@
     #
     # radiobutton14
     #
-    $radiobutton14.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton14.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton14.Location = New-Object System.Drawing.Point(400,140)
     $radiobutton14.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton14.TabIndex = 14
@@ -1099,7 +1086,7 @@
     #
     # radiobutton15
     #
-    $radiobutton15.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton15.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton15.Location = New-Object System.Drawing.Point(400,170)
     $radiobutton15.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton15.TabIndex = 15
@@ -1110,7 +1097,7 @@
     #
     # radiobutton16
     #
-    $radiobutton16.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton16.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton16.Location = New-Object System.Drawing.Point(400,200)
     $radiobutton16.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton16.TabIndex = 16
@@ -1121,7 +1108,7 @@
     #
     # radiobutton17
     #
-    $radiobutton17.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton17.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton17.Location = New-Object System.Drawing.Point(400,230)
     $radiobutton17.Size = New-Object System.Drawing.Size(175,15)
     $radiobutton17.TabIndex = 17
@@ -1139,7 +1126,6 @@
     $labImpersonationHelp.Text = "?"
     $labImpersonationHelp.add_Click($handler_labImpersonationHelp_Click)
     $PremiseForm.Controls.Add($labImpersonationHelp)
-
 
     #"Go" button
     $Global:buttonGo.Dispose()
@@ -1174,7 +1160,6 @@
     })
     $PremiseForm.Controls.Add($buttonGo2)
 
-
     #"Exit" button
     $buttonExit.DataBindings.DefaultDataSourceUpdateMode = 0
     $buttonExit.ForeColor = [System.Drawing.Color]::FromArgb(255,0,0,0)
@@ -1194,9 +1179,8 @@
     $txtBoxResults.BackColor = [System.Drawing.Color]::White
     $txtBoxResults.BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3D
     $Font = New-Object System.Drawing.Font("Consolas",8)
-    $txtBoxResults.Font = $Font 
+    $txtBoxResults.Font = $Font
     $PremiseForm.Controls.Add($txtBoxResults)
-
 
     #dataGrid
 
@@ -1213,7 +1197,6 @@
     $dgResults.AllowUserToResizeColumns = $True
     $PremiseForm.Controls.Add($dgResults)
 
-
     #endregion Generated Form Code
 
     # Show Form
@@ -1224,10 +1207,10 @@
     $PremiseForm.Add_Shown({$PremiseForm.Activate()})
     $PremiseForm.ShowDialog()| Out-Null
     #exit if 'Exit' button is pushed
-    if($buttonExit.IsDisposed){return} 
+    if($buttonExit.IsDisposed){return}
 
     } #End Function
-     
+
     #Call the Function
     GenerateForm
 }

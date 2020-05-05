@@ -10,7 +10,7 @@
     PS C:\> Regiser-EWSGuiApp
     Registers EWS API Application into AzureAD
     #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignment", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [Cmdletbinding()]
     param(
         # Parameters
