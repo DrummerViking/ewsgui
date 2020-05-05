@@ -12,6 +12,10 @@
     
     #>
     #[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
+    [Cmdletbinding()]
+    param(
+        # Parameters
+    )
     Write-PSFHostColor -String "[$((Get-Date).ToString("HH:mm:ss"))] This script requires at least EWS API 2.1" -DefaultColor Yellow
     
     # Locating DLL location either in working path, in EWS API 2.1 path or in EWS API 2.2 path
