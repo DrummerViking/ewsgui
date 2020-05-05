@@ -23,13 +23,13 @@
     $PremiseForm.Controls.Add($radiobutton3)
     #$PremiseForm.Controls.Add($radiobutton4)
     $PremiseForm.ClientSize = New-Object System.Drawing.Size(250, 160)
-    $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $PremiseForm.Name = "form1"
     $PremiseForm.Text = "Choose your Exchange version"
     #
     # radiobutton1
     #
-    $radiobutton1.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton1.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton1.Location = New-Object System.Drawing.Point(20, 20)
     $radiobutton1.Size = New-Object System.Drawing.Size(150, 25)
     $radiobutton1.TabStop = $True
@@ -39,7 +39,7 @@
     #
     # radiobutton2
     #
-    $radiobutton2.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton2.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton2.Location = New-Object System.Drawing.Point(20, 55)
     $radiobutton2.Size = New-Object System.Drawing.Size(150, 30)
     $radiobutton2.TabStop = $True
@@ -49,7 +49,7 @@
     #
     # radiobutton3
     #
-    $radiobutton3.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    $radiobutton3.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton3.Location = New-Object System.Drawing.Point(20, 95)
     $radiobutton3.Size = New-Object System.Drawing.Size(150, 25)
     $radiobutton3.TabStop = $True
@@ -59,7 +59,7 @@
     #
     # radiobutton4
     #
-    #$radiobutton4.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation 
+    #$radiobutton4.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     #$radiobutton4.Location = New-Object System.Drawing.Point(20, 110)
     #$radiobutton4.Size = New-Object System.Drawing.Size(150, 30)
     #$radiobutton4.Text = "Office365"
@@ -109,13 +109,13 @@
     $PremiseForm.Add_Shown( { $PremiseForm.Activate() })
     $PremiseForm.ShowDialog() | Out-Null
     #exit if 'Exit' button is pushed
-    if ($buttonExit.IsDisposed) { return } 
+    if ($buttonExit.IsDisposed) { return }
 
     #creating service object
     $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
     $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
  
-    if ($radiobutton3.Checked) { 
+    if ($radiobutton3.Checked) {
         #Getting oauth credentials
         $Folderpath = (Get-Module azuread -ListAvailable | Sort-Object Version -Descending)[0].Path
         $path = join-path (split-path $Folderpath -parent) 'Microsoft.IdentityModel.Clients.ActiveDirectory.dll'
@@ -137,7 +137,7 @@
 
             Write-PSFMessage -Level Warning -Message "Acquire token silent failed"
             switch ($authenticationResult.Exception.InnerException.ErrorCode) {
-                failed_to_acquire_token_silently { 
+                failed_to_acquire_token_silently {
                     # do nothing since we pretty much expect this to fail
                     Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "Cache miss, asking for credentials"
                     $authenticationResult = $authenticationContext.AcquireTokenAsync($resourceUri, $AppId, $redirectUri, $platformParameters)
@@ -161,10 +161,10 @@
     else {
         $psCred = Get-Credential -Message "Type your credentials or Administrator credentials"
         $Global:email = $psCred.UserName
-        $exchangeCredentials = New-Object System.Net.NetworkCredential($psCred.UserName.ToString(),$psCred.GetNetworkCredential().password.ToString()) 
+        $exchangeCredentials = New-Object System.Net.NetworkCredential($psCred.UserName.ToString(),$psCred.GetNetworkCredential().password.ToString())
         # setting Autodiscover endpoint
         $service.EnableScpLookup = $True
-        $service.AutodiscoverUrl($email,{$true}) 
+        $service.AutodiscoverUrl($email,{$true})
     }
     $Service.Credentials = $exchangeCredentials
 

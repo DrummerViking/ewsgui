@@ -41,7 +41,7 @@
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
     Add-Type -AssemblyName Microsoft.VisualBasic
-    [System.Windows.Forms.Application]::EnableVisualStyles() 
+    [System.Windows.Forms.Application]::EnableVisualStyles()
     #endregion
      
     #region Generated Form Objects
@@ -68,7 +68,7 @@
     $Global:buttonGo = New-Object System.Windows.Forms.Button
     $Global:buttonExit = New-Object System.Windows.Forms.Button
 
-    $Global:dgResults = New-Object System.Windows.Forms.DataGridView 
+    $Global:dgResults = New-Object System.Windows.Forms.DataGridView
     $Global:txtBoxResults = New-Object System.Windows.Forms.Label
     $Global:InitialFormWindowState = New-Object System.Windows.Forms.FormWindowState
     [String]$Global:email = $null
@@ -109,7 +109,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready. Folders found: $i"
-        write-host "process1-6 finished" -ForegroundColor Yellow
+        Write-PSFMessage -Level Output -Message "process1-6 finished"
         
     }
     #endregion Process1to6
@@ -147,27 +147,27 @@
                 $searchFilter = $Null
                 }
      
-            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)  
+            $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
          
             $fiItems = $null
-            $array = New-Object System.Collections.ArrayList  
-            do{  
-                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)  
-                foreach($Item in $fiItems.Items){  
+            $array = New-Object System.Collections.ArrayList
+            do{
+                $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)
+                foreach($Item in $fiItems.Items){
                     $i++
                     $output = $Item | Select-Object Subject, Sender, DateTimeReceived, Size #, Id
                     $array.Add($output)
                                 
                 }
-                $ivItemView.Offset += $fiItems.Items.Count  
-            }while($fiItems.MoreAvailable -eq $true)  
+                $ivItemView.Offset += $fiItems.Items.Count
+            }while($fiItems.MoreAvailable -eq $true)
             $dgResults.datasource = $array
             $dgResults.AutoResizeColumns()
             $dgResults.Visible = $True
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Items found: $i"
-            write-host "Process7 finished" -ForegroundColor Yellow
+            Write-PSFMessage -Level Output -Message "Process7 finished"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -184,7 +184,7 @@
         $folder.DisplayName = $txtBoxFolderID.Text
         $folder.Save([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::MsgFolderRoot)
 
-        Write-Host "process8 finished. Folder Created:" $txtBoxFolderID.Text -ForegroundColor Yellow
+        Write-PSFMessage -Level Host -Message "process8 finished. Folder Created: $txtBoxFolderID.Text"
         $statusBar.Text = "Ready..."
         $PremiseForm.Refresh()
         }else{
@@ -203,7 +203,7 @@
             $SourceFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
             $sourceFolder.Delete($ComboOption)
 
-            Write-Host "process9 finished." -ForegroundColor Yellow
+            Write-PSFMessage -Level Host -Message "process9 finished."
             $statusBar.Text = "Ready..."
             $PremiseForm.Refresh()
             }else{
@@ -237,7 +237,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready..."
-        write-host "process10 finished" -ForegroundColor Yellow    
+        Write-PSFMessage -Level Host -Message "process10 finished"
         #>
     }
     #endregion Process10
@@ -255,7 +255,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready..."
-        write-host "process11 finished" -ForegroundColor Yellow        
+        Write-PSFMessage -Level Host -Message "process11 finished"       
     }
     #endregion Process11
 
@@ -313,7 +313,7 @@
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Moved Items: $i"
-            write-host "Process12 finished" -ForegroundColor Yellow
+            Write-PSFMessage -Level Host -Message "Process12 finished"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -377,7 +377,7 @@
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Deleted items: $i"
-            write-host "Process13 finished" -ForegroundColor Yellow
+            Write-PSFMessage -Level Host -Message "Process13 finished"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -421,8 +421,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready. Amount of Delegates: $i"
-        write-host "process14 finished" -ForegroundColor Yellow    
-        
+        Write-PSFMessage -Level Host -Message "process14 finished"        
     }
     #endregion Process14
 
@@ -482,7 +481,7 @@
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Items changed: $i"
-            write-host "Process15 finished" -ForegroundColor Yellow
+            Write-PSFMessage -Level Host -Message "Process15 finished"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -526,7 +525,7 @@
                     $output = $output + $nl + "$ComboOption2 doesn't exist"
                 }
                 $statusBar.Text = "Ready..."
-                Write-Host "Process16 finished." -ForegroundColor Yellow
+                Write-PSFMessage -Level Host -Message "Process16 finished."
                 $txtBoxResults.Text = $output
                 $txtBoxResults.Visible = $True
                 $PremiseForm.Refresh()
@@ -557,7 +556,7 @@
                 $txtBoxResults.Text = $output
                 $txtBoxResults.Visible = $True
                 $statusBar.Text = "Ready..."
-                Write-Host "Process16 finished." -ForegroundColor Yellow
+                Write-PSFMessage -Level Host -Message "Process16 finished."
                 $PremiseForm.Refresh()
                 
                 #Cleaning Variables
@@ -586,15 +585,13 @@
         $labImpersonation.Text = $Global:email
         $PremiseForm.Text = "Managing user: " + $Global:email + ". Choose your Option"
         
-        Write-Host "Process17 finished." -ForegroundColor Yellow
+        Write-PSFMessage -Level Host -Message "Process17 finished."
         $statusBar.Text = "Ready..."
         $PremiseForm.Refresh()
-        
     }else{
         [Microsoft.VisualBasic.Interaction]::MsgBox("Email Address textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
         $statusBar.Text = "Process finished with warnings/errors"
         }
-        
     }
     #endregion Process17
 
