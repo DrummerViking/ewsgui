@@ -2,6 +2,7 @@
 ## 2.0.2 - 05/05/2020
  - Updating module to connect using "Basic" auth to on-premises (and discoverying endpoint by Autodiscover) and connect using "OAUTH" to Exchange Online.
  - Adding EWS API DLL to module folder, so no need to pre install EWS API DLL.
+ - Minor fix on Process17 to clear HTTPHeader
 ## 2.0.0 - 05/04/2020
  - Moving tool as a Module in GitHub
  - Added ADAL capabilities as many organizations have MFA or even disabling Basic Auth.
