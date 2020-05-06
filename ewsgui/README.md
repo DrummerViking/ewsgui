@@ -26,7 +26,7 @@ If you want to check for module updates you can run:
 ``` powershell
 Find-Module EWSGui
 ```
-If there is any version newer than the one you already have, you can run:
+If there is any newer version than the one you already have, you can run:
 ``` powershell
 Update-Module EWSGui -Force
 ```
@@ -50,3 +50,6 @@ Update-Module EWSGui -Force
 - Option 15 : Change sensitivity to items in a folder
 - Option 16 : Remove OWA configurations
 - Option 17 : Switch to another Mailbox
+
+## Version History
+[Change Log](/ewsgui/changelog.md)
