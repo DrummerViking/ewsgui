@@ -18,7 +18,7 @@
 	Copyright = 'Copyright (c) 2020 Agustin Gallegos'
 	
 	# Description of the functionality provided by this module
-	Description = 'Exchange Web Services (EWS) tool to perform different options'
+	Description = 'Exchange Web Services (EWS) tool to perform different operations'
 	
 	# Minimum version of the Windows PowerShell engine required by this module
 	PowerShellVersion = '3.0'
