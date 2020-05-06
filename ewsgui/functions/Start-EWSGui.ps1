@@ -84,7 +84,7 @@
      
     #region Processes
 
-    #region Process1to6
+    <#region Process1to6
     $Process1to6 = {
         $statusBar.Text = "Running..."
         if($radiobutton1.Checked){$Wellknownfolder = "MsgFolderRoot"}
@@ -117,11 +117,11 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready. Folders found: $i"
-        Write-PSFMessage -Level Output -Message "process1-6 finished"
+        Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 1-6"
         
     }
     #endregion Process1to6
-
+    #>
     #region Process7
     $Process7 = {
         $statusBar.Text = "Running..."
@@ -175,7 +175,7 @@
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Items found: $i"
-            Write-PSFMessage -Level Output -Message "Process7 finished"
+            Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 7"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -192,7 +192,7 @@
         $folder.DisplayName = $txtBoxFolderID.Text
         $folder.Save([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::MsgFolderRoot)
 
-        Write-PSFMessage -Level Host -Message "process8 finished. Folder Created: $txtBoxFolderID.Text"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully. Folder Created: $($txtBoxFolderID.Text)" -FunctionName "Method 8"
         $statusBar.Text = "Ready..."
         $PremiseForm.Refresh()
         }else{
@@ -211,7 +211,7 @@
             $SourceFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
             $sourceFolder.Delete($ComboOption)
 
-            Write-PSFMessage -Level Host -Message "process9 finished."
+            Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 9"
             $statusBar.Text = "Ready..."
             $PremiseForm.Refresh()
             }else{
@@ -245,7 +245,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready..."
-        Write-PSFMessage -Level Host -Message "process10 finished"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 10"
         #>
     }
     #endregion Process10
@@ -263,7 +263,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready..."
-        Write-PSFMessage -Level Host -Message "process11 finished"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 11"
     }
     #endregion Process11
 
@@ -321,7 +321,7 @@
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Moved Items: $i"
-            Write-PSFMessage -Level Host -Message "Process12 finished"
+            Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 12"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -385,7 +385,7 @@
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Deleted items: $i"
-            Write-PSFMessage -Level Host -Message "Process13 finished"
+            Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 13"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -428,7 +428,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBar.Text = "Ready. Amount of Delegates: $i"
-        Write-PSFMessage -Level Host -Message "process14 finished"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 14"
     }
     #endregion Process14
 
@@ -488,7 +488,7 @@
             $txtBoxResults.Visible = $False
             $PremiseForm.refresh()
             $statusBar.Text = "Ready. Items changed: $i"
-            Write-PSFMessage -Level Host -Message "Process15 finished"
+            Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 15"
         }else{
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
             $statusBar.Text = "Process finished with warnings/errors"
@@ -530,7 +530,7 @@
                     $output = $output + $nl + "$ComboOption2 doesn't exist"
                 }
                 $statusBar.Text = "Ready..."
-                Write-PSFMessage -Level Host -Message "Process16 finished."
+                Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16"
                 $txtBoxResults.Text = $output
                 $txtBoxResults.Visible = $True
                 $PremiseForm.Refresh()
@@ -561,7 +561,7 @@
                 $txtBoxResults.Text = $output
                 $txtBoxResults.Visible = $True
                 $statusBar.Text = "Ready..."
-                Write-PSFMessage -Level Host -Message "Process16 finished."
+                Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16"
                 $PremiseForm.Refresh()
 
                 #Cleaning Variables
@@ -590,7 +590,7 @@
         $labImpersonation.Text = $Global:email
         $PremiseForm.Text = "Managing user: " + $Global:email + ". Choose your Option"
 
-        Write-PSFMessage -Level Host -Message "Process17 finished."
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 17"
         $statusBar.Text = "Ready..."
         $PremiseForm.Refresh()
     }else{
@@ -601,9 +601,6 @@
     #endregion Process17
 
     #endregion Processes
-
-    # Loading EWS API dll file
-    # Import-EWSDLL
 
     # registering EWS API as an Enterprise App in Azure AD
     # Register-EWSGuiApp
@@ -1140,12 +1137,12 @@
     $buttonGo2.Text = "Go"
     $buttonGo2.UseVisualStyleBackColor = $True
     $buttonGo2.add_Click({
-            if($radiobutton1.Checked){& $Process1to6}
-            elseif($radiobutton2.Checked){& $Process1to6}
-            elseif($radiobutton3.Checked){& $Process1to6}
-            elseif($radiobutton4.Checked){& $Process1to6}
-            elseif($radiobutton5.Checked){& $Process1to6}
-            elseif($radiobutton6.Checked){& $Process1to6}
+            if($radiobutton1.Checked){Method1to6}
+            elseif($radiobutton2.Checked){Method1to6}
+            elseif($radiobutton3.Checked){Method1to6}
+            elseif($radiobutton4.Checked){Method1to6}
+            elseif($radiobutton5.Checked){Method1to6}
+            elseif($radiobutton6.Checked){Method1to6}
             elseif($radiobutton7.Checked){& $process7}
             elseif($radiobutton8.Checked){& $process8}
             elseif($radiobutton9.Checked){& $process9}
