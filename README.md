@@ -8,7 +8,7 @@ And will use Oauth to connect to Exchange Online. If "Modern Authentication" is 
 ## Pre-requisites
 
  > This Module requires Powershell 3.0 and above.  
- > This Module wil install AzureAD module, in order to use ADAL libraries to connect to Exchange Online.  
+ > This Module will install AzureAD module, in order to use ADAL libraries to connect to Exchange Online.  
  > There is no need to have EWS API Management dll pre installed. This Module already have the required files.  
 
  ## Installation

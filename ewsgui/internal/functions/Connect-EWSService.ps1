@@ -23,7 +23,6 @@
     $PremiseForm.Controls.Add($radiobutton1)
     $PremiseForm.Controls.Add($radiobutton2)
     $PremiseForm.Controls.Add($radiobutton3)
-    #$PremiseForm.Controls.Add($radiobutton4)
     $PremiseForm.ClientSize = New-Object System.Drawing.Size(250, 160)
     $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $PremiseForm.Name = "form1"
@@ -58,15 +57,6 @@
     $radiobutton3.Text = "Office365"
     $radiobutton3.Checked = $false
     $radiobutton3.UseVisualStyleBackColor = $True
-    #
-    # radiobutton4
-    #
-    #$radiobutton4.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
-    #$radiobutton4.Location = New-Object System.Drawing.Point(20, 110)
-    #$radiobutton4.Size = New-Object System.Drawing.Size(150, 30)
-    #$radiobutton4.Text = "Office365"
-    #$radiobutton4.Checked = $false
-    #$radiobutton4.UseVisualStyleBackColor = $True
 
     #"Go" button
     $buttonGo.DataBindings.DefaultDataSourceUpdateMode = 0

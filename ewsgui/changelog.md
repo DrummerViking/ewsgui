@@ -1,9 +1,12 @@
 ﻿# Changelog
+## 2.0.8 - 05/07/2020
+ - Moved all methods to individual Functions.
+ - Removed unused objects from Start-EWSGUi function.
 ## 2.0.6 - 05/06/2020
  - Updating Readme files.
  - Removing old function "Import-EWSDLL". Not needed anymore.
  - Minor changes on PSFMessages after each method.
- - Moving Method1to6 to separate function.
+ - Moving Method1to6 to individual function.
 ## 2.0.2 - 05/05/2020
  - Updating module to connect using "Basic" auth to on-premises (and discoverying endpoint by Autodiscover) and connect using "OAUTH" to Exchange Online.
  - Adding EWS API DLL to module folder, so no need to pre install EWS API DLL.
