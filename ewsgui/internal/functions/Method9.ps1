@@ -17,7 +17,7 @@
     )
     $statusBar.Text = "Running..."
         if ( $txtBoxFolderID.Text -ne "" )
-        {    
+        {
             $sourceFolderId = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
             $SourceFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
             $sourceFolder.Delete($ComboOption)
