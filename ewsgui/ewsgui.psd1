@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.6'
+	ModuleVersion = '2.0.8'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -67,10 +67,10 @@
 			# Tags = @()
 			
 			# A URL to the license for this module.
-			# LicenseUri = ''
+			LicenseUri = 'https://github.com/agallego-css/ewsgui/blob/master/LICENSE'
 			
 			# A URL to the main website for this project.
-			# ProjectUri = ''
+			ProjectUri = 'https://github.com/agallego-css/ewsgui/'
 			
 			# A URL to an icon representing this module.
 			# IconUri = ''
