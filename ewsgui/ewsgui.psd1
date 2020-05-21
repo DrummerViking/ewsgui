@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.8'
+	ModuleVersion = '2.0.9'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -27,7 +27,6 @@
 	# this module
 	RequiredModules = @(
 		@{ ModuleName='PSFramework'; ModuleVersion='1.1.59' }
-		@{ ModuleName='AzureAD' ; ModuleVersion='2.0.2.76' }
 	)
 	
 	# Assemblies that must be loaded prior to importing this module

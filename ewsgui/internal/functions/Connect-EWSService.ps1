@@ -75,7 +75,7 @@
     $buttonGo.add_Click( {
             if ($radiobutton1.Checked) { $Global:option = "Exchange2010_SP2" }
             elseif ($radiobutton2.Checked) { $Global:option = "Exchange2013_SP1" }
-            elseif ($radiobutton3.Checked) { $Global:option = "Exchange2013_SP1" }
+            elseif ($radiobutton3.Checked) { $Global:option = "Exchange2016" }
             $PremiseForm.Hide()
         })
     $PremiseForm.Controls.Add($buttonGo)
@@ -109,6 +109,9 @@
  
     if ($radiobutton3.Checked) {
         #Getting oauth credentials
+        if ( !(Get-Module AzureAD -ListAvailable) -and !(Get-Module AzureAD) ) {
+            Install-Module AzureAD -Force -ErrorAction Stop
+        }
         $Folderpath = (Get-Module azuread -ListAvailable | Sort-Object Version -Descending)[0].Path
         $path = join-path (split-path $Folderpath -parent) 'Microsoft.IdentityModel.Clients.ActiveDirectory.dll'
         Add-Type -Path $path
