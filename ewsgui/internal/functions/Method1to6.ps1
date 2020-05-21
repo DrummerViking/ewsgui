@@ -25,12 +25,15 @@
 
         #listing all available folders in the mailbox
         $FolderView = New-Object Microsoft.Exchange.WebServices.Data.FolderView(100);
-        if($radiobutton4.Checked){
+        if($radiobutton4.Checked)
+        {
             $sourceFolderId = new-object Microsoft.Exchange.WebServices.Data.FolderId($Wellknownfolder)
             $rootfolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
-            }else{
+        }
+        else
+        {
             $rootfolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::$Wellknownfolder)
-            }
+        }
         
         $rootfolder.load()
         $array = New-Object System.Collections.ArrayList
