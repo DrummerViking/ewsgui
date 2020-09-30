@@ -1,7 +1,9 @@
 ﻿# Changelog
-## 2.0.9 - 05/11/2020
+## 2.0.10 - 05/21/2020
+ - Updating project's build scripts.
+## 2.0.9 - 05/21/2020
  - Minor change in ExchangeVersion number for EWS Object.
- - Removing AzureAD Module dependency on this module install.
+ - Removing AzureAD Module dependency on this module installation.
 ## 2.0.8 - 05/07/2020
  - Moved all methods to individual Functions.
  - Removed unused objects from Start-EWSGUi function.
