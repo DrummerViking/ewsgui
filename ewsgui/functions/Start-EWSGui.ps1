@@ -43,6 +43,7 @@
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
 
+    $runspaceData = Start-ModuleUpdate -ModuleRoot $script:ModuleRoot
     function GenerateForm {
          
     #region Import the Assemblies
@@ -689,5 +690,10 @@
     } #End Function
 
     #Call the Function
-    GenerateForm
+    try {
+        GenerateForm
+    }
+    finally {
+        Stop-ModuleUpdate -RunspaceData $runspaceData
+    }
 }
