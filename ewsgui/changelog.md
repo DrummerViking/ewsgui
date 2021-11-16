@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 2.0.12 - 11/16/2021
+ - Adding requirement to run the module in PS 'Desktop' Edition.
 ## 2.0.11 - 09/17/2021
  - Adding auto-check for update functionality.
 ## 2.0.10 - 05/21/2020

@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.11'
+	ModuleVersion = '2.0.12'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -15,18 +15,21 @@
 	CompanyName = 'Agustin Gallegos'
 	
 	# Copyright statement for this module
-	Copyright = 'Copyright (c) 2020 Agustin Gallegos'
+	Copyright = 'Copyright (c) 2021 Agustin Gallegos'
 	
 	# Description of the functionality provided by this module
 	Description = 'Exchange Web Services (EWS) tool to perform different operations'
 	
 	# Minimum version of the Windows PowerShell engine required by this module
-	PowerShellVersion = '3.0'
+	PowerShellVersion = '5.1'
+
+	# Compatible Powershell Editions. This module should be run in 'Desktop' edition, but will be compatible as well with 'Core' editions.
+	CompatiblePSEditions = @('Desktop')
 	
 	# Modules that must be imported into the global environment prior to importing
 	# this module
 	RequiredModules = @(
-		@{ ModuleName='PSFramework'; ModuleVersion='1.1.59' }
+		@{ ModuleName='PSFramework'; ModuleVersion='1.6.205' }
 	)
 	
 	# Assemblies that must be loaded prior to importing this module
