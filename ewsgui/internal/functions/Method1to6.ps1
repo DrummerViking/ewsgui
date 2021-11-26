@@ -15,7 +15,7 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.Text = "Running..."
         if($radiobutton1.Checked){$Wellknownfolder = "MsgFolderRoot"}
         elseif($radiobutton2.Checked){$Wellknownfolder = "ArchiveMsgFolderRoot"}
         elseif($radiobutton3.Checked){$Wellknownfolder = "PublicFoldersRoot"}
@@ -48,6 +48,6 @@
         $dgResults.Visible = $True
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
-        $statusBar.Text = "Ready. Folders found: $i"
+        $statusBarLabel.Text = "Ready. Folders found: $i"
         Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 1-6"
 }

@@ -395,9 +395,11 @@
     $PremiseForm.Controls.Add($radiobutton15)
     $PremiseForm.Controls.Add($radiobutton16)
     $PremiseForm.Controls.Add($radiobutton17)
-    $statusBar = New-Object System.Windows.Forms.StatusBar
+    $statusBar = New-Object System.Windows.Forms.StatusStrip
     $statusBar.Name = "statusBar"
-    $statusBar.Text = "Ready..."
+    $statusBarLabel = New-Object System.Windows.Forms.ToolStripStatusLabel
+    $statusBar.Items.Add($statusBarLabel)
+    $statusBarLabel.Text = "Ready..."
     $PremiseForm.Controls.Add($statusBar)
     $PremiseForm.ClientSize = New-Object System.Drawing.Size(800,720)
     $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation

@@ -1,5 +1,4 @@
-﻿#Requires -PSEdition "Desktop"
-$script:ModuleRoot = $PSScriptRoot
+﻿$script:ModuleRoot = $PSScriptRoot
 $script:ModuleVersion = (Import-PowerShellDataFile -Path "$($script:ModuleRoot)\ewsgui.psd1").ModuleVersion
 
 # Detect whether at some level dotsourcing was enforced

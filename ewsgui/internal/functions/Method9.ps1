@@ -15,7 +15,7 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.text = "Running..."
         if ( $txtBoxFolderID.Text -ne "" )
         {
             $sourceFolderId = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
@@ -23,12 +23,12 @@
             $sourceFolder.Delete($ComboOption)
 
             Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 9"
-            $statusBar.Text = "Ready..."
+            $statusBarLabel.text = "Ready..."
             $PremiseForm.Refresh()
         }
         else
         {
             [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
-            $statusBar.Text = "Process finished with warnings/errors"
+            $statusBarLabel.text = "Process finished with warnings/errors"
         }
 }

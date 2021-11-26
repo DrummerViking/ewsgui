@@ -15,7 +15,7 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.text = "Running..."
     if ( $txtBoxFolderID.Text -ne "" )
     {
         # Creating Filter variables
@@ -74,12 +74,12 @@
         $dgResults.Visible = $True
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
-        $statusBar.Text = "Ready. Deleted items: $i"
+        $statusBarLabel.text = "Ready. Deleted items: $i"
         Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 13"
     }
     else
     {
         [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
-        $statusBar.Text = "Process finished with warnings/errors"
+        $statusBarLabel.text = "Process finished with warnings/errors"
     }
 }

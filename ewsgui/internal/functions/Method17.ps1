@@ -16,7 +16,7 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.text = "Running..."
     if ( $txtBoxFolderID.Text -ne "" )
     {
         $TargetSmtpAddress = $txtBoxFolderID.Text
@@ -34,12 +34,12 @@
         $PremiseForm.Text = "Managing user: " + $Global:email + ". Choose your Option"
 
         Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 17"
-        $statusBar.Text = "Ready..."
+        $statusBarLabel.text = "Ready..."
         $PremiseForm.Refresh()
     }
     else
     {
         [Microsoft.VisualBasic.Interaction]::MsgBox("Email Address textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
-        $statusBar.Text = "Process finished with warnings/errors"
+        $statusBarLabel.text = "Process finished with warnings/errors"
     }
 }
