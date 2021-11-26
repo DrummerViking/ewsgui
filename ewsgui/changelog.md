@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 2.0.13 - 11/26/2021
+ - Updated authentication libraries from ADAL to MSAL.
 ## 2.0.12 - 11/16/2021
  - Adding requirement to run the module in PS 'Desktop' Edition.
 ## 2.0.11 - 09/17/2021

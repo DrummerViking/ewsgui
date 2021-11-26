@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.12'
+	ModuleVersion = '2.0.13'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -30,6 +30,7 @@
 	# this module
 	RequiredModules = @(
 		@{ ModuleName='PSFramework'; ModuleVersion='1.6.205' }
+		@{ ModuleName='Microsoft.identity.Client'; ModuleVersion='4.37.0' }
 	)
 	
 	# Assemblies that must be loaded prior to importing this module
@@ -66,7 +67,7 @@
 		PSData = @{
 			
 			# Tags applied to this module. These help with module discovery in online galleries.
-			# Tags = @()
+			Tags = @("EWS","ExchangeWebServices","WebServices","ExchangeOnline")
 			
 			# A URL to the license for this module.
 			LicenseUri = 'https://github.com/agallego-css/ewsgui/blob/master/LICENSE'

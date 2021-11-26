@@ -109,6 +109,9 @@
  
     if ($radiobutton3.Checked) {
         #Getting oauth credentials
+        ############################################################
+        # PREVIOUS ADAL AUTHENTICATION FLOW
+        <#
         if ( !(Get-Module AzureAD -ListAvailable) -and !(Get-Module AzureAD) ) {
             Install-Module AzureAD -Force -ErrorAction Stop
         }
@@ -151,6 +154,22 @@
         }
         $Global:email = $authenticationResult.Result.UserInfo.DisplayableId
         $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($authenticationResult.Result.AccessToken)
+        $service.Url = New-Object Uri("https://outlook.office365.com/ews/exchange.asmx")
+        #>
+        ############################################################
+        # NEW MSAL AUTHENTICATION FLOW
+        $AppId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
+        $pcaOptions = [Microsoft.Identity.Client.PublicClientApplicationOptions]::new()
+        $pcaOptions.ClientId = $AppId
+        $pcaOptions.RedirectUri = "http://localhost/code"
+        $pcaBuilder = [Microsoft.Identity.Client.PublicClientApplicationBuilder]::CreateWithApplicationOptions($pcaOptions)
+        $pca = $pcaBuilder.Build()
+        $scopes = New-Object System.Collections.Generic.List[string]
+        $scopes.Add("https://outlook.office365.com/.default")
+        $authResult = $pca.AcquireTokenInteractive($scopes)
+        $token = $authResult.ExecuteAsync()
+        $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($Token.Result.AccessToken)
+        $Global:email = $Token.Result.Account.Username
         $service.Url = New-Object Uri("https://outlook.office365.com/ews/exchange.asmx")
     }
     else {
