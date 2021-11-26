@@ -15,7 +15,7 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.text = "Running..."
     # Create a mailbox object that represents the user in case we are impersonating.
     $mailbox = New-Object Microsoft.Exchange.WebServices.Data.Mailbox($email);
     # Call the GetDelegates method to get the delegates of the mailbox object.
@@ -48,6 +48,6 @@
     $dgResults.Visible = $True
     $txtBoxResults.Visible = $False
     $PremiseForm.refresh()
-    $statusBar.Text = "Ready. Amount of Delegates: $i"
+    $statusBarLabel.text = "Ready. Amount of Delegates: $i"
     Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 14"
 }

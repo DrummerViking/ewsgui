@@ -166,6 +166,7 @@
         $pca = $pcaBuilder.Build()
         $scopes = New-Object System.Collections.Generic.List[string]
         $scopes.Add("https://outlook.office365.com/.default")
+        #$scopes.Add("https://outlook.office.com/EWS.AccessAsUser.All")
         $authResult = $pca.AcquireTokenInteractive($scopes)
         $token = $authResult.ExecuteAsync()
         $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($Token.Result.AccessToken)

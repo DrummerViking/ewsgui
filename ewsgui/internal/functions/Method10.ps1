@@ -15,12 +15,12 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.text = "Running..."
     $txtBoxResults.Text = "This method is still under construction."
     $dgResults.Visible = $False
     $txtBoxResults.Visible = $True
     $PremiseForm.refresh()
-    $statusBar.Text = "Ready..."
+    $statusBarLabel.text = "Ready..."
     
     <#
     $rules = $service.GetInboxRules()
@@ -35,7 +35,7 @@
     $dgResults.Visible = $True
     $txtBoxResults.Visible = $False
     $PremiseForm.refresh()
-    $statusBar.Text = "Ready..."
+    $statusBarLabel.text = "Ready..."
     Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 10"
     #>
 }

@@ -15,7 +15,7 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.text = "Running..."
     $array = New-Object System.Collections.ArrayList
     $output = $service.GetUserOofSettings($email) | Select-Object `
         State, `
@@ -32,6 +32,6 @@
     $dgResults.Visible = $True
     $txtBoxResults.Visible = $False
     $PremiseForm.refresh()
-    $statusBar.Text = "Ready..."
+    $statusBarLabel.text = "Ready..."
     Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 11"
 }

@@ -15,7 +15,7 @@
     param(
         # Parameters
     )
-    $statusBar.Text = "Running..."
+    $statusBarLabel.text = "Running..."
     $output = "Checking" + $ComboOption2
     $txtBoxResults.Text = $output
     $txtBoxResults.Visible = $True
@@ -47,7 +47,7 @@
         {
             $output = $output + $nl + "$ComboOption2 doesn't exist"
         }
-        $statusBar.Text = "Ready..."
+        $statusBarLabel.text = "Ready..."
         Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16"
         $txtBoxResults.Text = $output
         $txtBoxResults.Visible = $True
@@ -83,7 +83,7 @@
         }
         $txtBoxResults.Text = $output
         $txtBoxResults.Visible = $True
-        $statusBar.Text = "Ready..."
+        $statusBarLabel.text = "Ready..."
         Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16"
         $PremiseForm.Refresh()
 
