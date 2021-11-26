@@ -24,7 +24,7 @@
         elseif($radiobutton4.Checked){$Wellknownfolder = $txtBoxFolderID.Text}
 
         #listing all available folders in the mailbox
-        $FolderView = New-Object Microsoft.Exchange.WebServices.Data.FolderView(100);
+        $FolderView = New-Object Microsoft.Exchange.WebServices.Data.FolderView(100)
         if($radiobutton4.Checked)
         {
             $sourceFolderId = new-object Microsoft.Exchange.WebServices.Data.FolderId($Wellknownfolder)
