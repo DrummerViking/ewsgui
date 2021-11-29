@@ -398,7 +398,7 @@
     $statusBar = New-Object System.Windows.Forms.StatusStrip
     $statusBar.Name = "statusBar"
     $statusBarLabel = New-Object System.Windows.Forms.ToolStripStatusLabel
-    $statusBar.Items.Add($statusBarLabel)
+    $null = $statusBar.Items.Add($statusBarLabel)
     $statusBarLabel.Text = "Ready..."
     $PremiseForm.Controls.Add($statusBar)
     $PremiseForm.ClientSize = New-Object System.Drawing.Size(800,720)

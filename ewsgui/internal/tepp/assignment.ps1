@@ -1,4 +1,4 @@
 ﻿<#
 # Example:
-Register-PSFTeppArgumentCompleter -Command Get-Alcohol -Parameter Type -Name ewsgui.alcohol
+Register-PSFTeppArgumentCompleter -Command Get-Alcohol -Parameter Type -Name EWSGui.alcohol
 #>
