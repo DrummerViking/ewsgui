@@ -19,21 +19,22 @@ Write-PSFMessage -Level Important -Message "Importing Module"
 $global:testroot = $PSScriptRoot
 $global:__pester_data = @{ }
 
-Remove-Module ewsgui -ErrorAction Ignore
-Import-Module "$PSScriptRoot\..\ewsgui.psd1"
-Import-Module "$PSScriptRoot\..\ewsgui.psm1" -Force
+Remove-Module EWSGui -ErrorAction Ignore
+Import-Module "$PSScriptRoot\..\EWSGui.psd1"
+Import-Module "$PSScriptRoot\..\EWSGui.psm1" -Force
 
 # Need to import explicitly so we can use the configuration class
 Import-Module Pester
 
-
+Write-PSFMessage -Level Important -Message "Creating test result folder"
+$null = New-Item -Path "$PSScriptRoot\..\.." -Name TestResults -ItemType Directory -Force
 
 $totalFailed = 0
 $totalRun = 0
 
 $testresults = @()
 $config = [PesterConfiguration]::Default
-
+$config.TestResult.Enabled = $true
 
 #region Run General Tests
 if ($TestGeneral)

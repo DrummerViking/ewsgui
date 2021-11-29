@@ -1,9 +1,9 @@
 ﻿$script:ModuleRoot = $PSScriptRoot
-$script:ModuleVersion = (Import-PowerShellDataFile -Path "$($script:ModuleRoot)\ewsgui.psd1").ModuleVersion
+$script:ModuleVersion = (Import-PowerShellDataFile -Path "$($script:ModuleRoot)\EWSGui.psd1").ModuleVersion
 
 # Detect whether at some level dotsourcing was enforced
-$script:doDotSource = Get-PSFConfigValue -FullName ewsgui.Import.DoDotSource -Fallback $false
-if ($ewsgui_dotsourcemodule) { $script:doDotSource = $true }
+$script:doDotSource = Get-PSFConfigValue -FullName EWSGui.Import.DoDotSource -Fallback $false
+if ($EWSGui_dotsourcemodule) { $script:doDotSource = $true }
 
 <#
 Note on Resolve-Path:
@@ -14,8 +14,8 @@ This is important when testing for paths.
 #>
 
 # Detect whether at some level loading individual module files, rather than the compiled module was enforced
-$importIndividualFiles = Get-PSFConfigValue -FullName ewsgui.Import.IndividualFiles -Fallback $false
-if ($ewsgui_importIndividualFiles) { $importIndividualFiles = $true }
+$importIndividualFiles = Get-PSFConfigValue -FullName EWSGui.Import.IndividualFiles -Fallback $false
+if ($EWSGui_importIndividualFiles) { $importIndividualFiles = $true }
 if (Test-Path (Resolve-PSFPath -Path "$($script:ModuleRoot)\..\.git" -SingleItem -NewChild)) { $importIndividualFiles = $true }
 if ("<was not compiled>" -eq '<was not compiled>') { $importIndividualFiles = $true }
 	
@@ -54,7 +54,9 @@ function Import-ModuleFile
 if ($importIndividualFiles)
 {
 	# Execute Preimport actions
-	. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\preimport.ps1"
+	foreach ($path in (& "$ModuleRoot\internal\scripts\preimport.ps1")) {
+		. Import-ModuleFile -Path $path
+	}
 	
 	# Import all internal functions
 	foreach ($function in (Get-ChildItem "$ModuleRoot\internal\functions" -Filter "*.ps1" -Recurse -ErrorAction Ignore))
@@ -69,7 +71,9 @@ if ($importIndividualFiles)
 	}
 	
 	# Execute Postimport actions
-	. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\postimport.ps1"
+	foreach ($path in (& "$ModuleRoot\internal\scripts\postimport.ps1")) {
+		. Import-ModuleFile -Path $path
+	}
 	
 	# End it here, do not load compiled code below
 	return
