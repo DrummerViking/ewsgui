@@ -1,5 +1,5 @@
 ﻿# Changelog
-## 2.0.14 - 11/26/2021
+## 2.0.14 - 11/29/2021
  - Fixed update 2.0.12 and the tool should be working both in PS Core and Desktop.
 ## 2.0.13 - 11/26/2021
  - Updated authentication libraries from ADAL to MSAL.

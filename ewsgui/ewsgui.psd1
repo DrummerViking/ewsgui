@@ -24,7 +24,7 @@
 	PowerShellVersion = '5.1'
 
 	# Compatible Powershell Editions. This module should be run in 'Desktop' edition, but will be compatible as well with 'Core' editions.
-	CompatiblePSEditions = @('Desktop')
+	CompatiblePSEditions = @('Desktop', 'Core')
 	
 	# Modules that must be imported into the global environment prior to importing
 	# this module
