@@ -1,19 +1,19 @@
 ﻿# EWS-GUI Tool
 
 ## About
-Exchange Web Services (EWS) tool to perform different operations in Exhcange On-Premises and Exchange Online.  
+Exchange Web Services (EWS) tool to perform different operations in Exchange On-Premises and Exchange Online.  
 This tool will connect using Basic Auth to on-premises mailboxes (uses Autodiscover for endpoint discovery).  
 And will use Oauth to connect to Exchange Online. If "Modern Authentication" is not enabled in the tenant, the tool will fail to connect.  
 
 ## Pre-requisites
 
- > This Module requires Powershell 3.0 and above.  
- > This Module will install AzureAD module, in order to use ADAL libraries to connect to Exchange Online.  
- > There is no need to have EWS API Management dll pre installed. This Module already have the required files.  
+ > This Module requires Powershell 5.1 and above. It should work fine in PS7 and PS5.1.  
+ > This Module will install Microsoft.Identity.Client module, in order to use MSAL libraries to connect to Exchange Online.  
+ > There is no need to have EWS API Management dll pre installed. This Module already has the required files.  
 
- ## Installation
+## Installation
 
- Opening a Windows Powershell with "Run as Administrator" you can just run:
+Opening Powershell with "Run as Administrator" you can run:
 ``` powershell
 Install-Module EWSGui -Force
 ```
@@ -22,7 +22,7 @@ Once the module is installed, you can run:
 Start-EWSGui
 ```
 
-If you want to check for module updates you can run:
+If you want to check for module updates you can run (the tool will already check for updates automatically):
 ``` powershell
 Find-Module EWSGui
 ```
