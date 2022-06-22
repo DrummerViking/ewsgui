@@ -1,4 +1,16 @@
 ﻿function Unregister-EWsGuiTenantData {
+    <#
+    .SYNOPSIS
+    Function to unregister ClientID, TenantID and ClientSecret to the EWSGui powershell module.
+    
+    .DESCRIPTION
+    Function to unregister ClientID, TenantID and ClientSecret to the EWSGui powershell module.
+    
+    .EXAMPLE
+    PS C:\> Unregister-EWsGuiTenantData
+
+    The script will unregister these values in the EWSGui module to be used automatically.
+    #>
     [CmdletBinding()]
     param (
         # Parameters

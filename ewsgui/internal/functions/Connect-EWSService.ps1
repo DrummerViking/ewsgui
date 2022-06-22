@@ -6,9 +6,18 @@
     .DESCRIPTION
     This function will create the service object.
     Will opt to the user to select connection either to On-premises or Exchange Online.
-        Will use basic auth to connect to on-premises. Endpoint will be discovered using Autodiscover.
-        Will use modern auth to connect to Exchange Online. Endpoint is hard-coded to EXO EWS URL.
+    Will use basic auth to connect to on-premises. Endpoint will be discovered using Autodiscover.
+    Will use modern auth to connect to Exchange Online. Endpoint is hard-coded to EXO EWS URL.
     
+    .PARAMETER ClientID
+    String parameter with the ClientID (or AppId) of your AzureAD Registered App.
+
+    .PARAMETER TenantID
+    String parameter with the TenantID your AzureAD tenant.
+
+    .PARAMETER ClientSecret
+    String parameter with the Client Secret which is configured in the AzureAD App.
+
     .EXAMPLE
     PS C:\> Connect-EWSService
     Creates service object and authenticate the user.
@@ -136,8 +145,8 @@
             $token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
             if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-Host "Known issue occurred. There is work in progress to fix authentication flow." -ForegroundColor red
-                Write-Host "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -ForegroundColor Red
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow." -DefaultColor Red
+                Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
                 exit
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with passed ClientID, TenantID and ClientSecret"
@@ -163,8 +172,8 @@
             $token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
             if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-Host "Known issue occurred. There is work in progress to fix authentication flow." -ForegroundColor red
-                Write-Host "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -ForegroundColor Red
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow." -DefaultColor Red
+                Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
                 exit
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with registered ClientID, TenantID and ClientSecret embedded to the module."
@@ -183,9 +192,9 @@
             $global:token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
             if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-Host "Known issue occurred. There is work in progress to fix authentication flow." -ForegroundColor red
-                Write-Host "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -ForegroundColor Red
-                throw
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow." -DefaultColor Red
+                Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
+                exit
             }
             Write-PSFMessage -Level Important -Message "Connected using Delegated permissions with: $($token.result.Account.Username)"
         }
