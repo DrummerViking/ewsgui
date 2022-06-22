@@ -1,4 +1,8 @@
 ﻿# Changelog
+## 2.0.17 - 06/22/2022
+ - Added functionality to logon using Application Permission flow. So now with a valid Azure Registered app we can logon to the app.  
+ - Added 2 functions to register and unregister clientID, TenantID and ClientSecret to the powershell module, so we don't need to enter these all the times.  
+ - Added AuthenticationOptions page to explain the details on the different authentication options and details registration.  
 ## 2.0.14 - 11/29/2021
  - Fixed update 2.0.12 and the tool should be working both in PS Core and Desktop.
 ## 2.0.13 - 11/26/2021

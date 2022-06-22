@@ -31,6 +31,13 @@ If there is any newer version than the one you already have, you can run:
 Update-Module EWSGui -Force
 ```
 
+## Authentication options
+
+The EWSGui tool can connect to Exchange On-premises mailboxes using Basic Authentication.  
+To connect to Exchange Online, it will use Modern auth and we have 2 options, either with Delegated Permission or Application permission.  
+Please check on the following page for more details and options to configure your EWSGui module.
+[Authentication Options](/AuthenticationOptions.md)  
+
 ## Module features:
 ### Allows to perform 16 different operations using EWS API:
 - Option 1 : List Folders in Root

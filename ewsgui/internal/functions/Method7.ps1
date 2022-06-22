@@ -50,9 +50,9 @@
         {
             $searchFilter = $Null
         }
-         
+        
         $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
-         
+        
         $fiItems = $null
         $array = New-Object System.Collections.ArrayList
         do {

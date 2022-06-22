@@ -23,6 +23,15 @@
         16) Remove OWA configurations
         17) Switch to another Mailbox
     
+    .PARAMETER ClientID
+    This is an optional parameter. String parameter with the ClientID (or AppId) of your AzureAD Registered App.
+
+    .PARAMETER TenantID
+    This is an optional parameter. String parameter with the TenantID your AzureAD tenant.
+
+    .PARAMETER ClientSecret
+    This is an optional parameter. String parameter with the Client Secret which is configured in the AzureAD App.
+
     .PARAMETER Confirm
     If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
@@ -35,10 +44,15 @@
 
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "")]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = 'Low')]
     param(
-        # Parameters
+        [String] $ClientID,
+
+        [String] $TenantID,
+
+        [String] $ClientSecret
     )
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
@@ -87,7 +101,7 @@
     # Register-EWSGuiApp
 
     # Connecting to EWS and creating service object
-    $service = Connect-EWSService
+    $service = Connect-EWSService -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
     $ExpandFilters = {
     # Removing all controls, in order to reload the screen appropiately for each selection

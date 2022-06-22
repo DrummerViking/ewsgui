@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.14'
+	ModuleVersion = '2.0.17'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -15,7 +15,7 @@
 	CompanyName = 'Agustin Gallegos'
 	
 	# Copyright statement for this module
-	Copyright = 'Copyright (c) 2021 Agustin Gallegos'
+	Copyright = 'Copyright (c) 2022 Agustin Gallegos'
 	
 	# Description of the functionality provided by this module
 	Description = 'Exchange Web Services (EWS) tool to perform different operations'
@@ -43,7 +43,11 @@
 	# FormatsToProcess = @('xml\ewsgui.Format.ps1xml')
 	
 	# Functions to export from this module
-	FunctionsToExport = 'Start-EWSGui'
+	FunctionsToExport = @(
+		'Start-EWSGui'
+		'Register-EWsGuiTenantData'
+		'Unregister-EWsGuiTenantData'
+	)
 	
 	# Cmdlets to export from this module
 	CmdletsToExport = ''
