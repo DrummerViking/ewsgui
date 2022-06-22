@@ -151,7 +151,7 @@
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with passed ClientID, TenantID and ClientSecret"
         }
-        elseif ( 
+        elseif (
             $null -ne (Get-pSFConfig -Module EwsGui -Name ClientID).value -and `
             $null -ne (Get-pSFConfig -Module EwsGui -Name TenantID).value -and `
             $null -ne (Get-pSFConfig -Module EwsGui -Name ClientSecret).value
@@ -178,8 +178,8 @@
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with registered ClientID, TenantID and ClientSecret embedded to the module."
         }
-        else {     
-            # Connecting using Oauth with delegated permissions           
+        else {
+            # Connecting using Oauth with delegated permissions
             $pcaOptions = [Microsoft.Identity.Client.PublicClientApplicationOptions]::new()
             $pcaOptions.ClientId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
             $pcaOptions.RedirectUri = "http://localhost/code"
