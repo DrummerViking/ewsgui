@@ -38,7 +38,11 @@
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = 'Low')]
     param(
-        # Parameters
+        [String] $ClientID,
+
+        [String] $TenantID,
+
+        [String] $ClientSecret
     )
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
@@ -87,7 +91,7 @@
     # Register-EWSGuiApp
 
     # Connecting to EWS and creating service object
-    $service = Connect-EWSService
+    $service = Connect-EWSService -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
     $ExpandFilters = {
     # Removing all controls, in order to reload the screen appropiately for each selection

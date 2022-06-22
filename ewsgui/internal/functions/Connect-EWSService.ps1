@@ -17,7 +17,11 @@
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [Cmdletbinding()]
     param(
-        # Parameters
+        [String] $ClientID,
+
+        [String] $TenantID,
+
+        [String] $ClientSecret
     )
     # Choosing if connection is to Office 365 or an Exchange on-premises
     $PremiseForm.Controls.Add($radiobutton1)
@@ -75,7 +79,7 @@
     $buttonGo.add_Click( {
             if ($radiobutton1.Checked) { $Global:option = "Exchange2010_SP2" }
             elseif ($radiobutton2.Checked) { $Global:option = "Exchange2013_SP1" }
-            elseif ($radiobutton3.Checked) { $Global:option = "Exchange2016" }
+            elseif ($radiobutton3.Checked) { $Global:option = "Exchange2013_SP1" }
             $PremiseForm.Hide()
         })
     $PremiseForm.Controls.Add($buttonGo)
@@ -105,70 +109,87 @@
 
     #creating service object
     $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
-    $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
- 
+    $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
+
     if ($radiobutton3.Checked) {
-        #Getting oauth credentials
-        ############################################################
-        # PREVIOUS ADAL AUTHENTICATION FLOW
-        <#
-        if ( !(Get-Module AzureAD -ListAvailable) -and !(Get-Module AzureAD) ) {
-            Install-Module AzureAD -Force -ErrorAction Stop
+        #Getting oauth credentials
+        if ( -not(Get-Module Microsoft.Identity.Client -ListAvailable) -and -not(Get-Module Microsoft.Identity.Client) ) {
+            Install-Module Microsoft.Identity.Client -Force -ErrorAction Stop
         }
-        $Folderpath = (Get-Module azuread -ListAvailable | Sort-Object Version -Descending)[0].Path
-        $path = join-path (split-path $Folderpath -parent) 'Microsoft.IdentityModel.Clients.ActiveDirectory.dll'
-        Add-Type -Path $path
+        Import-Module Microsoft.Identity.Client
 
-        $authenticationContext = New-Object Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext("https://login.windows.net/common", $False)
-        $platformParameters = New-Object Microsoft.IdentityModel.Clients.ActiveDirectory.PlatformParameters([Microsoft.IdentityModel.Clients.ActiveDirectory.PromptBehavior]::Always)
-        $resourceUri = "https://outlook.office365.com"
-        $AppId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
-        $redirectUri = New-Object Uri("http://localhost/code")
+        # Connecting using Oauth with Application permissions
+        if ( -not[String]::IsNullOrEmpty($ClientID) -or -not[String]::IsNullOrEmpty($TenantID) -or -not[String]::IsNullOrEmpty($ClientSecret) ) {
+            $cid = $ClientID
+            $tid = $TenantID
+            $cs = $clientSecret
 
-        Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "Looking in token cache"
-        $authenticationResult = $authenticationContext.AcquireTokenSilentAsync($resourceUri, $AppId)
-
-        while ($authenticationResult.IsCompleted -ne $true) { Start-Sleep -Milliseconds 500; Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "sleep" }
-
-        # Check if we failed to get the token
-        if (!($authenticationResult.IsFaulted -eq $false)) {
-
-            Write-PSFMessage -Level Warning -Message "Acquire token silent failed"
-            switch ($authenticationResult.Exception.InnerException.ErrorCode) {
-                failed_to_acquire_token_silently {
-                    # do nothing since we pretty much expect this to fail
-                    Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "Cache miss, asking for credentials"
-                    $authenticationResult = $authenticationContext.AcquireTokenAsync($resourceUri, $AppId, $redirectUri, $platformParameters)
-
-                    while ($authenticationResult.IsCompleted -ne $true) { Start-Sleep -Milliseconds 500; Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "sleep" }
-                }
-                multiple_matching_tokens_detected {
-                    # we could clear the cache here since we don't have a UPN, but we are just going to move on to prompting
-                    Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "Multiple matching entries found, asking for credentials"
-                    $authenticationResult = $authenticationContext.AcquireTokenAsync($resourceUri, $AppId, $redirectUri, $platformParameters)
-
-                    while ($authenticationResult.IsCompleted -ne $true) { Start-Sleep -Milliseconds 500; Write-PSFMessage -Level Verbose -FunctionName "EWSGui" -Message "sleep" }
-                }
-                Default { Write-PSFMessage -Level Warning -Message "Unknown Token Error $authenticationResult.Exception.InnerException.ErrorCode" -ErrorRecord $_ }
+            $ccaOptions = [Microsoft.Identity.Client.ConfidentialClientApplicationOptions]::new()
+            $ccaOptions.ClientID = $cid
+            $ccaOptions.TenantID = $Tid
+            $ccaOptions.ClientSecret = $cs
+            $ccaBuilder = [Microsoft.Identity.Client.ConfidentialClientApplicationBuilder]::CreateWithApplicationOptions($ccaOptions)
+            $cca = $ccaBuilder.Build()
+            $scopes = New-Object System.Collections.Generic.List[string]
+            $scopes.Add("https://outlook.office365.com/.default")
+            $authResult = $cca.AcquireTokenForClient($scopes)
+            $token = $authResult.ExecuteAsync()
+            while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
+            if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
+                Write-Host "Known issue occurred. There is work in progress to fix authentication flow." -ForegroundColor red
+                Write-Host "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -ForegroundColor Red
+                exit
             }
+            Write-PSFMessage -Level Important -Message "Connected using Application permissions with passed ClientID, TenantID and ClientSecret"
         }
-        $Global:email = $authenticationResult.Result.UserInfo.DisplayableId
-        $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($authenticationResult.Result.AccessToken)
-        $service.Url = New-Object Uri("https://outlook.office365.com/ews/exchange.asmx")
-        #>
-        ############################################################
-        # NEW MSAL AUTHENTICATION FLOW
-        $AppId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
-        $pcaOptions = [Microsoft.Identity.Client.PublicClientApplicationOptions]::new()
-        $pcaOptions.ClientId = $AppId
-        $pcaOptions.RedirectUri = "http://localhost/code"
-        $pcaBuilder = [Microsoft.Identity.Client.PublicClientApplicationBuilder]::CreateWithApplicationOptions($pcaOptions)
-        $pca = $pcaBuilder.Build()
-        $scopes = New-Object System.Collections.Generic.List[string]
-        $scopes.Add("https://outlook.office365.com/.default")
-        #$scopes.Add("https://outlook.office.com/EWS.AccessAsUser.All")
-        $authResult = $pca.AcquireTokenInteractive($scopes)
-        $token = $authResult.ExecuteAsync()
+        elseif ( 
+            $null -ne (Get-pSFConfig -Module EwsGui -Name ClientID).value -and `
+            $null -ne (Get-pSFConfig -Module EwsGui -Name TenantID).value -and `
+            $null -ne (Get-pSFConfig -Module EwsGui -Name ClientSecret).value
+        ) {
+            $cid = (Get-pSFConfig -Module EwsGui -Name ClientID).value
+            $tid = (Get-pSFConfig -Module EwsGui -Name TenantID).value
+            $cs = (Get-pSFConfig -Module EwsGui -Name ClientSecret).value
+
+            $ccaOptions = [Microsoft.Identity.Client.ConfidentialClientApplicationOptions]::new()
+            $ccaOptions.ClientId = $cid
+            $ccaOptions.TenantID = $Tid
+            $ccaOptions.ClientSecret = $cs
+            $ccaBuilder = [Microsoft.Identity.Client.ConfidentialClientApplicationBuilder]::CreateWithApplicationOptions($ccaOptions)
+            $cca = $ccaBuilder.Build()
+            $scopes = New-Object System.Collections.Generic.List[string]
+            $scopes.Add("https://outlook.office365.com/.default")
+            $authResult = $cca.AcquireTokenForClient($scopes)
+            $token = $authResult.ExecuteAsync()
+            while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
+            if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
+                Write-Host "Known issue occurred. There is work in progress to fix authentication flow." -ForegroundColor red
+                Write-Host "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -ForegroundColor Red
+                exit
+            }
+            Write-PSFMessage -Level Important -Message "Connected using Application permissions with registered ClientID, TenantID and ClientSecret embedded to the module."
+        }
+        else {     
+            # Connecting using Oauth with delegated permissions           
+            $pcaOptions = [Microsoft.Identity.Client.PublicClientApplicationOptions]::new()
+            $pcaOptions.ClientId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
+            $pcaOptions.RedirectUri = "http://localhost/code"
+            $pcaBuilder = [Microsoft.Identity.Client.PublicClientApplicationBuilder]::CreateWithApplicationOptions($pcaOptions)
+            $pca = $pcaBuilder.Build()
+            $scopes = New-Object System.Collections.Generic.List[string]
+            $scopes.Add("https://outlook.office365.com/.default")
+            #$scopes.Add("https://outlook.office.com/EWS.AccessAsUser.All")
+            $authResult = $pca.AcquireTokenInteractive($scopes)
+            $global:token = $authResult.ExecuteAsync()
+            while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
+            if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
+                Write-Host "Known issue occurred. There is work in progress to fix authentication flow." -ForegroundColor red
+                Write-Host "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -ForegroundColor Red
+                throw
+            }
+            Write-PSFMessage -Level Important -Message "Connected using Delegated permissions with: $($token.result.Account.Username)"
+        }
+        
         $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($Token.Result.AccessToken)
         $Global:email = $Token.Result.Account.Username
         $service.Url = New-Object Uri("https://outlook.office365.com/ews/exchange.asmx")
@@ -176,10 +197,10 @@
     else {
         $psCred = Get-Credential -Message "Type your credentials or Administrator credentials"
         $Global:email = $psCred.UserName
-        $exchangeCredentials = New-Object System.Net.NetworkCredential($psCred.UserName.ToString(),$psCred.GetNetworkCredential().password.ToString())
+        $exchangeCredentials = New-Object System.Net.NetworkCredential($psCred.UserName.ToString(), $psCred.GetNetworkCredential().password.ToString())
         # setting Autodiscover endpoint
         $service.EnableScpLookup = $True
-        $service.AutodiscoverUrl($email,{$true})
+        $service.AutodiscoverUrl($email, { $true })
     }
     $Service.Credentials = $exchangeCredentials
 
