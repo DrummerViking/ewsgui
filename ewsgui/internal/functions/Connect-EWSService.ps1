@@ -144,10 +144,10 @@
             $authResult = $cca.AcquireTokenForClient($scopes)
             $token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
-            if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow." -DefaultColor Red
+            if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/29" -DefaultColor Red
                 Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
-                exit
+                break
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with passed ClientID, TenantID and ClientSecret"
         }
@@ -171,10 +171,10 @@
             $authResult = $cca.AcquireTokenForClient($scopes)
             $token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
-            if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow." -DefaultColor Red
+            if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/29" -DefaultColor Red
                 Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
-                exit
+                break
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with registered ClientID, TenantID and ClientSecret embedded to the module."
         }
@@ -191,10 +191,10 @@
             $authResult = $pca.AcquireTokenInteractive($scopes)
             $global:token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
-            if ($token.Status -eq "Faulted" -and $token.Exception.Message.StartsWith("One or more errors occurred. (ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow." -DefaultColor Red
+            if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/29" -DefaultColor Red
                 Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
-                exit
+                break
             }
             Write-PSFMessage -Level Important -Message "Connected using Delegated permissions with: $($token.result.Account.Username)"
         }
