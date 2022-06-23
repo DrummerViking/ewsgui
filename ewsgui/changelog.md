@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 2.0.18 - 06/23/2022
+ - Issue found: register bug https://github.com/agallego-css/ewsgui/issues/28. And make the appropiate error handling to aware the user to retry the tool.  
 ## 2.0.17 - 06/22/2022
  - Added functionality to logon using Application Permission flow. So now with a valid Azure Registered app we can logon to the app.  
  - Added 2 functions to register and unregister clientID, TenantID and ClientSecret to the powershell module, so we don't need to enter these all the times.  
