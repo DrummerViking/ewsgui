@@ -127,7 +127,7 @@
         }
         Import-Module Microsoft.Identity.Client
 
-        # Connecting using Oauth with Application permissions
+        #region Connecting using Oauth with Application permissions with passed parameters
         if ( -not[String]::IsNullOrEmpty($ClientID) -or -not[String]::IsNullOrEmpty($TenantID) -or -not[String]::IsNullOrEmpty($ClientSecret) ) {
             $cid = $ClientID
             $tid = $TenantID
@@ -145,12 +145,14 @@
             $token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
             if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/29" -DefaultColor Red
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/28" -DefaultColor Red
                 Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
                 break
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with passed ClientID, TenantID and ClientSecret"
         }
+        #endregion
+        #region Connecting using Oauth with Application permissions with saved values in the module
         elseif (
             $null -ne (Get-pSFConfig -Module EwsGui -Name ClientID).value -and `
             $null -ne (Get-pSFConfig -Module EwsGui -Name TenantID).value -and `
@@ -172,14 +174,15 @@
             $token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
             if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/29" -DefaultColor Red
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/28" -DefaultColor Red
                 Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
                 break
             }
             Write-PSFMessage -Level Important -Message "Connected using Application permissions with registered ClientID, TenantID and ClientSecret embedded to the module."
         }
+        #endregion
+        #region Connecting using Oauth with delegated permissions
         else {
-            # Connecting using Oauth with delegated permissions
             $pcaOptions = [Microsoft.Identity.Client.PublicClientApplicationOptions]::new()
             $pcaOptions.ClientId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
             $pcaOptions.RedirectUri = "http://localhost/code"
@@ -192,13 +195,13 @@
             $global:token = $authResult.ExecuteAsync()
             while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
             if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/29" -DefaultColor Red
+                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/28" -DefaultColor Red
                 Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
                 break
             }
             Write-PSFMessage -Level Important -Message "Connected using Delegated permissions with: $($token.result.Account.Username)"
         }
-        
+        #endregion
         $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($Token.Result.AccessToken)
         $Global:email = $Token.Result.Account.Username
         $service.Url = New-Object Uri("https://outlook.office365.com/ews/exchange.asmx")
