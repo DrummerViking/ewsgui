@@ -49,5 +49,5 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBarLabel.Text = "Ready. Folders found: $i"
-        Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 1-6"
+        Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 1-6" -Target $email
 }

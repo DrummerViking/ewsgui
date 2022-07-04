@@ -48,7 +48,7 @@
             $output = $output + $nl + "$ComboOption2 doesn't exist"
         }
         $statusBarLabel.text = "Ready..."
-        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16" -Target $email
         $txtBoxResults.Text = $output
         $txtBoxResults.Visible = $True
         $PremiseForm.Refresh()

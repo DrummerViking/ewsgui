@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 2.0.19 - 07/04/2022
+ - Added functionality to export logs to CSV in user's desktop and/or to powershell GidView for easy view and filtering.  
 ## 2.0.18 - 06/23/2022
  - Issue found: register bug https://github.com/agallego-css/ewsgui/issues/28. And make the appropiate error handling to aware the user to retry the tool.  
 ## 2.0.17 - 06/22/2022

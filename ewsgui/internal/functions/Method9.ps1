@@ -22,7 +22,7 @@
             $SourceFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
             $sourceFolder.Delete($ComboOption)
 
-            Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 9"
+            Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 9" -Target $email
             $statusBarLabel.text = "Ready..."
             $PremiseForm.Refresh()
         }
