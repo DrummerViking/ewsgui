@@ -22,7 +22,7 @@
         $folder.DisplayName = $txtBoxFolderID.Text
         $folder.Save([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::MsgFolderRoot)
 
-        Write-PSFMessage -Level Host -Message "Task finished succesfully. Folder Created: $($txtBoxFolderID.Text)" -FunctionName "Method 8"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully. Folder Created: $($txtBoxFolderID.Text)" -FunctionName "Method 8" -Target $email
         $statusBarLabel.text = "Ready..."
         $PremiseForm.Refresh()
     }

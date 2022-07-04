@@ -36,7 +36,7 @@ Update-Module EWSGui -Force
 The EWSGui tool can connect to Exchange On-premises mailboxes using Basic Authentication.  
 To connect to Exchange Online, it will use Modern auth and we have 2 options, either with Delegated Permission or Application permission.  
 Please check on the following page for more details and options to configure your EWSGui module.
-[Authentication Options](/AuthenticationOptions.md)  
+[Authentication Options](/docs/AuthenticationOptions.md)  
 
 ## Module features:
 ### Allows to perform 16 different operations using EWS API:
@@ -57,6 +57,11 @@ Please check on the following page for more details and options to configure you
 - Option 15 : Change sensitivity to items in a folder
 - Option 16 : Remove OWA configurations
 - Option 17 : Switch to another Mailbox
+
+## Module logging
+
+The module offers the command `Export-EWSGuiLog` in order to export module logs to CSV file and/or to Powershell GridView.  
+More info [here](/docs/Export-EWSGuiLog.md).  
 
 ## Version History
 [Change Log](/ewsgui/changelog.md)

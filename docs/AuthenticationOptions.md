@@ -28,11 +28,11 @@ Start-EWSGui -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSe
 If you want to use Application permission flow, we have an option to save your "ClientID", "TenantID" and "ClientSecret", so you don't need to enter it every time as the example above.  
 you can run:  
 ```Powershell
-Register-EWSGuiTenantData -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSecret "your Secret passcode"
+Register-EWsGuiAADAppData -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSecret "your Secret passcode"
 ```
 
 Now everytime you want to run the module, just run `Start-EWSGui` and will fetch these saved details (so it will follow the Application permissions flow).  
 if you need to revert this change, let's say you need to try Delegated Permission back again, you can unregister these values:  
 ```Powershell
-Unregister-EWSGuiTenantData
+Unregister-EWsGuiAADAppData
 ```

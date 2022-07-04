@@ -1,4 +1,4 @@
-﻿function Register-EWsGuiTenantData {
+﻿function Register-EWsGuiAADAppData {
     <#
     .SYNOPSIS
     Function to register ClientID, TenantID and ClientSecret to the EWSGui powershell module.
@@ -16,7 +16,7 @@
     String parameter with the Client Secret which is configured in the AzureAD App.
     
     .EXAMPLE
-    PS C:\> Register-EWsGuiTenantData -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSecret "your Secret passcode"
+    PS C:\> Register-EWsGuiAADAppData -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSecret "your Secret passcode"
 
     The script will register these values in the EWSGui module to be used automatically.
     #>

@@ -72,7 +72,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBarLabel.text = "Ready. Items found: $i"
-        Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 7"
+        Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 7" -Target $email
     }
     else
     {

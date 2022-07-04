@@ -33,7 +33,7 @@
         $labImpersonation.Text = $Global:email
         $PremiseForm.Text = "Managing user: " + $Global:email + ". Choose your Option"
 
-        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 17"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 17" -Target $email
         $statusBarLabel.text = "Ready..."
         $PremiseForm.Refresh()
     }

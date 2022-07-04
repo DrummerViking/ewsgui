@@ -49,5 +49,5 @@
     $txtBoxResults.Visible = $False
     $PremiseForm.refresh()
     $statusBarLabel.text = "Ready. Amount of Delegates: $i"
-    Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 14"
+    Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 14" -Target $email
 }

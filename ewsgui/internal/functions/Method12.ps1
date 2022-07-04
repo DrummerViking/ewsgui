@@ -74,7 +74,7 @@
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
         $statusBarLabel.text = "Ready. Moved Items: $i"
-        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 12"
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 12" -Target $email
     }
     else
     {
