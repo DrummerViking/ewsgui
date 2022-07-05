@@ -1,4 +1,7 @@
 ﻿# Changelog
+## 2.0.20 - 07/05/2022  
+ - Added validation logic to the Export-EWSGuiLog function export file.  
+ - Fixed some function renaming to register the AzureAD App details in the module.  
 ## 2.0.19 - 07/04/2022
  - Added functionality to export logs to CSV in user's desktop and/or to powershell GidView for easy view and filtering.  
 ## 2.0.18 - 06/23/2022

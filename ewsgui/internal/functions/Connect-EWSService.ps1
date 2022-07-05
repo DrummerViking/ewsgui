@@ -122,9 +122,6 @@
 
     if ($radiobutton3.Checked) {
         #Getting oauth credentials
-        if ( -not(Get-Module Microsoft.Identity.Client -ListAvailable) -and -not(Get-Module Microsoft.Identity.Client) ) {
-            Install-Module Microsoft.Identity.Client -Force -ErrorAction Stop
-        }
         Import-Module Microsoft.Identity.Client
 
         #region Connecting using Oauth with Application permissions with passed parameters

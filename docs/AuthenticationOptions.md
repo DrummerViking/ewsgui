@@ -32,6 +32,7 @@ Register-EWsGuiAADAppData -ClientID "your app client ID" -TenantID "Your tenant 
 ```
 
 Now everytime you want to run the module, just run `Start-EWSGui` and will fetch these saved details (so it will follow the Application permissions flow).  
+<br>
 if you need to revert this change, let's say you need to try Delegated Permission back again, you can unregister these values:  
 ```Powershell
 Unregister-EWsGuiAADAppData
