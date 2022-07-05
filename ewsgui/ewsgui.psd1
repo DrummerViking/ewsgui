@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.19'
+	ModuleVersion = '2.0.20'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -46,8 +46,8 @@
 	FunctionsToExport = @(
 		'Export-EWSGuiLog'
 		'Start-EWSGui'
-		'Register-EWsGuiTenantData'
-		'Unregister-EWsGuiTenantData'
+		'Register-EWsGuiAADAppData'
+		'Unregister-EWsGuiAADAppData'
 	)
 	
 	# Cmdlets to export from this module
