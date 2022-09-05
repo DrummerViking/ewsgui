@@ -119,6 +119,8 @@
     #creating service object
     $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
     $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
+    $service.ReturnClientRequestId = $true
+    $service.UserAgent = "EwsGuiApp/2.0.21"
 
     if ($radiobutton3.Checked) {
         #Getting oauth credentials

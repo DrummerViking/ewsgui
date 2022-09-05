@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.20'
+	ModuleVersion = '2.0.21'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -30,11 +30,15 @@
 	# this module
 	RequiredModules = @(
 		@{ ModuleName='PSFramework'; ModuleVersion='1.6.205' }
-		@{ ModuleName='Microsoft.identity.Client'; ModuleVersion='4.37.0' }
+		@{ ModuleName='Microsoft.identity.Client'; ModuleVersion='4.46.0' }
+		#@{ ModuleName='MSAL.PS'; ModuleVersion='4.37.0.0' }
 	)
 	
 	# Assemblies that must be loaded prior to importing this module
-	RequiredAssemblies = @('bin\Microsoft.Exchange.WebServices.dll')
+	RequiredAssemblies = @(
+		'bin\Microsoft.Exchange.WebServices.dll'
+		'bin\Microsoft.IdentityModel.Abstractions.dll'
+	)
 	
 	# Type files (.ps1xml) to be loaded when importing this module
 	# TypesToProcess = @('xml\ewsgui.Types.ps1xml')
