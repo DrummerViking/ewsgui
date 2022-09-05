@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 2.0.21 - 09/05/2022  
+ - Added Microsoft.IdentityModel.Abstractions dll as it seems it fails to load Microsoft.identity.Client module in PS7.
 ## 2.0.20 - 07/05/2022  
  - Added validation logic to the Export-EWSGuiLog function export file.  
  - Fixed some function renaming to register the AzureAD App details in the module.  
