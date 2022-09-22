@@ -85,7 +85,6 @@
     $Global:radiobutton14 = New-Object System.Windows.Forms.RadioButton
     $Global:radiobutton15 = New-Object System.Windows.Forms.RadioButton
     $Global:radiobutton16 = New-Object System.Windows.Forms.RadioButton
-    $Global:radiobutton17 = New-Object System.Windows.Forms.RadioButton
     $Global:labImpersonation = New-Object System.Windows.Forms.Label
     $labImpersonationHelp = New-Object System.Windows.Forms.Label
     $Global:buttonGo = New-Object System.Windows.Forms.Button
@@ -188,15 +187,15 @@
     $txtBoxFolderID.Text = ""
 
     #Adapting FolderID and TxtBoxFolderID based on the selection
-    if($radiobutton4.Checked -or $radiobutton8.Checked -or $radiobutton9.Checked){
+    if($radiobutton7.Checked -or $radiobutton8.Checked){
         $labFolderID.Location = New-Object System.Drawing.Point(5,285)
         $txtBoxFolderID.Location = New-Object System.Drawing.Point(100,285)
     }
-    elseif($radiobutton12.Checked){
+    elseif($radiobutton11.Checked){
         $labFolderID.Size = New-Object System.Drawing.Size(95,20)
         $labFolderID.Text = "SourceFolderID:"
     }
-    elseif($radiobutton17.Checked){
+    elseif($radiobutton16.Checked){
         $labFolderID.Location = New-Object System.Drawing.Point(5,285)
         $labFolderID.Size = New-Object System.Drawing.Size(95,20)
         $labFolderID.Text = "E-mail Address:"
@@ -219,7 +218,12 @@
     $labelCombobox.Location = New-Object System.Drawing.Point(400,285)
     $labelCombobox.Size = New-Object System.Drawing.Size(80,35)
     $labelCombobox.Name = "labelCombobox"
-    $labelCombobox.Text = "Delete Option"
+    if($radiobutton14.Checked){
+        $labelCombobox.Text = "Change Option"
+    }
+    else {
+        $labelCombobox.Text = "Delete Option"
+    }
 
     #ComboBox Menu
     $comboBoxMenu.DataBindings.DefaultDataSourceUpdateMode = 0
@@ -271,11 +275,7 @@
     $comboBoxConfig.Items.Add("CleanFinders")|Out-Null
     $comboBoxConfig.add_SelectedIndexChanged($handler_comboBoxConfig_SelectedIndexChanged)
 
-    if($radiobutton4.Checked){
-        $PremiseForm.Controls.Add($labFolderID)
-        $PremiseForm.Controls.Add($txtBoxFolderID)
-        }
-    elseif($radiobutton7.Checked){
+    if($radiobutton6.Checked){
         $PremiseForm.Controls.Add($labFolderID)
         $PremiseForm.Controls.Add($txtBoxFolderID)
         $PremiseForm.Controls.Add($labFromDate)
@@ -285,13 +285,13 @@
         $PremiseForm.Controls.Add($labSubject)
         $PremiseForm.Controls.Add($txtBoxSubject)
     }
-    elseif($radiobutton8.Checked){
+    elseif($radiobutton7.Checked){
         $labFolderID.Size = New-Object System.Drawing.Size(95,20)
         $labFolderID.Text = "Folder Name:"
         $PremiseForm.Controls.Add($labFolderID)
         $PremiseForm.Controls.Add($txtBoxFolderID)
     }
-    elseif($radiobutton9.Checked){
+    elseif($radiobutton8.Checked){
         $comboBoxMenu.Items.Add("")|Out-Null
         $comboBoxMenu.Items.Add("HardDelete")|Out-Null
         $comboBoxMenu.Items.Add("MoveToDeletedItems")|Out-Null
@@ -301,7 +301,7 @@
         $PremiseForm.Controls.Add($labelCombobox)
         $PremiseForm.Controls.Add($comboBoxMenu)
     }
-    elseif($radiobutton12.Checked){
+    elseif($radiobutton11.Checked){
         $PremiseForm.Controls.Add($labFromDate)
         $PremiseForm.Controls.Add($FromDatePicker)
         $PremiseForm.Controls.Add($labToDate)
@@ -313,7 +313,7 @@
         $PremiseForm.Controls.Add($labTargetFolderID)
         $PremiseForm.Controls.Add($txtBoxTargetFolderID)
     }
-    elseif($radiobutton13.Checked){
+    elseif($radiobutton12.Checked){
         $comboBoxMenu.Items.Add("")|Out-Null
         $comboBoxMenu.Items.Add("SoftDelete")|Out-Null
         $comboBoxMenu.Items.Add("HardDelete")|Out-Null
@@ -330,7 +330,7 @@
         $PremiseForm.Controls.Add($labelCombobox)
         $PremiseForm.Controls.Add($comboBoxMenu)
     }
-    elseif($radiobutton15.Checked){
+    elseif($radiobutton14.Checked){
         $comboBoxMenu.Items.Add("")|Out-Null
         $comboBoxMenu.Items.Add("Normal")|Out-Null
         $comboBoxMenu.Items.Add("Personal")|Out-Null
@@ -348,13 +348,13 @@
         $PremiseForm.Controls.Add($labelCombobox)
         $PremiseForm.Controls.Add($comboBoxMenu)
     }
-    elseif($radiobutton16.Checked){
+    elseif($radiobutton15.Checked){
         $PremiseForm.Controls.Add($labelComboboxFolder)
         $PremiseForm.Controls.Add($comboBoxFolder)
         $PremiseForm.Controls.Add($labelComboboxConfig)
         $PremiseForm.Controls.Add($comboBoxConfig)
     }
-    elseif($radiobutton17.Checked){
+    elseif($radiobutton16.Checked){
         $PremiseForm.Controls.Add($labFolderID)
         $PremiseForm.Controls.Add($txtBoxFolderID)
     }
@@ -378,7 +378,7 @@
 
     $handler_labImpersonationHelp_Click={
         [Microsoft.VisualBasic.Interaction]::MsgBox("In order to use Impersonation, we must first assign proper ManagementRole to the 'administrative' account that run the different options.
-    New-ManagementRoleAssignment –Name:impersonationAssignmentName –Role:ApplicationImpersonation –User:<Account>
+    New-ManagementRoleAssignment -Name:impersonationAssignmentName -Role:ApplicationImpersonation -User:<Account>
 
     More info at: https://msdn.microsoft.com/en-us/library/bb204095(exchg.140).aspx
 
@@ -408,14 +408,13 @@
     $PremiseForm.Controls.Add($radiobutton14)
     $PremiseForm.Controls.Add($radiobutton15)
     $PremiseForm.Controls.Add($radiobutton16)
-    $PremiseForm.Controls.Add($radiobutton17)
     $statusBar = New-Object System.Windows.Forms.StatusStrip
     $statusBar.Name = "statusBar"
     $statusBarLabel = New-Object System.Windows.Forms.ToolStripStatusLabel
     $null = $statusBar.Items.Add($statusBarLabel)
     $statusBarLabel.Text = "Ready..."
     $PremiseForm.Controls.Add($statusBar)
-    $PremiseForm.ClientSize = New-Object System.Drawing.Size(800,720)
+    $PremiseForm.ClientSize = New-Object System.Drawing.Size(850,720)
     $PremiseForm.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $PremiseForm.Name = "form1"
     $PremiseForm.Text = "Managing user: " + $email + ". Choose your Option"
@@ -462,7 +461,7 @@
     $radiobutton4.Location = New-Object System.Drawing.Point(20,110)
     $radiobutton4.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton4.TabIndex = 4
-    $radiobutton4.Text = "4 - List subFolders from a desired Parent Folder"
+    $radiobutton4.Text = "4 - List folders in Recoverable Items Root folder"
     $radiobutton4.Checked = $false
     $radiobutton4.UseVisualStyleBackColor = $True
     $radiobutton4.Add_Click({& $ExpandFilters})
@@ -473,7 +472,7 @@
     $radiobutton5.Location = New-Object System.Drawing.Point(20,140)
     $radiobutton5.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton5.Tabindex = 5
-    $radiobutton5.Text = "5 - List folders in Recoverable Items Root folder"
+    $radiobutton5.Text = "5 - List folders in Recoverable Items folder in Archive"
     $radiobutton5.Checked = $false
     $radiobutton5.UseVisualStyleBackColor = $True
     $radiobutton5.Add_Click({& $ExpandFilters})
@@ -484,7 +483,7 @@
     $radiobutton6.Location = New-Object System.Drawing.Point(20,170)
     $radiobutton6.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton6.TabIndex = 6
-    $radiobutton6.Text = "6 - List folders in Recoverable Items folder in Archive"
+    $radiobutton6.Text = "6 - List Items in a desired Folder"
     $radiobutton6.Checked = $false
     $radiobutton6.UseVisualStyleBackColor = $True
     $radiobutton6.Add_Click({& $ExpandFilters})
@@ -496,7 +495,7 @@
     $radiobutton7.Name = "radiobutton7"
     $radiobutton7.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton7.TabIndex = 7
-    $radiobutton7.Text = "7 - List Items in a desired Folder"
+    $radiobutton7.Text = "7 - Create a custom Folder in Root"
     $radiobutton7.Checked = $false
     $radiobutton7.UseVisualStyleBackColor = $True
     $radiobutton7.Add_Click({& $ExpandFilters})
@@ -507,7 +506,7 @@
     $radiobutton8.Location = New-Object System.Drawing.Point(20,230)
     $radiobutton8.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton8.TabIndex = 8
-    $radiobutton8.Text = "8 - Create a custom Folder in Root"
+    $radiobutton8.Text = "8 - Delete a Folder"
     $radiobutton8.Checked = $false
     $radiobutton8.UseVisualStyleBackColor = $True
     $radiobutton8.Add_Click({& $ExpandFilters})
@@ -518,7 +517,7 @@
     $radiobutton9.Location = New-Object System.Drawing.Point(20,260)
     $radiobutton9.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton9.TabIndex = 9
-    $radiobutton9.Text = "9 - Delete a Folder"
+    $radiobutton9.Text = "9 - Get user's Inbox Rules"
     $radiobutton9.Checked = $false
     $radiobutton9.UseVisualStyleBackColor = $True
     $radiobutton9.Add_Click({& $ExpandFilters})
@@ -529,7 +528,7 @@
     $radiobutton10.Location = New-Object System.Drawing.Point(400,20)
     $radiobutton10.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton10.TabIndex = 10
-    $radiobutton10.Text = "10 - Get user's Inbox Rules"
+    $radiobutton10.Text = "10 - Get user's OOF Settings"
     $radiobutton10.Checked = $false
     $radiobutton10.UseVisualStyleBackColor = $True
     $radiobutton10.Add_Click({& $ExpandFilters})
@@ -540,7 +539,7 @@
     $radiobutton11.Location = New-Object System.Drawing.Point(400,50)
     $radiobutton11.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton11.TabIndex = 11
-    $radiobutton11.Text = "11 - Get user's OOF Settings"
+    $radiobutton11.Text = "11 - Move items between folders"
     $radiobutton11.Checked = $false
     $radiobutton11.UseVisualStyleBackColor = $True
     $radiobutton11.Add_Click({& $ExpandFilters})
@@ -551,7 +550,7 @@
     $radiobutton12.Location = New-Object System.Drawing.Point(400,80)
     $radiobutton12.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton12.TabIndex = 12
-    $radiobutton12.Text = "12 - Move items between folders"
+    $radiobutton12.Text = "12 - Delete a subset of items in a folder"
     $radiobutton12.Checked = $false
     $radiobutton12.UseVisualStyleBackColor = $True
     $radiobutton12.Add_Click({& $ExpandFilters})
@@ -562,7 +561,7 @@
     $radiobutton13.Location = New-Object System.Drawing.Point(400,110)
     $radiobutton13.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton13.TabIndex = 13
-    $radiobutton13.Text = "13 - Delete a subset of items in a folder"
+    $radiobutton13.Text = "13 - Get user's Delegate information"
     $radiobutton13.Checked = $false
     $radiobutton13.UseVisualStyleBackColor = $True
     $radiobutton13.Add_Click({& $ExpandFilters})
@@ -573,7 +572,7 @@
     $radiobutton14.Location = New-Object System.Drawing.Point(400,140)
     $radiobutton14.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton14.TabIndex = 14
-    $radiobutton14.Text = "14 - Get user's Delegate information"
+    $radiobutton14.Text = "14 - Change sensitivity to items in a folder"
     $radiobutton14.Checked = $false
     $radiobutton14.UseVisualStyleBackColor = $True
     $radiobutton14.Add_Click({& $ExpandFilters})
@@ -584,7 +583,7 @@
     $radiobutton15.Location = New-Object System.Drawing.Point(400,170)
     $radiobutton15.Size = New-Object System.Drawing.Size(300,15)
     $radiobutton15.TabIndex = 15
-    $radiobutton15.Text = "15 - Change sensitivity to items in a folder"
+    $radiobutton15.Text = "15 - Remove OWA configurations"
     $radiobutton15.Checked = $false
     $radiobutton15.UseVisualStyleBackColor = $True
     $radiobutton15.Add_Click({& $ExpandFilters})
@@ -593,27 +592,16 @@
     #
     $radiobutton16.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton16.Location = New-Object System.Drawing.Point(400,200)
-    $radiobutton16.Size = New-Object System.Drawing.Size(300,15)
+    $radiobutton16.Size = New-Object System.Drawing.Size(175,15)
     $radiobutton16.TabIndex = 16
-    $radiobutton16.Text = "16 - Remove OWA configurations"
+    $radiobutton16.Text = "16 - Switch to another Mailbox"
     $radiobutton16.Checked = $false
     $radiobutton16.UseVisualStyleBackColor = $True
     $radiobutton16.Add_Click({& $ExpandFilters})
     #
-    # radiobutton17
-    #
-    $radiobutton17.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
-    $radiobutton17.Location = New-Object System.Drawing.Point(400,230)
-    $radiobutton17.Size = New-Object System.Drawing.Size(175,15)
-    $radiobutton17.TabIndex = 17
-    $radiobutton17.Text = "17 - Switch to another Mailbox"
-    $radiobutton17.Checked = $false
-    $radiobutton17.UseVisualStyleBackColor = $True
-    $radiobutton17.Add_Click({& $ExpandFilters})
-    #
     # Label Impersonation Help
     #
-    $labImpersonationHelp.Location = New-Object System.Drawing.Point(380,231)
+    $labImpersonationHelp.Location = New-Object System.Drawing.Point(380,200)
     $labImpersonationHelp.Size = New-Object System.Drawing.Size(10,20)
     $labImpersonationHelp.Name = "labImpersonation"
     $labImpersonationHelp.ForeColor = "Blue"
@@ -639,18 +627,17 @@
             elseif($radiobutton3.Checked){Method1to6}
             elseif($radiobutton4.Checked){Method1to6}
             elseif($radiobutton5.Checked){Method1to6}
-            elseif($radiobutton6.Checked){Method1to6}
-            elseif($radiobutton7.Checked){Method7}
-            elseif($radiobutton8.Checked){Method8}
-            elseif($radiobutton9.Checked){Method9}
-            elseif($radiobutton10.Checked){Method10}
-            elseif($radiobutton11.Checked){Method11}
-            elseif($radiobutton12.Checked){Method12}
-            elseif($radiobutton13.Checked){Method13}
-            elseif($radiobutton14.Checked){Method14}
-            elseif($radiobutton15.Checked){Method15}
-            elseif($radiobutton16.Checked){Method16}
-            elseif($radiobutton17.Checked){Method17}
+            elseif($radiobutton6.Checked){Method7}
+            elseif($radiobutton7.Checked){Method8}
+            elseif($radiobutton8.Checked){Method9}
+            elseif($radiobutton9.Checked){Method10}
+            elseif($radiobutton10.Checked){Method11}
+            elseif($radiobutton11.Checked){Method12}
+            elseif($radiobutton12.Checked){Method13}
+            elseif($radiobutton13.Checked){Method14}
+            elseif($radiobutton14.Checked){Method15}
+            elseif($radiobutton15.Checked){Method16}
+            elseif($radiobutton16.Checked){Method17}
     })
     $PremiseForm.Controls.Add($buttonGo2)
 
@@ -668,7 +655,7 @@
     #TextBox results
     $txtBoxResults.DataBindings.DefaultDataSourceUpdateMode = 0
     $txtBoxResults.Location = New-Object System.Drawing.Point(5,460)
-    $txtBoxResults.Size = New-Object System.Drawing.Size(790,240)
+    $txtBoxResults.Size = New-Object System.Drawing.Size(840,240)
     $txtBoxResults.Name = "TextResults"
     $txtBoxResults.BackColor = [System.Drawing.Color]::White
     $txtBoxResults.BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3D
@@ -682,7 +669,7 @@
     $dgResults.DataBindings.DefaultDataSourceUpdateMode = 0
     $dgResults.DataMember = ""
     $dgResults.Location = New-Object System.Drawing.Point(5,460)
-    $dgResults.Size = New-Object System.Drawing.Size(790,240)
+    $dgResults.Size = New-Object System.Drawing.Size(840,240)
     $dgResults.Name = "dgResults"
     $dgResults.ReadOnly = $True
     $dgResults.RowHeadersVisible = $False

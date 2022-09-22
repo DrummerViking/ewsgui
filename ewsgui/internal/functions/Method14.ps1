@@ -6,6 +6,15 @@
     .DESCRIPTION
     Get user's Delegates information
     
+    .PARAMETER ClientID
+    String parameter with the ClientID (or AppId) of your AzureAD Registered App.
+
+    .PARAMETER TenantID
+    String parameter with the TenantID your AzureAD tenant.
+
+    .PARAMETER ClientSecret
+    String parameter with the Client Secret which is configured in the AzureAD App.
+    
     .EXAMPLE
     PS C:\> Method14
     Get user's Delegates information
@@ -13,9 +22,16 @@
     #>
     [CmdletBinding()]
     param(
-        # Parameters
+        [String] $ClientID,
+
+        [String] $TenantID,
+
+        [String] $ClientSecret
     )
-    $statusBarLabel.text = "Running..."
+    $statusBarLabel.Text = "Running..."
+
+    Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
+
     # Create a mailbox object that represents the user in case we are impersonating.
     $mailbox = New-Object Microsoft.Exchange.WebServices.Data.Mailbox($email);
     # Call the GetDelegates method to get the delegates of the mailbox object.

@@ -1,4 +1,8 @@
 ﻿# Changelog
+## 2.0.24 - 09/22/2022  
+ - Updated methods to retrieve mailbox folders. Now we do a recursive search so we search for subfolders on the same run.
+ - Added a StopWatch method, in order to fetch a Refresh Token if more than 50 minutes were elapsed since the app launched.
+ - Implemented a workaround to load up Microsoft.Identity.client and MSAL.PS modules, as they have been affecting in previous version.
 ## 2.0.21 - 09/05/2022  
  - Added Microsoft.IdentityModel.Abstractions dll as it seems it fails to load Microsoft.identity.Client module in PS7.
 ## 2.0.20 - 07/05/2022  

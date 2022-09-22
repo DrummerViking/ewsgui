@@ -117,92 +117,19 @@
     if ($buttonExit.IsDisposed) { return }
 
     #creating service object
+    Add-Type -Path $ModuleRoot\Bin\Microsoft.IdentityModel.Abstractions.dll
+    Install-Module Microsoft.Identity.Client -Scope CurrentUser -Force -WarningAction SilentlyContinue
+    Install-Module msal.ps -Scope CurrentUser -Force -WarningAction SilentlyContinue
+
     $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
     $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
     $service.ReturnClientRequestId = $true
     $service.UserAgent = "EwsGuiApp/2.0.21"
 
     if ($radiobutton3.Checked) {
-        #Getting oauth credentials
-        Import-Module Microsoft.Identity.Client
-
-        #region Connecting using Oauth with Application permissions with passed parameters
-        if ( -not[String]::IsNullOrEmpty($ClientID) -or -not[String]::IsNullOrEmpty($TenantID) -or -not[String]::IsNullOrEmpty($ClientSecret) ) {
-            $cid = $ClientID
-            $tid = $TenantID
-            $cs = $clientSecret
-
-            $ccaOptions = [Microsoft.Identity.Client.ConfidentialClientApplicationOptions]::new()
-            $ccaOptions.ClientID = $cid
-            $ccaOptions.TenantID = $Tid
-            $ccaOptions.ClientSecret = $cs
-            $ccaBuilder = [Microsoft.Identity.Client.ConfidentialClientApplicationBuilder]::CreateWithApplicationOptions($ccaOptions)
-            $cca = $ccaBuilder.Build()
-            $scopes = New-Object System.Collections.Generic.List[string]
-            $scopes.Add("https://outlook.office365.com/.default")
-            $authResult = $cca.AcquireTokenForClient($scopes)
-            $token = $authResult.ExecuteAsync()
-            while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
-            if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/28" -DefaultColor Red
-                Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
-                break
-            }
-            Write-PSFMessage -Level Important -Message "Connected using Application permissions with passed ClientID, TenantID and ClientSecret"
-        }
-        #endregion
-        #region Connecting using Oauth with Application permissions with saved values in the module
-        elseif (
-            $null -ne (Get-pSFConfig -Module EwsGui -Name ClientID).value -and `
-            $null -ne (Get-pSFConfig -Module EwsGui -Name TenantID).value -and `
-            $null -ne (Get-pSFConfig -Module EwsGui -Name ClientSecret).value
-        ) {
-            $cid = (Get-pSFConfig -Module EwsGui -Name ClientID).value
-            $tid = (Get-pSFConfig -Module EwsGui -Name TenantID).value
-            $cs = (Get-pSFConfig -Module EwsGui -Name ClientSecret).value
-
-            $ccaOptions = [Microsoft.Identity.Client.ConfidentialClientApplicationOptions]::new()
-            $ccaOptions.ClientId = $cid
-            $ccaOptions.TenantID = $Tid
-            $ccaOptions.ClientSecret = $cs
-            $ccaBuilder = [Microsoft.Identity.Client.ConfidentialClientApplicationBuilder]::CreateWithApplicationOptions($ccaOptions)
-            $cca = $ccaBuilder.Build()
-            $scopes = New-Object System.Collections.Generic.List[string]
-            $scopes.Add("https://outlook.office365.com/.default")
-            $authResult = $cca.AcquireTokenForClient($scopes)
-            $token = $authResult.ExecuteAsync()
-            while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
-            if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/28" -DefaultColor Red
-                Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
-                break
-            }
-            Write-PSFMessage -Level Important -Message "Connected using Application permissions with registered ClientID, TenantID and ClientSecret embedded to the module."
-        }
-        #endregion
-        #region Connecting using Oauth with delegated permissions
-        else {
-            $pcaOptions = [Microsoft.Identity.Client.PublicClientApplicationOptions]::new()
-            $pcaOptions.ClientId = "8799ab60-ace5-4bda-b31f-621c9f6668db"
-            $pcaOptions.RedirectUri = "http://localhost/code"
-            $pcaBuilder = [Microsoft.Identity.Client.PublicClientApplicationBuilder]::CreateWithApplicationOptions($pcaOptions)
-            $pca = $pcaBuilder.Build()
-            $scopes = New-Object System.Collections.Generic.List[string]
-            $scopes.Add("https://outlook.office365.com/.default")
-            #$scopes.Add("https://outlook.office.com/EWS.AccessAsUser.All")
-            $authResult = $pca.AcquireTokenInteractive($scopes)
-            $global:token = $authResult.ExecuteAsync()
-            while ( $token.IsCompleted -eq $False ) { <# Waiting for token auth flow to complete #> }
-            if ($token.Status -eq "Faulted" -and $token.Exception.InnerException.toString().StartsWith("System.Threading.ThreadStateException: ActiveX control '8856f961-340a-11d0-a96b-00c04fd705a2'")) {
-                Write-PSFHostColor -String "Known issue occurred. There is work in progress to fix authentication flow. More info at: https://github.com/agallego-css/ewsgui/issues/28" -DefaultColor Red
-                Write-PSFHostColor -String "Failed to obtain authentication token. Exiting script. Please rerun the script again and it should work." -DefaultColor Red
-                break
-            }
-            Write-PSFMessage -Level Important -Message "Connected using Delegated permissions with: $($token.result.Account.Username)"
-        }
-        #endregion
-        $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($Token.Result.AccessToken)
-        $Global:email = $Token.Result.Account.Username
+        $Token = Get-EWSToken -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
+        $exchangeCredentials = New-Object Microsoft.Exchange.WebServices.Data.OAuthCredentials($Token.AccessToken)
+        $Global:email = $Token.Account.Username
         $service.Url = New-Object Uri("https://outlook.office365.com/ews/exchange.asmx")
     }
     else {
