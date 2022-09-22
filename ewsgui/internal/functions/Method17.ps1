@@ -6,6 +6,15 @@
     .DESCRIPTION
     Method to switch to another mailbox.
     
+    .PARAMETER ClientID
+    String parameter with the ClientID (or AppId) of your AzureAD Registered App.
+
+    .PARAMETER TenantID
+    String parameter with the TenantID your AzureAD tenant.
+
+    .PARAMETER ClientSecret
+    String parameter with the Client Secret which is configured in the AzureAD App.
+    
     .EXAMPLE
     PS C:\> Method17
     Method to switch to another mailbox.
@@ -14,9 +23,16 @@
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [CmdletBinding()]
     param(
-        # Parameters
+        [String] $ClientID,
+
+        [String] $TenantID,
+
+        [String] $ClientSecret
     )
-    $statusBarLabel.text = "Running..."
+    $statusBarLabel.Text = "Running..."
+
+    Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
+
     if ( $txtBoxFolderID.Text -ne "" )
     {
         $TargetSmtpAddress = $txtBoxFolderID.Text
@@ -25,8 +41,8 @@
         $service.HttpHeaders.Add("X-AnchorMailbox", $TargetSmtpAddress)
         $Global:email = $TargetSmtpAddress
 
-        $labImpersonation.Location = New-Object System.Drawing.Point(575,231)
-        $labImpersonation.Size = New-Object System.Drawing.Size(250,20)
+        $labImpersonation.Location = New-Object System.Drawing.Point(575,200)
+        $labImpersonation.Size = New-Object System.Drawing.Size(300,20)
         $labImpersonation.Name = "labImpersonation"
         $labImpersonation.ForeColor = "Blue"
         $PremiseForm.Controls.Add($labImpersonation)

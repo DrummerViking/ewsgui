@@ -6,6 +6,15 @@
     .DESCRIPTION
     Method to remove OWA configurations.
     
+    .PARAMETER ClientID
+    String parameter with the ClientID (or AppId) of your AzureAD Registered App.
+
+    .PARAMETER TenantID
+    String parameter with the TenantID your AzureAD tenant.
+
+    .PARAMETER ClientSecret
+    String parameter with the Client Secret which is configured in the AzureAD App.
+    
     .EXAMPLE
     PS C:\> Method16
     Method to remove OWA configurations.
@@ -13,9 +22,16 @@
     #>
     [CmdletBinding()]
     param(
-        # Parameters
+        [String] $ClientID,
+
+        [String] $TenantID,
+
+        [String] $ClientSecret
     )
-    $statusBarLabel.text = "Running..."
+    $statusBarLabel.Text = "Running..."
+
+    Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
+
     $output = "Checking" + $ComboOption2
     $txtBoxResults.Text = $output
     $txtBoxResults.Visible = $True
