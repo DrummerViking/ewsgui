@@ -20,6 +20,7 @@
     lists folders in the user mailbox.
 
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     [CmdletBinding()]
     param(
         [String] $ClientID,
@@ -66,7 +67,7 @@
     elseif ($radiobutton5.Checked) { $Wellknownfolder = "ArchiveRecoverableItemsRoot" }
 
     #listing all available folders in the mailbox
-    $rootfolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::$Wellknownfolder)   
+    $rootfolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::$Wellknownfolder)
     $array = New-Object System.Collections.ArrayList
     Find-Subfolders -ParentFolderId $rootfolder.id -Array $array -ParentDisplayname ""
 

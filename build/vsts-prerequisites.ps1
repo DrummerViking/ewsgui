@@ -3,7 +3,7 @@
     $Repository = 'PSGallery'
 )
 
-$modules = @("Pester", "PSFramework", "PSModuleDevelopment", "PSScriptAnalyzer", "Microsoft.identity.Client")
+$modules = @("Pester", "PSFramework", "PSModuleDevelopment", "PSScriptAnalyzer")
 
 # Automatically add missing dependencies
 $data = Import-PowerShellDataFile -Path "$PSScriptRoot\..\EWSGui\EWSGui.psd1"

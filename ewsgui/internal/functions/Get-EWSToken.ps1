@@ -23,6 +23,8 @@
 
     The function gets an authentication token based on the parameters passed.
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
     [CmdletBinding()]
     param (
         [Switch] $Refresh = $false,

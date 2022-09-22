@@ -6,7 +6,7 @@
     
     .DESCRIPTION
     Function to check time elapsed since the last token was retrieved.
-    If the time elapsed is greater than 50 minutes, we will go and fetch a new AccessToken based on the refresh token.    
+    If the time elapsed is greater than 50 minutes, we will go and fetch a new AccessToken based on the refresh token.
 
     .PARAMETER service
     EWS Service object.
@@ -25,6 +25,7 @@
 
     The function will check the time elapsed in the stop watcher, and fetch a new AccessToken if needed.
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [CmdletBinding()]
     param (
         $service,
