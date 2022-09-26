@@ -1,10 +1,10 @@
 ﻿Function Method10 {
     <#
     .SYNOPSIS
-    Method to get user's Inbox Rules.
+    Method to get user's OOF Settings.
     
     .DESCRIPTION
-    Method to get user's Inbox Rules.
+    Method to get user's OOF Settings.
     
     .PARAMETER ClientID
     String parameter with the ClientID (or AppId) of your AzureAD Registered App.
@@ -14,10 +14,10 @@
 
     .PARAMETER ClientSecret
     String parameter with the Client Secret which is configured in the AzureAD App.
-    
+
     .EXAMPLE
     PS C:\> Method10
-    Method to get user's Inbox Rules.
+    Method to get user's OOF Settings.
 
     #>
     [CmdletBinding()]
@@ -32,20 +32,17 @@
 
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
-    $txtBoxResults.Text = "This method is still under construction."
-    $dgResults.Visible = $False
-    $txtBoxResults.Visible = $True
-    $PremiseForm.refresh()
-    $statusBarLabel.text = "Ready..."
-    
-    <#
-    $rules = $service.GetInboxRules()
     $array = New-Object System.Collections.ArrayList
-    foreach ( $rule in $rules )
-    {
-        $output = $rule | select DisplayName, Conditions, Actions, Exceptions
-        $array.Add($output)
-    }
+    $output = $service.GetUserOofSettings($email) | Select-Object `
+        State, `
+        ExternalAudience, `
+        @{ Name = "StartTime" ; Expression = { $service.GetUserOofSettings($email).Duration.StartTime.ToString() } }, `
+        @{ Name = "EndTime" ; Expression = { $service.GetUserOofSettings($email).Duration.EndTime.ToString() } }, `
+        @{ Name = "InternalReply" ; Expression = { $service.GetUserOofSettings($email).InternalReply.Message } }, `
+        @{ Name = "ExternalReply" ; Expression = { $service.GetUserOofSettings($email).ExternalReply.Message } }, `
+        AllowExternalOof
+    $array.Add($output)
+
     $dgResults.datasource = $array
     $dgResults.AutoResizeColumns()
     $dgResults.Visible = $True
@@ -53,5 +50,4 @@
     $PremiseForm.refresh()
     $statusBarLabel.text = "Ready..."
     Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 10" -Target $email
-    #>
 }

@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 2.0.25 - 09/26/2022  
+ - Updated cosmetic methods name.
 ## 2.0.24 - 09/22/2022  
  - Updated methods to retrieve mailbox folders. Now we do a recursive search so we search for subfolders on the same run.
  - Added a StopWatch method, in order to fetch a Refresh Token if more than 50 minutes were elapsed since the app launched.

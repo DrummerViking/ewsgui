@@ -1,4 +1,4 @@
-﻿Function Method1to6 {
+﻿Function Method1to5 {
     <#
     .SYNOPSIS
     Method to list folders in the user mailbox.
@@ -16,7 +16,7 @@
     String parameter with the Client Secret which is configured in the AzureAD App.
 
     .EXAMPLE
-    PS C:\> Method1to6
+    PS C:\> Method1to5
     lists folders in the user mailbox.
 
     #>
@@ -77,5 +77,5 @@
     $txtBoxResults.Visible = $False
     $PremiseForm.refresh()
     $statusBarLabel.Text = "Ready. Folders found: $($array.Count)"
-    Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 1-6" -Target $email
+    Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 1-5" -Target $email
 }

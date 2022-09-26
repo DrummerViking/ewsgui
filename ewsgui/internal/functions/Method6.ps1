@@ -1,10 +1,10 @@
-﻿Function Method14 {
+﻿Function Method6 {
     <#
     .SYNOPSIS
-    Method to change sensitivity to items in a folder.
+    Method to list items in a specific folders in the user mailbox.
     
     .DESCRIPTION
-    Method to change sensitivity to items in a folder.
+    Method to list items in a specific folders in the user mailbox.
     
     .PARAMETER ClientID
     String parameter with the ClientID (or AppId) of your AzureAD Registered App.
@@ -16,8 +16,8 @@
     String parameter with the Client Secret which is configured in the AzureAD App.
     
     .EXAMPLE
-    PS C:\> Method14
-    Method to change sensitivity to items in a folder.
+    PS C:\> Method6
+    Method to list items in a specific folders in the user mailbox.
 
     #>
     [CmdletBinding()]
@@ -38,9 +38,9 @@
         $FolderID = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
         $Folder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$FolderID)
         $StartDate = $FromDatePicker.Value
-        $EndDate = $ToDatePicker.Value
-        $MsgSubject = $txtBoxSubject.text
-        [int]$i = 0
+        $EndDate = $ToDatePicker.Value
+        $MsgSubject = $txtBoxSubject.text
+        [int]$i=0
 
         # Combining Filters into a single Collection
         $filters = @()
@@ -59,14 +59,16 @@
             $Filter3 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsLessThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$EndDate)
             $filters += $Filter3
         }
+
         $searchFilter = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+SearchFilterCollection([Microsoft.Exchange.WebServices.Data.LogicalOperator]::AND,$filters)
 
         if ( $filters.Length -eq 0 )
         {
             $searchFilter = $Null
         }
-
+        
         $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
+        
         $fiItems = $null
         $array = New-Object System.Collections.ArrayList
         do {
@@ -74,23 +76,19 @@
             foreach ( $Item in $fiItems.Items )
             {
                 $i++
-                $output = $Item | Select-Object @{Name="Action";Expression={"Applying Sensitivity" + $DeleteOpt}}, DateTimeReceived, Subject
+                $output = $Item | Select-Object Subject, Sender, DateTimeReceived, Size
                 $array.Add($output)
-
-                $tempItem = [Microsoft.Exchange.WebServices.Data.Item]::Bind($service,$Item.Id)
-                $tempItem.Sensitivity = $DeleteOpt
-                $tempItem.Update([Microsoft.Exchange.WebServices.Data.ConflictResolutionMode]::AlwaysOverwrite)
             }
             $ivItemView.Offset += $fiItems.Items.Count
-            Start-Sleep -Milliseconds 500
         } while ( $fiItems.MoreAvailable -eq $true )
+
         $dgResults.datasource = $array
         $dgResults.AutoResizeColumns()
         $dgResults.Visible = $True
         $txtBoxResults.Visible = $False
         $PremiseForm.refresh()
-        $statusBarLabel.text = "Ready. Items changed: $i"
-        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 14" -Target $email
+        $statusBarLabel.text = "Ready. Items found: $i"
+        Write-PSFMessage -Level Output -Message "Task finished succesfully" -FunctionName "Method 6" -Target $email
     }
     else
     {

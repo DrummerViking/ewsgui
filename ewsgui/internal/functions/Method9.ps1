@@ -1,10 +1,10 @@
 ﻿Function Method9 {
     <#
     .SYNOPSIS
-    Method to delete a specific folder in the user mailbox.
+    Method to get user's Inbox Rules.
     
     .DESCRIPTION
-    Method to delete a specific folder in the user mailbox with 3 different deletion methods.
+    Method to get user's Inbox Rules.
     
     .PARAMETER ClientID
     String parameter with the ClientID (or AppId) of your AzureAD Registered App.
@@ -14,10 +14,10 @@
 
     .PARAMETER ClientSecret
     String parameter with the Client Secret which is configured in the AzureAD App.
-
+    
     .EXAMPLE
     PS C:\> Method9
-    Method to delete a specific folder in the user mailbox.
+    Method to get user's Inbox Rules.
 
     #>
     [CmdletBinding()]
@@ -32,19 +32,26 @@
 
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
-    if ( $txtBoxFolderID.Text -ne "" )
+    $txtBoxResults.Text = "This method is still under construction."
+    $dgResults.Visible = $False
+    $txtBoxResults.Visible = $True
+    $PremiseForm.refresh()
+    $statusBarLabel.text = "Ready..."
+    
+    <#
+    $rules = $service.GetInboxRules()
+    $array = New-Object System.Collections.ArrayList
+    foreach ( $rule in $rules )
     {
-        $sourceFolderId = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
-        $SourceFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
-        $sourceFolder.Delete($ComboOption)
-
-        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 9" -Target $email
-        $statusBarLabel.text = "Ready..."
-        $PremiseForm.Refresh()
+        $output = $rule | select DisplayName, Conditions, Actions, Exceptions
+        $array.Add($output)
     }
-    else
-    {
-        [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
-        $statusBarLabel.text = "Process finished with warnings/errors"
-    }
+    $dgResults.datasource = $array
+    $dgResults.AutoResizeColumns()
+    $dgResults.Visible = $True
+    $txtBoxResults.Visible = $False
+    $PremiseForm.refresh()
+    $statusBarLabel.text = "Ready..."
+    Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 9" -Target $email
+    #>
 }
