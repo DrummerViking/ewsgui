@@ -36,7 +36,7 @@
 		$GalleryModule = Find-Module -Name $ModuleName -Repository PSGallery
 		if ( $script:ModuleVersion -lt $GalleryModule.version ) {
 			$bt = New-BTButton -Content "Get Update" -Arguments "$($moduleManifest.PrivateData.PSData.ProjectUri)#installation"
-			New-BurntToastNotification -Text "$ModuleName Update found", 'There is a new version of this module available.' -Button $bt
+			New-BurntToastNotification -Text "$ModuleName Update found", "There is a new version $($GalleryModule.version) of this module available." -Button $bt
 		}
 	}
 

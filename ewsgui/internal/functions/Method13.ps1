@@ -1,10 +1,10 @@
 ﻿Function Method13 {
     <#
     .SYNOPSIS
-    Method to Delete a subset of items in a folder.
+    Get user's Delegates information
     
     .DESCRIPTION
-    Method to Delete a subset of items in a folder using Date Filters and/or subject.
+    Get user's Delegates information
     
     .PARAMETER ClientID
     String parameter with the ClientID (or AppId) of your AzureAD Registered App.
@@ -14,10 +14,10 @@
 
     .PARAMETER ClientSecret
     String parameter with the Client Secret which is configured in the AzureAD App.
-
+    
     .EXAMPLE
     PS C:\> Method13
-    Method to Delete a subset of items in a folder.
+    Get user's Delegates information
 
     #>
     [CmdletBinding()]
@@ -32,70 +32,38 @@
 
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
-    if ( $txtBoxFolderID.Text -ne "" )
+    # Create a mailbox object that represents the user in case we are impersonating.
+    $mailbox = New-Object Microsoft.Exchange.WebServices.Data.Mailbox($email);
+    # Call the GetDelegates method to get the delegates of the mailbox object.
+    $delegates = $service.GetDelegates($mailbox , $true)
+    $Collection = @()
+    foreach( $Delegate in $delegates.DelegateUserResponses )
     {
-        # Creating Filter variables
-        $FolderID = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
-        $Folder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$FolderID)
-        $StartDate = $FromDatePicker.Value
-        $EndDate = $ToDatePicker.Value
-        $MsgSubject = $txtBoxSubject.text
-        [int]$i = 0
-        
-        # Combining Filters into a single Collection
-        $filters = @()
-        if ( $MsgSubject -ne "" )
-        {
-            $Filter1 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+ContainsSubstring([Microsoft.Exchange.WebServices.Data.EmailMessageSchema]::Subject,$MsgSubject, [Microsoft.Exchange.WebServices.Data.ContainmentMode]::ExactPhrase, [Microsoft.Exchange.WebServices.Data.ComparisonMode]::IgnoreCase)
-            $filters += $Filter1
-        }
-        if ( $StartDate -ne "" )
-        {
-            $Filter2 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsGreaterThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$StartDate)
-            $filters += $Filter2
-        }
-        if ( $EndDate -ne "" )
-        {
-            $Filter3 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsLessThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$EndDate)
-            $filters += $Filter3
-        }
-
-        $searchFilter = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+SearchFilterCollection([Microsoft.Exchange.WebServices.Data.LogicalOperator]::AND,$filters)
-
-        if ( $filters.Length -eq 0 )
-        {
-            $searchFilter = $Null
-        }
-
-        $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
-        $fiItems = $null
-
-        $array = New-Object System.Collections.ArrayList
-        do {
-            $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)
-            foreach ( $Item in $fiItems.Items )
-            {
-                $i++
-                $output = $Item | Select-Object @{Name="Action";Expression={"Deleting Item"}}, DateTimeReceived, Subject
-                $array.Add($output)
-            
-                $tempItem = [Microsoft.Exchange.WebServices.Data.Item]::Bind($service,$Item.Id)
-                $tempItem.Delete($ComboOption, $True)
-            }
-            $ivItemView.Offset += $fiItems.Items.Count
-            Start-Sleep -Milliseconds 500
-        } while ( $fiItems.MoreAvailable -eq $true )
-        $dgResults.datasource = $array
-        $dgResults.AutoResizeColumns()
-        $dgResults.Visible = $True
-        $txtBoxResults.Visible = $False
-        $PremiseForm.refresh()
-        $statusBarLabel.text = "Ready. Deleted items: $i"
-        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 13" -Target $email
+        $Obj = "" | Select-Object EmailAddress,Inbox,Calendar,Contacts,Tasks,Notes,Journal,MeetingMessages,ViewPrivateItems
+        $Obj.EmailAddress = $Delegate.DelegateUser.UserId.PrimarySmtpAddress
+        $Obj.Inbox = $Delegate.DelegateUser.Permissions.InboxFolderPermissionLevel
+        $Obj.Calendar = $Delegate.DelegateUser.Permissions.CalendarFolderPermissionLevel
+        $Obj.Contacts = $Delegate.DelegateUser.Permissions.ContactsFolderPermissionLevel
+        $Obj.Tasks = $Delegate.DelegateUser.Permissions.TasksFolderPermissionLevel
+        $Obj.Notes = $Delegate.DelegateUser.Permissions.NotesFolderPermissionLevel
+        $Obj.Journal = $Delegate.DelegateUser.Permissions.JournalFolderPermissionLevel
+        $Obj.ViewPrivateItems = $Delegate.DelegateUser.ViewPrivateItems
+        $Obj.MeetingMessages = $Delegate.DelegateUser.ReceiveCopiesOfMeetingMessages
+        $Collection += $Obj
     }
-    else
+    $array = New-Object System.Collections.ArrayList
+    [int]$i = 0
+    foreach ( $Del in $Collection )
     {
-        [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
-        $statusBarLabel.text = "Process finished with warnings/errors"
+        $i++
+        $output = $Del | Select-Object EmailAddress, Inbox, Calendar, Tasks, Notes, Journal, ViewPrivateItems, MeetingMessages
+        $array.Add($output)
     }
+    $dgResults.datasource = $array
+    $dgResults.AutoResizeColumns()
+    $dgResults.Visible = $True
+    $txtBoxResults.Visible = $False
+    $PremiseForm.refresh()
+    $statusBarLabel.text = "Ready. Amount of Delegates: $i"
+    Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 13" -Target $email
 }

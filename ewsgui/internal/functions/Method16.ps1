@@ -1,10 +1,10 @@
 ﻿Function Method16 {
     <#
     .SYNOPSIS
-    Method to remove OWA configurations.
+    Method to switch to another mailbox.
     
     .DESCRIPTION
-    Method to remove OWA configurations.
+    Method to switch to another mailbox.
     
     .PARAMETER ClientID
     String parameter with the ClientID (or AppId) of your AzureAD Registered App.
@@ -17,9 +17,10 @@
     
     .EXAMPLE
     PS C:\> Method16
-    Method to remove OWA configurations.
+    Method to switch to another mailbox.
 
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [CmdletBinding()]
     param(
         [String] $ClientID,
@@ -32,80 +33,29 @@
 
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
-    $output = "Checking" + $ComboOption2
-    $txtBoxResults.Text = $output
-    $txtBoxResults.Visible = $True
-    $PremiseForm.Refresh()
+    if ( $txtBoxFolderID.Text -ne "" )
+    {
+        $TargetSmtpAddress = $txtBoxFolderID.Text
+        $service.ImpersonatedUserId = New-Object Microsoft.Exchange.WebServices.Data.ImpersonatedUserId([Microsoft.Exchange.WebServices.Data.ConnectingIdType]::SmtpAddress, $TargetSmtpAddress)
+        $service.HttpHeaders.Clear()
+        $service.HttpHeaders.Add("X-AnchorMailbox", $TargetSmtpAddress)
+        $Global:email = $TargetSmtpAddress
 
-    $fid = $null
-    if ( $ComboOption1 -eq "Root" )
-    {
-        $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root, $email)
-    }
-    elseif ( $ComboOption1 -eq "Calendar" )
-    {
-        $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Calendar, $email)
-    }
-    elseif ( $ComboOption1 -eq "Inbox" )
-    {
-        $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Inbox, $email)
-    }
-    
-    if ( $ComboOption2 -ne "CleanFinders" )
-    {
-        try
-        {
-            $Config = [Microsoft.Exchange.WebServices.Data.UserConfiguration]::Bind($Service, $ComboOption2, $fid, [Microsoft.Exchange.WebServices.Data.UserConfigurationProperties]::All)
-            $Config.Delete();
-            $output = $output + $nl + "Deleted $ComboOption2"
-        }
-        catch
-        {
-            $output = $output + $nl + "$ComboOption2 doesn't exist"
-        }
-        $statusBarLabel.text = "Ready..."
+        $labImpersonation.Location = New-Object System.Drawing.Point(595,200)
+        $labImpersonation.Size = New-Object System.Drawing.Size(300,20)
+        $labImpersonation.Name = "labImpersonation"
+        $labImpersonation.ForeColor = "Blue"
+        $PremiseForm.Controls.Add($labImpersonation)
+        $labImpersonation.Text = $Global:email
+        $PremiseForm.Text = "Managing user: " + $Global:email + ". Choose your Option"
+
         Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16" -Target $email
-        $txtBoxResults.Text = $output
-        $txtBoxResults.Visible = $True
+        $statusBarLabel.text = "Ready..."
         $PremiseForm.Refresh()
-
     }
     else
     {
-        # Creating folder object (SearchFolders also know as Finder)
-        $folderid = new-object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::SearchFolders,$SmtpAddress)
-
-        # Opening the bind to user Folder Finder
-        $output = $output + $nl + "Opening Mailbox: $email"
-        try
-        {
-            $finderFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($Service,$folderid)
-            $output = $output + $nl + "Cleaning SearchFolder (same as Outlook /Cleanfinders)"
-
-            # If the bind was created, clean the folder Finder
-            Try
-            {
-                $finderFolder.Empty([Microsoft.Exchange.WebServices.Data.DeleteMode]::SoftDelete, $true)
-                $output = $output + $nl + "The Cleanup process for the Mailbox: $email Succeed!"
-            }
-            catch
-            {
-                $output = $output + $nl + "Fail to clean Search folder Mailbox: $email"
-            }
-        }
-        catch
-        {
-            $output = $output + $nl + "Fail to open Mailbox: $email"
-        }
-        $txtBoxResults.Text = $output
-        $txtBoxResults.Visible = $True
-        $statusBarLabel.text = "Ready..."
-        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 16"
-        $PremiseForm.Refresh()
-
-        #Cleaning Variables
-        $SmtpAddress = $null
-        $finderFolder = $null
-        $folderid = $null
+        [Microsoft.VisualBasic.Interaction]::MsgBox("Email Address textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
+        $statusBarLabel.text = "Process finished with warnings/errors"
     }
 }

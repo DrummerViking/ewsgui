@@ -1,10 +1,10 @@
 ﻿Function Method15 {
     <#
     .SYNOPSIS
-    Method to change sensitivity to items in a folder.
+    Method to remove OWA configurations.
     
     .DESCRIPTION
-    Method to change sensitivity to items in a folder.
+    Method to remove OWA configurations.
     
     .PARAMETER ClientID
     String parameter with the ClientID (or AppId) of your AzureAD Registered App.
@@ -17,7 +17,7 @@
     
     .EXAMPLE
     PS C:\> Method15
-    Method to change sensitivity to items in a folder.
+    Method to remove OWA configurations.
 
     #>
     [CmdletBinding()]
@@ -32,69 +32,80 @@
 
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
-    if ( $txtBoxFolderID.Text -ne "" )
+    $output = "Checking" + $ComboOption2
+    $txtBoxResults.Text = $output
+    $txtBoxResults.Visible = $True
+    $PremiseForm.Refresh()
+
+    $fid = $null
+    if ( $ComboOption1 -eq "Root" )
     {
-        # Creating Filter variables
-        $FolderID = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
-        $Folder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$FolderID)
-        $StartDate = $FromDatePicker.Value
-        $EndDate = $ToDatePicker.Value
-        $MsgSubject = $txtBoxSubject.text
-        [int]$i = 0
-
-        # Combining Filters into a single Collection
-        $filters = @()
-        if ( $MsgSubject -ne "" )
+        $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root, $email)
+    }
+    elseif ( $ComboOption1 -eq "Calendar" )
+    {
+        $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Calendar, $email)
+    }
+    elseif ( $ComboOption1 -eq "Inbox" )
+    {
+        $fid = New-Object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Inbox, $email)
+    }
+    
+    if ( $ComboOption2 -ne "CleanFinders" )
+    {
+        try
         {
-            $Filter1 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+ContainsSubstring([Microsoft.Exchange.WebServices.Data.EmailMessageSchema]::Subject,$MsgSubject, [Microsoft.Exchange.WebServices.Data.ContainmentMode]::ExactPhrase, [Microsoft.Exchange.WebServices.Data.ComparisonMode]::IgnoreCase)
-            $filters += $Filter1
+            $Config = [Microsoft.Exchange.WebServices.Data.UserConfiguration]::Bind($Service, $ComboOption2, $fid, [Microsoft.Exchange.WebServices.Data.UserConfigurationProperties]::All)
+            $Config.Delete();
+            $output = $output + $nl + "Deleted $ComboOption2"
         }
-        if ( $StartDate -ne "" )
+        catch
         {
-            $Filter2 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsGreaterThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$StartDate)
-            $filters += $Filter2
+            $output = $output + $nl + "$ComboOption2 doesn't exist"
         }
-        if ( $EndDate -ne "" )
-        {
-            $Filter3 = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+IsLessThanOrEqualTo([Microsoft.Exchange.WebServices.Data.ItemSchema]::DateTimeReceived,[DateTime]$EndDate)
-            $filters += $Filter3
-        }
-        $searchFilter = New-Object Microsoft.Exchange.WebServices.Data.SearchFilter+SearchFilterCollection([Microsoft.Exchange.WebServices.Data.LogicalOperator]::AND,$filters)
-
-        if ( $filters.Length -eq 0 )
-        {
-            $searchFilter = $Null
-        }
-
-        $ivItemView =  New-Object Microsoft.Exchange.WebServices.Data.ItemView(250)
-        $fiItems = $null
-        $array = New-Object System.Collections.ArrayList
-        do {
-            $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)
-            foreach ( $Item in $fiItems.Items )
-            {
-                $i++
-                $output = $Item | Select-Object @{Name="Action";Expression={"Applying Sensitivity" + $DeleteOpt}}, DateTimeReceived, Subject
-                $array.Add($output)
-
-                $tempItem = [Microsoft.Exchange.WebServices.Data.Item]::Bind($service,$Item.Id)
-                $tempItem.Sensitivity = $DeleteOpt
-                $tempItem.Update([Microsoft.Exchange.WebServices.Data.ConflictResolutionMode]::AlwaysOverwrite)
-            }
-            $ivItemView.Offset += $fiItems.Items.Count
-            Start-Sleep -Milliseconds 500
-        } while ( $fiItems.MoreAvailable -eq $true )
-        $dgResults.datasource = $array
-        $dgResults.AutoResizeColumns()
-        $dgResults.Visible = $True
-        $txtBoxResults.Visible = $False
-        $PremiseForm.refresh()
-        $statusBarLabel.text = "Ready. Items changed: $i"
+        $statusBarLabel.text = "Ready..."
         Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 15" -Target $email
+        $txtBoxResults.Text = $output
+        $txtBoxResults.Visible = $True
+        $PremiseForm.Refresh()
+
     }
     else
     {
-        [Microsoft.VisualBasic.Interaction]::MsgBox("FolderID textbox is empty. Check and try again",[Microsoft.VisualBasic.MsgBoxStyle]::Okonly,"Information Message")
-        $statusBarLabel.text = "Process finished with warnings/errors"
+        # Creating folder object (SearchFolders also know as Finder)
+        $folderid = new-object Microsoft.Exchange.WebServices.Data.FolderId([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::SearchFolders,$SmtpAddress)
+
+        # Opening the bind to user Folder Finder
+        $output = $output + $nl + "Opening Mailbox: $email"
+        try
+        {
+            $finderFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($Service,$folderid)
+            $output = $output + $nl + "Cleaning SearchFolder (same as Outlook /Cleanfinders)"
+
+            # If the bind was created, clean the folder Finder
+            Try
+            {
+                $finderFolder.Empty([Microsoft.Exchange.WebServices.Data.DeleteMode]::SoftDelete, $true)
+                $output = $output + $nl + "The Cleanup process for the Mailbox: $email Succeed!"
+            }
+            catch
+            {
+                $output = $output + $nl + "Fail to clean Search folder Mailbox: $email"
+            }
+        }
+        catch
+        {
+            $output = $output + $nl + "Fail to open Mailbox: $email"
+        }
+        $txtBoxResults.Text = $output
+        $txtBoxResults.Visible = $True
+        $statusBarLabel.text = "Ready..."
+        Write-PSFMessage -Level Host -Message "Task finished succesfully" -FunctionName "Method 15"
+        $PremiseForm.Refresh()
+
+        #Cleaning Variables
+        $SmtpAddress = $null
+        $finderFolder = $null
+        $folderid = $null
     }
 }

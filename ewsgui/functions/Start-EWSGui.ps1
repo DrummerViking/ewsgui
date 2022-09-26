@@ -592,7 +592,7 @@
     #
     $radiobutton16.DataBindings.DefaultDataSourceUpdateMode = [System.Windows.Forms.DataSourceUpdateMode]::OnValidation
     $radiobutton16.Location = New-Object System.Drawing.Point(400,200)
-    $radiobutton16.Size = New-Object System.Drawing.Size(175,15)
+    $radiobutton16.Size = New-Object System.Drawing.Size(190,15)
     $radiobutton16.TabIndex = 16
     $radiobutton16.Text = "16 - Switch to another Mailbox"
     $radiobutton16.Checked = $false
@@ -622,22 +622,22 @@
     $buttonGo2.Text = "Go"
     $buttonGo2.UseVisualStyleBackColor = $True
     $buttonGo2.add_Click({
-            if($radiobutton1.Checked){Method1to6}
-            elseif($radiobutton2.Checked){Method1to6}
-            elseif($radiobutton3.Checked){Method1to6}
-            elseif($radiobutton4.Checked){Method1to6}
-            elseif($radiobutton5.Checked){Method1to6}
-            elseif($radiobutton6.Checked){Method7}
-            elseif($radiobutton7.Checked){Method8}
-            elseif($radiobutton8.Checked){Method9}
-            elseif($radiobutton9.Checked){Method10}
-            elseif($radiobutton10.Checked){Method11}
-            elseif($radiobutton11.Checked){Method12}
-            elseif($radiobutton12.Checked){Method13}
-            elseif($radiobutton13.Checked){Method14}
-            elseif($radiobutton14.Checked){Method15}
-            elseif($radiobutton15.Checked){Method16}
-            elseif($radiobutton16.Checked){Method17}
+            if($radiobutton1.Checked){Method1to5}
+            elseif($radiobutton2.Checked){Method1to5}
+            elseif($radiobutton3.Checked){Method1to5}
+            elseif($radiobutton4.Checked){Method1to5}
+            elseif($radiobutton5.Checked){Method1to5}
+            elseif($radiobutton6.Checked){Method6}
+            elseif($radiobutton7.Checked){Method7}
+            elseif($radiobutton8.Checked){Method8}
+            elseif($radiobutton9.Checked){Method9}
+            elseif($radiobutton10.Checked){Method10}
+            elseif($radiobutton11.Checked){Method11}
+            elseif($radiobutton12.Checked){Method12}
+            elseif($radiobutton13.Checked){Method13}
+            elseif($radiobutton14.Checked){Method14}
+            elseif($radiobutton15.Checked){Method15}
+            elseif($radiobutton16.Checked){Method16}
     })
     $PremiseForm.Controls.Add($buttonGo2)
 
