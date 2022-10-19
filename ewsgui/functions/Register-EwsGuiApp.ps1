@@ -54,6 +54,7 @@
         $ImportAppDataToModule
     )
     # Required modules
+    Write-PSFMessage -Level Verbose -Message "Looking for required 'Microsoft.Graph.Applications' powershell module"
     if ( -not(Get-module "Microsoft.Graph.Applications" -ListAvailable) ) {
         Install-Module "Microsoft.Graph.Applications" -Scope CurrentUser -Force
     }
@@ -67,6 +68,7 @@
     }
 
     # Requires an admin
+    Write-PSFMessage -Level Important -Message "Connecting to MgGraph"
     if ($TenantId) {
         Connect-MgGraph -Scopes "Application.ReadWrite.All User.Read" -TenantId $TenantId
     }
@@ -89,19 +91,17 @@
         endDateTime = (Get-Date).Addyears(1)
     }
     $secret = Add-MgApplicationPassword -applicationId $appObjId.Id -PasswordCredential $passwordCred
-    Write-Host "App registration created with app ID $($appRegistration.AppId) and clientSecret: $($secret.SecretText)" -ForegroundColor Cyan
-    Write-Host -ForegroundColor Cyan "Please take note of your client secret as it will not be shown anymore"
+    Write-PSFMessage -Level Important -Message "App registration created with app ID $($appRegistration.AppId) and clientSecret: $($secret.SecretText)"
+    Write-PSFMessage -Level Important -Message "Please take note of your client secret as it will not be shown anymore"
     # Create corresponding service principal
     New-MgServicePrincipal -AppId $appRegistration.AppId -AdditionalProperties @{} | Out-Null
-    Write-Host -ForegroundColor Cyan "Service principal created"
-    Write-Host
-    Write-Host -ForegroundColor Green "Success"
-    Write-Host
+    Write-PSFMessage -Level Important -Message "Service principal created"
+    Write-PSFMessage -Level Important -Message "Success"
 
     # Generate admin consent URL
     $adminConsentUrl = "https://login.microsoftonline.com/" + $context.TenantId + "/adminconsent?client_id=" + $appRegistration.AppId
-    Write-Host -ForeGroundColor Yellow "Please go to the following URL in your browser to provide admin consent"
-    Write-Host $adminConsentUrl
+    Write-PSFHostColor "[$(Get-Date -Format "HH:MM:ss")] Please go to the following URL in your browser to provide admin consent" -DefaultColor Yellow
+    Write-PSFMessage -Level Important -Message "$adminConsentUrl"
     Write-Host
 
     if ( $ImportAppDataToModule ) {
@@ -109,12 +109,10 @@
     }
 
     if ($StayConnected -eq $false) {
-        Write-Host
         $null = Disconnect-MgGraph
-        Write-Host "Disconnected from Microsoft Graph"
+        Write-PSFMessage -Level Important -Message "Disconnected from Microsoft Graph"
     }
     else {
-        Write-Host
-        Write-Host -ForegroundColor Yellow "The connection to Microsoft Graph is still active. To disconnect, use Disconnect-MgGraph"
+        Write-PSFHostColor "[$(Get-Date -Format "HH:MM:ss")] The connection to Microsoft Graph is still active. To disconnect, use Disconnect-MgGraph" -DefaultColor Yellow
     }
 }
