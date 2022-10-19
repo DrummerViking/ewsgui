@@ -102,7 +102,6 @@
     $adminConsentUrl = "https://login.microsoftonline.com/" + $context.TenantId + "/adminconsent?client_id=" + $appRegistration.AppId
     Write-PSFHostColor "[$(Get-Date -Format "HH:MM:ss")] Please go to the following URL in your browser to provide admin consent" -DefaultColor Yellow
     Write-PSFMessage -Level Important -Message "$adminConsentUrl"
-    Write-Host
 
     if ( $ImportAppDataToModule ) {
         Import-EWsGuiAADAppData -ClientID $appRegistration.AppId -TenantID $context.TenantId -ClientSecret $secret.SecretText
