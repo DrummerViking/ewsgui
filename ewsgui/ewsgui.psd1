@@ -3,7 +3,7 @@
 	RootModule = 'ewsgui.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '2.0.25'
+	ModuleVersion = '2.0.27'
 	
 	# ID used to uniquely identify this module
 	GUID = '6a24f2b4-bc88-43fd-9046-19030cf015dc'
@@ -30,13 +30,14 @@
 	# this module
 	RequiredModules = @(
 		@{ ModuleName='PSFramework'; ModuleVersion='1.7.237' }
-		#@{ ModuleName='MSAL.PS'; ModuleVersion='4.37.0.0' }
-		#@{ ModuleName='Microsoft.identity.Client'; ModuleVersion='4.47.1' }
+		@{ ModuleName='MSAL.PS'; ModuleVersion='4.37.0.0' }
+		#@{ ModuleName='Microsoft.identity.Client'; ModuleVersion='4.47.2' }
 	)
 	
 	# Assemblies that must be loaded prior to importing this module
 	RequiredAssemblies = @(
 		'bin\Microsoft.Exchange.WebServices.dll'
+		'bin\Microsoft.IdentityModel.Abstractions.dll'
 	)
 	
 	# Type files (.ps1xml) to be loaded when importing this module
@@ -48,9 +49,10 @@
 	# Functions to export from this module
 	FunctionsToExport = @(
 		'Export-EWSGuiLog'
+		'Import-EWsGuiAADAppData'
+		'Register-EWSGuiApp'
+		'Remove-EWsGuiAADAppData'
 		'Start-EWSGui'
-		'Register-EWsGuiAADAppData'
-		'Unregister-EWsGuiAADAppData'
 	)
 	
 	# Cmdlets to export from this module

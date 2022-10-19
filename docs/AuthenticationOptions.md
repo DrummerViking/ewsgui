@@ -16,7 +16,24 @@ New-ManagementRoleAssignment -Name "Impersonation assignment name" -Role Applica
 ## Using Application Permissions
 
 In order to connect with an Application Permission, no ApplicationImpersonation role is needed in EXO.  
-Just need to create the Application in Azure following: [Authenticate an EWS application by using OAuth](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-authenticate-an-ews-application-by-using-oauth)  
+Just need to create the Application in Azure following the steps here: [Authenticate an EWS application by using OAuth](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-authenticate-an-ews-application-by-using-oauth).  
+Or you can run the powershell function to create the app for you:  
+```Powershell
+Register-EWSGuiApp
+```
+The script will create a new AzureAD App Registration.  
+The name of the app will be "EWSGui Registered App".  
+It will add the following API Permissions: "full_access_as_app".  
+it will use a ClientSecret (later will be exposed).  
+
+Once the app is created, the script will expose the link to grant "Admin consent" for the permissions requested.  
+<br>  
+Additionally you can run the script with the parameter "ImportAppDataToModule" like this:  
+```Powershell
+Register-EWSGuiApp -ImportAppDataToModule
+```
+And the script will create the AzureAD App registration as mentioned above, and will follow the below instructions to save app data into the module.  
+
 
 Once you create your app with a ClientSecret, you can use this tool by running:  
 ```Powershell
@@ -28,12 +45,12 @@ Start-EWSGui -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSe
 If you want to use Application permission flow, we have an option to save your "ClientID", "TenantID" and "ClientSecret", so you don't need to enter it every time as the example above.  
 you can run:  
 ```Powershell
-Register-EWsGuiAADAppData -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSecret "your Secret passcode"
+Import-EWsGuiAADAppData -ClientID "your app client ID" -TenantID "Your tenant ID" -ClientSecret "your Secret passcode"
 ```
 
 Now everytime you want to run the module, just run `Start-EWSGui` and will fetch these saved details (so it will follow the Application permissions flow).  
 <br>
 if you need to revert this change, let's say you need to try Delegated Permission back again, you can unregister these values:  
 ```Powershell
-Unregister-EWsGuiAADAppData
+Remove-EWsGuiAADAppData
 ```
