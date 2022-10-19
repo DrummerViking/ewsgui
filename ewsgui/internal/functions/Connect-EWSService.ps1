@@ -117,14 +117,14 @@
     if ($buttonExit.IsDisposed) { return }
 
     #creating service object
-    Add-Type -Path $ModuleRoot\Bin\Microsoft.IdentityModel.Abstractions.dll
-    Install-Module Microsoft.Identity.Client -Scope CurrentUser -Force -WarningAction SilentlyContinue
-    Install-Module msal.ps -Scope CurrentUser -Force -WarningAction SilentlyContinue
+    #Add-Type -Path $ModuleRoot\Bin\Microsoft.IdentityModel.Abstractions.dll
+    #Install-Module Microsoft.Identity.Client -Scope CurrentUser -Force -WarningAction SilentlyContinue
+    #Install-Module msal.ps -Scope CurrentUser -Force -WarningAction SilentlyContinue
 
     $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
     $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
     $service.ReturnClientRequestId = $true
-    $service.UserAgent = "EwsGuiApp/2.0.21"
+    $service.UserAgent = "EwsGuiApp/$((Get-Module ewsgui).Version.ToString())"
 
     if ($radiobutton3.Checked) {
         $Token = Get-EWSToken -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret

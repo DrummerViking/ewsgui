@@ -1,6 +1,9 @@
 ﻿# Changelog
+## 2.0.27 - 10/19/2022
+ - Updated module requirements and loaded DLLs.  
+ - Added new function to add the App Registration into AzureAD in case you want to use "Application Flow" authentication.  
 ## 2.0.25 - 09/26/2022  
- - Updated cosmetic methods name.
+ - Updated cosmetic methods name.  
 ## 2.0.24 - 09/22/2022  
  - Updated methods to retrieve mailbox folders. Now we do a recursive search so we search for subfolders on the same run.
  - Added a StopWatch method, in order to fetch a Refresh Token if more than 50 minutes were elapsed since the app launched.
