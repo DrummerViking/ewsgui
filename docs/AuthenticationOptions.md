@@ -21,18 +21,19 @@ Or you can run the powershell function to create the app for you:
 ```Powershell
 Register-EWSGuiApp
 ```
-The script will create a new AzureAD App Registration.  
+The function will create a new AzureAD App Registration.  
+It will download a necessary Graph Powershell module to create the app registration.  
 The name of the app will be "EWSGui Registered App".  
 It will add the following API Permissions: "full_access_as_app".  
 it will use a ClientSecret (later will be exposed).  
 
-Once the app is created, the script will expose the link to grant "Admin consent" for the permissions requested.  
-<br>  
-Additionally you can run the script with the parameter "ImportAppDataToModule" like this:  
+Once the app is created, it will expose the link to grant "Admin consent" for the permissions requested.  
+
+Additionally you can run the function with the parameter "ImportAppDataToModule" like this:  
 ```Powershell
 Register-EWSGuiApp -ImportAppDataToModule
 ```
-And the script will create the AzureAD App registration as mentioned above, and will follow the below instructions to save app data into the module.  
+And the script will create the AzureAD App registration as mentioned above, and will follow the below instructions to save app data into the module automatically.  
 
 
 Once you create your app with a ClientSecret, you can use this tool by running:  
