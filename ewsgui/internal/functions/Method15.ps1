@@ -55,6 +55,7 @@
     {
         try
         {
+            $service.clientRequestId = (New-Guid).ToString()
             $Config = [Microsoft.Exchange.WebServices.Data.UserConfiguration]::Bind($Service, $ComboOption2, $fid, [Microsoft.Exchange.WebServices.Data.UserConfigurationProperties]::All)
             $Config.Delete();
             $output = $output + $nl + "Deleted $ComboOption2"
@@ -79,12 +80,14 @@
         $output = $output + $nl + "Opening Mailbox: $email"
         try
         {
+            $service.clientRequestId = (New-Guid).ToString()
             $finderFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($Service,$folderid)
             $output = $output + $nl + "Cleaning SearchFolder (same as Outlook /Cleanfinders)"
 
             # If the bind was created, clean the folder Finder
             Try
             {
+                $service.clientRequestId = (New-Guid).ToString()
                 $finderFolder.Empty([Microsoft.Exchange.WebServices.Data.DeleteMode]::SoftDelete, $true)
                 $output = $output + $nl + "The Cleanup process for the Mailbox: $email Succeed!"
             }

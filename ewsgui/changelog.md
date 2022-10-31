@@ -1,4 +1,6 @@
 ﻿# Changelog
+## 2.0.28 - 10/31/2022
+ - Added new method 'EnableTraceLogging' to enable EWS Tracing in 'Temp\EWSgui Logging\' folder.  
 ## 2.0.27 - 10/19/2022
  - Updated module requirements and loaded DLLs.  
  - Added new function to add the App Registration into AzureAD in case you want to use "Application Flow" authentication.  

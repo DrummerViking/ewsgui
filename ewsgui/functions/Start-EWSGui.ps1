@@ -32,6 +32,9 @@
     .PARAMETER ClientSecret
     This is an optional parameter. String parameter with the Client Secret which is configured in the AzureAD App.
 
+    .PARAMETER EnableTraceLogging
+    If this switch is enabled, an advanced EWS tracing file will be created under '%Temp%\EWSGui Logging' folder.
+
     .PARAMETER Confirm
     If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 
@@ -52,7 +55,9 @@
 
         [String] $TenantID,
 
-        [String] $ClientSecret
+        [String] $ClientSecret,
+
+        [Switch] $EnableTraceLogging = $false
     )
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
@@ -96,11 +101,8 @@
     [String]$Global:email = $null
     #endregion Generated Form Objects
 
-    # registering EWS API as an Enterprise App in Azure AD
-    # Register-EWSGuiApp
-
     # Connecting to EWS and creating service object
-    $service = Connect-EWSService -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
+    $service = Connect-EWSService -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret -EnableTraceLogging:$EnableTraceLogging
 
     $ExpandFilters = {
     # Removing all controls, in order to reload the screen appropiately for each selection

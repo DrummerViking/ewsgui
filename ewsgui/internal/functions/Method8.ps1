@@ -34,6 +34,7 @@
 
     if ( $txtBoxFolderID.Text -ne "" )
     {
+        $service.clientRequestId = (New-Guid).ToString()
         $sourceFolderId = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
         $SourceFolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
         $sourceFolder.Delete($ComboOption)
