@@ -128,8 +128,6 @@
     $service.clientRequestId = (New-Guid).ToString()
     $service.UserAgent = "EwsGuiApp/$((Get-Module ewsgui).Version.ToString())"
     if ( $EnableTraceLogging ) {
-        # Load Listener class
-        . $script:ModuleRoot\bin\TraceClass.ps1
         New-Item -Name "EWSgui Logging" -Path $env:temp -ItemType Directory -Force
         $service.TraceListener = New-Object EWSTraceListener
         $service.TraceEnabled = $True
