@@ -30,9 +30,7 @@
         [String] $ClientSecret
     )
     $statusBarLabel.Text = "Running..."
-
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
-
     Function Find-Subfolders {
         Param (
             $array,
@@ -42,15 +40,12 @@
             $ParentDisplayname
         )
         $sourceFolderId = new-object Microsoft.Exchange.WebServices.Data.FolderId($ParentFolderId)
-        $service.clientRequestId = (New-Guid).ToString()
         $rootfolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$sourceFolderId)
 
         $FolderView = New-Object Microsoft.Exchange.WebServices.Data.FolderView(100)
         #$FolderView.Traversal = "Deep"
         
-        $service.clientRequestId = (New-Guid).ToString()
         $rootfolder.load()
-        $service.clientRequestId = (New-Guid).ToString()
         foreach ($folder in $rootfolder.FindFolders($FolderView) ) {
             $i++
             $DisplayName = "$ParentDisplayname\$($Folder.Displayname)"
@@ -58,7 +53,6 @@
             $array.Add($output)
             if ($folder.ChildFolderCount -gt 0) {
                 #write-host "looking for subfolders under $($folder.displayname)" -ForegroundColor Green
-                $service.clientRequestId = (New-Guid).ToString()
                 Find-Subfolders -ParentFolderId $folder.id -ParentDisplayname $Displayname -Array $array
             }
         }
@@ -71,7 +65,6 @@
     elseif ($radiobutton5.Checked) { $Wellknownfolder = "ArchiveRecoverableItemsRoot" }
 
     #listing all available folders in the mailbox
-    $service.clientRequestId = (New-Guid).ToString()
     $rootfolder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::$Wellknownfolder)
     $array = New-Object System.Collections.ArrayList
     Find-Subfolders -ParentFolderId $rootfolder.id -Array $array -ParentDisplayname ""

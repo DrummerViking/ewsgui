@@ -12,4 +12,4 @@ $moduleRoot = Split-Path (Split-Path $PSScriptRoot)
 
 # Load the strings used in messages
 "$moduleRoot\internal\scripts\strings.ps1"
-"$ModuleRoot\internal\scripts\EWSTraceClass.ps1"
+"$moduleRoot\internal\scripts\EWSTraceClass.ps1"
