@@ -62,6 +62,12 @@
     $script:nl = "`r`n"
     $ProgressPreference = "SilentlyContinue"
 
+$appNotification = @"
+There's a new tool replacing EWSGui and you can find it at https://aka.ms/ExoGraphGUI
+This new tool connects using 100% Graph commands.
+There are some features still not available in Graph, so if you depend on those, you might still use EWSGui.
+"@
+    Write-PSFHostColor -String $appNotification -DefaultColor Yellow
     $runspaceData = Start-ModuleUpdate -ModuleRoot $script:ModuleRoot
     function GenerateForm {
          
