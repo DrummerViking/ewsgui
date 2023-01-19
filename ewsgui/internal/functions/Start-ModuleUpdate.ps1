@@ -35,9 +35,16 @@
 
 		$GalleryModule = Find-Module -Name $ModuleName -Repository PSGallery
 		if ( $script:ModuleVersion -lt $GalleryModule.version ) {
+			#$header = New-BTHeader -Id 'EwsGui' -Title 'EwsGui'
 			$bt = New-BTButton -Content "Get Update" -Arguments "$($moduleManifest.PrivateData.PSData.ProjectUri)#installation"
 			New-BurntToastNotification -Text "$ModuleName Update found", "There is a new version $($GalleryModule.version) of this module available." -Button $bt
 		}
+		
+		# if (-not(Get-Module ExoGraphGUI -ListAvailable )) {
+		# 	$bt = New-BTButton -Content "Get info" -Arguments "https://aka.ms/ExoGraphGUI"
+		# 	$bt2 = New-BTButton -Content "Don't show again" -Arguments {powershell.exe -command ". $ModuleRoot\Internal\scripts\Clear-ToolNotifications.ps1"}
+		# 	New-BurntToastNotification -Text "New tool available", "There is a new tool 'ExoGraphGUI' replacing this tool." -Button $bt, $bt2
+		# }
 	}
 
 	# Create Runspace, set maximum threads
