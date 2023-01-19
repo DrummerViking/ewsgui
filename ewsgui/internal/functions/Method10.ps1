@@ -32,6 +32,7 @@
 
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
+    $service.clientRequestId = (New-Guid).ToString()
     $array = New-Object System.Collections.ArrayList
     $output = $service.GetUserOofSettings($email) | Select-Object `
         State, `

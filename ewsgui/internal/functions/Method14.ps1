@@ -35,6 +35,7 @@
     if ( $txtBoxFolderID.Text -ne "" )
     {
         # Creating Filter variables
+        $service.clientRequestId = (New-Guid).ToString()
         $FolderID = new-object Microsoft.Exchange.WebServices.Data.FolderId($txtBoxFolderID.Text)
         $Folder = [Microsoft.Exchange.WebServices.Data.Folder]::Bind($service,$FolderID)
         $StartDate = $FromDatePicker.Value
@@ -70,6 +71,7 @@
         $fiItems = $null
         $array = New-Object System.Collections.ArrayList
         do {
+            $service.clientRequestId = (New-Guid).ToString()
             $fiItems = $service.FindItems($Folder.Id, $searchFilter, $ivItemView)
             foreach ( $Item in $fiItems.Items )
             {

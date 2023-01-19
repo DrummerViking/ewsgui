@@ -36,6 +36,7 @@
 
         $folder = new-object Microsoft.Exchange.WebServices.Data.Folder($service)
         $folder.DisplayName = $txtBoxFolderID.Text
+        $service.clientRequestId = (New-Guid).ToString()
         $folder.Save([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::MsgFolderRoot)
 
         Write-PSFMessage -Level Host -Message "Task finished succesfully. Folder Created: $($txtBoxFolderID.Text)" -FunctionName "Method 7" -Target $email

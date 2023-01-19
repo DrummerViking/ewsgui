@@ -37,7 +37,10 @@
     {
         $TargetSmtpAddress = $txtBoxFolderID.Text
         $service.ImpersonatedUserId = New-Object Microsoft.Exchange.WebServices.Data.ImpersonatedUserId([Microsoft.Exchange.WebServices.Data.ConnectingIdType]::SmtpAddress, $TargetSmtpAddress)
-        $service.HttpHeaders.Clear()
+        #$service.HttpHeaders.Clear()
+        if ( $service.HttpHeaders.ContainsKey("X-AnchorMailbox") ){
+            $service.HttpHeaders.Remove("X-AnchorMailbox")
+        }
         $service.HttpHeaders.Add("X-AnchorMailbox", $TargetSmtpAddress)
         $Global:email = $TargetSmtpAddress
 

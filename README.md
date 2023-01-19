@@ -62,5 +62,10 @@ Please check on the following page for more details and options to configure you
 The module offers the command `Export-EWSGuiLog` in order to export module logs to CSV file and/or to Powershell GridView.  
 More info [here](/docs/Export-EWSGuiLog.md).  
 
+## EWS Trace Logging
+
+Above module logs, will just log your module funcions, but not specifically the ews trace to the server.  
+If you want to enable this, you can start the tool with: `Start-EWSGui -EnableTraceLogging` and will generate your outputs in **%temp%\EWSgui Logging** folder.  
+
 ## Version History
 [Change Log](/ewsgui/changelog.md)

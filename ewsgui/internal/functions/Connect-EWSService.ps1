@@ -18,6 +18,9 @@
     .PARAMETER ClientSecret
     String parameter with the Client Secret which is configured in the AzureAD App.
 
+    .PARAMETER EnableTraceLogging
+    If this switch is enabled, an advanced EWS tracing file will be created under '%Temp%\EWSGui Logging' folder.
+
     .EXAMPLE
     PS C:\> Connect-EWSService
     Creates service object and authenticate the user.
@@ -30,7 +33,9 @@
 
         [String] $TenantID,
 
-        [String] $ClientSecret
+        [String] $ClientSecret,
+
+        [switch] $EnableTraceLogging
     )
     # Choosing if connection is to Office 365 or an Exchange on-premises
     $PremiseForm.Controls.Add($radiobutton1)
@@ -117,14 +122,16 @@
     if ($buttonExit.IsDisposed) { return }
 
     #creating service object
-    #Add-Type -Path $ModuleRoot\Bin\Microsoft.IdentityModel.Abstractions.dll
-    #Install-Module Microsoft.Identity.Client -Scope CurrentUser -Force -WarningAction SilentlyContinue
-    #Install-Module msal.ps -Scope CurrentUser -Force -WarningAction SilentlyContinue
-
     $ExchangeVersion = [Microsoft.Exchange.WebServices.Data.ExchangeVersion]::$option
     $service = New-Object Microsoft.Exchange.WebServices.Data.ExchangeService($ExchangeVersion)
     $service.ReturnClientRequestId = $true
+    $service.clientRequestId = (New-Guid).ToString()
     $service.UserAgent = "EwsGuiApp/$((Get-Module ewsgui).Version.ToString())"
+    if ( $EnableTraceLogging ) {
+        New-Item -Name "EWSgui Logging" -Path $env:temp -ItemType Directory -Force
+        $service.TraceListener = New-Object EWSTraceListener
+        $service.TraceEnabled = $True
+    }
 
     if ($radiobutton3.Checked) {
         $Token = Get-EWSToken -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret

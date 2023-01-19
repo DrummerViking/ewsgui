@@ -33,8 +33,9 @@
     Test-StopWatch -Service $service -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret
 
     # Create a mailbox object that represents the user in case we are impersonating.
-    $mailbox = New-Object Microsoft.Exchange.WebServices.Data.Mailbox($email);
+    $mailbox = New-Object Microsoft.Exchange.WebServices.Data.Mailbox($email)
     # Call the GetDelegates method to get the delegates of the mailbox object.
+    $service.clientRequestId = (New-Guid).ToString()
     $delegates = $service.GetDelegates($mailbox , $true)
     $Collection = @()
     foreach( $Delegate in $delegates.DelegateUserResponses )
@@ -52,10 +53,8 @@
         $Collection += $Obj
     }
     $array = New-Object System.Collections.ArrayList
-    [int]$i = 0
     foreach ( $Del in $Collection )
     {
-        $i++
         $output = $Del | Select-Object EmailAddress, Inbox, Calendar, Tasks, Notes, Journal, ViewPrivateItems, MeetingMessages
         $array.Add($output)
     }
