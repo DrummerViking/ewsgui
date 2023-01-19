@@ -5,6 +5,13 @@ Exchange Web Services (EWS) tool to perform different operations in Exchange On-
 This tool will connect using Basic Auth to on-premises mailboxes (uses Autodiscover for endpoint discovery).  
 And will use Oauth to connect to Exchange Online. If "Modern Authentication" is not enabled in the tenant, the tool will fail to connect.  
 
+# News!
+
+There is a new version of the tool ported to MsGraph.  
+As we know, Microsoft is putting all its efforts in porting all these features (and more) to graph.  
+So it was time to start developing on graph requests.  
+if you want to take a look and try it, go to https://aka.ms/ExoGraphGUI  
+
 ## Pre-requisites
 
  > This Module requires Powershell 5.1 and above. It should work fine in PS7 and PS5.1.  

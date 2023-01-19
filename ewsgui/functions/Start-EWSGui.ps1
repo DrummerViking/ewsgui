@@ -103,7 +103,6 @@
 
     # Connecting to EWS and creating service object
     $service = Connect-EWSService -ClientID $ClientID -TenantID $TenantID -ClientSecret $ClientSecret -EnableTraceLogging:$EnableTraceLogging
-
     $ExpandFilters = {
     # Removing all controls, in order to reload the screen appropiately for each selection
     $PremiseForm.Controls.RemoveByKey("FromDate")
