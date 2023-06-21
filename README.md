@@ -1,5 +1,8 @@
 ﻿# EWS-GUI Tool
 
+![](https://img.shields.io/github/last-commit/DrummerViking/ewsgui/master?logo=Github&label=Last%20updated)
+![](https://img.shields.io/powershellgallery/dt/ewsgui?logo=Powershell&label=Gallery)
+
 ## About
 Exchange Web Services (EWS) tool to perform different operations in Exchange On-Premises and Exchange Online.  
 This tool will connect using Basic Auth to on-premises mailboxes (uses Autodiscover for endpoint discovery).  
